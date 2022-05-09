@@ -47,8 +47,13 @@ const userSchema = new mongoose.Schema(
    { timestamps: true }
 );
 
+// Schema.virtual("name_property") for create a property dinamic for the Schema with some of logic
 userSchema.virtual("password").set(function (password) {
    this.hash_password = bcrypt.hashSync(password, 10);
+});
+
+userSchema.virtual("fullName").get(function () {
+   return `${this.firstName} ${this.lastName}`;
 });
 
 userSchema.methods = {

@@ -1,8 +1,10 @@
 const express = require("express");
 const env = require("dotenv");
+const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
-const userRoutes = require("./router/user.js");
+const authRoutes = require("./router/auth.js");
+const adminRoutes = require("./router/admin/auth.js");
 
 env.config();
 
@@ -24,7 +26,16 @@ mongoose
    });
 
 app.use(express.json());
-app.use("/api", userRoutes);
+app.use(
+   cors({
+      origin: "*",
+      credentials: true,
+      methods: ["GET", "POST"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+   })
+); // Allow everyone to share resources
+app.use("/api", authRoutes);
+app.use("/api", adminRoutes);
 
 app.get("/", (req, res, next) => {
    return res.status(200).json({
