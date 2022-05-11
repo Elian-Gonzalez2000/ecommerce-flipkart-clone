@@ -5,6 +5,7 @@ const app = express();
 const mongoose = require("mongoose");
 const authRoutes = require("./router/auth.js");
 const adminRoutes = require("./router/admin/auth.js");
+const categoryRoutes = require("./router/category.js");
 
 env.config();
 
@@ -36,6 +37,7 @@ app.use(
 ); // Allow everyone to share resources
 app.use("/api", authRoutes);
 app.use("/api", adminRoutes);
+app.use("/api", categoryRoutes);
 
 app.get("/", (req, res, next) => {
    return res.status(200).json({

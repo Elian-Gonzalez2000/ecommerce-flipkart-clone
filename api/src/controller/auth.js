@@ -1,12 +1,8 @@
 const User = require("../models/auth.js");
 const jwt = require("jsonwebtoken");
-const { validationResult } = require("express-validator");
 
 // exports something with specific name
 exports.signup = (req, res) => {
-   const errors = validationResult(req);
-   return res.status(400).json({ errors: errors.array() });
-
    User.findOne({ email: req.body.email }).exec((error, user) => {
       if (user)
          return res.status(400).json({
@@ -68,15 +64,4 @@ exports.signin = (req, res) => {
          return res.status(400).json({ message: "Something went wront" });
       }
    });
-};
-
-exports.requiresSignin = (req, res, next) => {
-   // Separate the token and save the position with the code in a variable
-   const token = req.headers.authorization.split(" ")[1];
-
-   // Function decode of JsonWebToken recieve the token and the JsonWebToken Secret Key
-   const user = jwt.verify(token, process.env.JWT_SECRET);
-   req.user = user;
-   next();
-   //jwt.decode()
 };

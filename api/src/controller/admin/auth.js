@@ -42,9 +42,13 @@ exports.signin = (req, res) => {
       if (user) {
          if (user.authenticate(req.body.password) && user.role === "admin") {
             // Create a token with JsonWebToken, expires in 2 hours
-            const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-               expiresIn: "2h",
-            });
+            const token = jwt.sign(
+               { _id: user._id, role: user.role },
+               process.env.JWT_SECRET,
+               {
+                  expiresIn: "2h",
+               }
+            );
             const { _id, firstName, lastName, email, role, fullName } = user;
             res.status(200).json({
                token,
@@ -66,15 +70,4 @@ exports.signin = (req, res) => {
          return res.status(400).json({ message: "Something went wront" });
       }
    });
-};
-
-exports.requiresSignin = (req, res, next) => {
-   // Separate the token and save the position with the code in a variable
-   const token = req.headers.authorization.split(" ")[1];
-
-   // Function decode of JsonWebToken recieve the token and the JsonWebToken Secret Key
-   const user = jwtverify(token, process.env.JWT_SECRET);
-   req.user = user;
-   next();
-   //jwt.decode()
 };
