@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const authRoutes = require("./router/auth.js");
 const adminRoutes = require("./router/admin/auth.js");
 const categoryRoutes = require("./router/category.js");
+const productRoutes = require("./router/product.js");
 
 env.config();
 
@@ -38,6 +39,7 @@ app.use(
 app.use("/api", authRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
 
 app.get("/", (req, res, next) => {
    return res.status(200).json({
