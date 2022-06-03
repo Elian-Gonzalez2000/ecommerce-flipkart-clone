@@ -7,6 +7,8 @@ const authRoutes = require("./router/auth.js");
 const adminRoutes = require("./router/admin/auth.js");
 const categoryRoutes = require("./router/category.js");
 const productRoutes = require("./router/product.js");
+const cartRoutes = require("./router/cart.js");
+const path = require("path");
 
 env.config();
 
@@ -36,10 +38,12 @@ app.use(
       allowedHeaders: ["Content-Type", "Authorization"],
    })
 ); // Allow everyone to share resources
+app.use("/public", express.static(path.join(__dirname, "uploads")));
 app.use("/api", authRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
+app.use("/api", cartRoutes);
 
 app.get("/", (req, res, next) => {
    return res.status(200).json({
