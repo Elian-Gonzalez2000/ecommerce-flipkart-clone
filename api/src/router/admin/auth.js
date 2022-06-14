@@ -12,6 +12,6 @@ router.post("/admin/signin", validateSigninRequest, signin);
 
 router.post("/admin/signup", validateSignupRequest, isRequestValidated, signup);
 
-router.post("/admin/signout", requiresSignin, signout);
+router.post("/admin/signout", signout);
 
 module.exports = router;
