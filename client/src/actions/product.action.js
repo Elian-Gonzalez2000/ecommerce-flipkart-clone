@@ -27,7 +27,7 @@ export const getProductPage = (payload) => {
          console.log(res);
          dispatch({ type: productConstants.GET_PRODUCTS_PAGE_REQUEST });
          if (res.status === 200) {
-            const page = res.data;
+            const { page } = res.data;
             dispatch({
                type: productConstants.GET_PRODUCTS_PAGE_SUCCESS,
                payload: { page },
