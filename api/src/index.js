@@ -2,13 +2,15 @@ const express = require("express");
 const env = require("dotenv");
 const cors = require("cors");
 const app = express();
+const path = require("path");
 const mongoose = require("mongoose");
 const authRoutes = require("./router/auth.js");
 const adminRoutes = require("./router/admin/auth.js");
 const categoryRoutes = require("./router/category.js");
 const productRoutes = require("./router/product.js");
 const cartRoutes = require("./router/cart.js");
-const path = require("path");
+const initialDataRoutes = require("./router/admin/initialData.js");
+const pageRoutes = require("./router/admin/page.js");
 
 env.config();
 
@@ -44,6 +46,8 @@ app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
 app.use("/api", cartRoutes);
+app.use("/api", initialDataRoutes);
+app.use("/api", pageRoutes);
 
 app.get("/", (req, res, next) => {
    return res.status(200).json({

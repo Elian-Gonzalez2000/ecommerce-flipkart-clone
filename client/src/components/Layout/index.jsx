@@ -1,12 +1,13 @@
 import React from "react";
-import { Container } from "react-bootstrap";
 import Header from "../Header";
+import MenuHeader from "../MenuHeader";
 
 const Layout = (props) => {
    return (
       <>
          <Header />
-         <Container>{props.children}</Container>
+         <MenuHeader />
+         {props.children}
       </>
    );
 };
