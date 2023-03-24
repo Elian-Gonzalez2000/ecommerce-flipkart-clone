@@ -23,7 +23,7 @@ function ProductPage(props) {
    return (
       <div>
          <h1>{page.title}</h1>
-         <Carousel>
+         <Carousel renderThumbs={() => {}}>
             {page.banners &&
                page.banners.map((banner, index) => (
                   <a
