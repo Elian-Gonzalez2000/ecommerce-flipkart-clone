@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useMatch, useParams } from "react-router-dom";
+import { useLocation, useParams, Link } from "react-router-dom";
 import { getProductsBySlug } from "../../../actions";
 import Layout from "../../../components/Layout";
 import { genericPublicUrl } from "../../../urlConfig";
@@ -19,9 +19,7 @@ function ProductStore(props) {
    const params = useParams();
    const dispatch = useDispatch();
    useEffect(() => {
-      const { match } = props;
       dispatch(getProductsBySlug(slug));
-      console.log(match);
    }, [slug]);
    console.log(useLocation(), product, params);
    return (
@@ -37,7 +35,11 @@ function ProductStore(props) {
                      </div>
                      <div style={{ display: "flex" }}>
                         {product.productsByPrice[key].map((product) => (
-                           <div className="product-container">
+                           <Link
+                              to={`/${product.slug}/${product._id}/p`}
+                              style={{ display: "block" }}
+                              className="product-container"
+                           >
                               <div className="product-img-container">
                                  <img
                                     src={genericPublicUrl(
@@ -58,7 +60,7 @@ function ProductStore(props) {
                                     {product.price}
                                  </div>
                               </div>
-                           </div>
+                           </Link>
                         ))}
                      </div>
                   </div>

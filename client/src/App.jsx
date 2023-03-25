@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { isUserLoggedIn } from "./actions";
 import "./App.css";
 import HomePage from "./containers/HomePage";
 import ProductListPage from "./containers/ProductListPage";
+import ProductsDetailsPage from "./containers/ProductsDetailsPage";
 
 function App() {
    const url = "http://localhost:3002/api/admin/signin";
@@ -45,11 +48,30 @@ function App() {
    //    })
    //    .catch((error) => console.log(error));
 
+   const dispatch = useDispatch();
+   const auth = useSelector((state) => state.auth);
+
+   useEffect(() => {
+      if (!auth.authenticate) {
+         dispatch(isUserLoggedIn());
+      }
+   }, []);
+   useEffect(() => {
+      if (!auth.authenticate) {
+         dispatch(isUserLoggedIn());
+      }
+   }, [auth.authenticate]);
+
    return (
       <div className="App">
          <Router>
             <Routes>
                <Route path="/" exact element={<HomePage />} />
+               <Route
+                  path="/:productSlug/:productId/p"
+                  exact
+                  element={<ProductsDetailsPage />}
+               />
                <Route path="/:slug" exact element={<ProductListPage />} />
             </Routes>
          </Router>

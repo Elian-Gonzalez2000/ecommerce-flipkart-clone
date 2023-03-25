@@ -3,10 +3,10 @@ const {
    requiresSignin,
    adminMiddleware,
 } = require("../common-middleware/index.js");
-const Category = require("../models/category");
 const {
    createProduct,
    getProductsBySlug,
+   getProductDetailsById,
 } = require("../controller/product.js");
 const multer = require("multer");
 const router = express.Router();
@@ -33,6 +33,6 @@ router.post(
 );
 
 router.post("/products/:slug", getProductsBySlug);
-//router.get("/category/getcategory", getCategories);
+router.get("/product/:productId", getProductDetailsById);
 
 module.exports = router;
