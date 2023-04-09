@@ -1,10 +1,15 @@
 .card {
-   width: 400px;
-   height: 200px;
-   margin: 5px 0 5px;
+   width: 100%;
    background-color: #fff;
    border: 1px solid #cecece;
-   box-shadow: 0 0 2px 2px #cecece;
+   box-shadow: 0 0 2px 2px rgb(0, 0, 0, 0.2);
+}
+
+.card-header {
+   display: flex;
+   justify-content: space-between;
+   padding: 1.2rem;
+   border-bottom: 1px solid #cecece;
 }
 
 .card img {

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { isUserLoggedIn } from "./actions";
+import { isUserLoggedIn, updateToCart } from "./actions";
 import "./App.css";
 import HomePage from "./containers/HomePage";
 import ProductListPage from "./containers/ProductListPage";
 import ProductsDetailsPage from "./containers/ProductsDetailsPage";
+import CartPage from "./containers/CartPage";
 
 function App() {
    const url = "http://localhost:3002/api/admin/signin";
@@ -62,11 +63,16 @@ function App() {
       }
    }, [auth.authenticate]);
 
+   useEffect(() => {
+      dispatch(updateToCart());
+   }, []);
+
    return (
       <div className="App">
          <Router>
             <Routes>
                <Route path="/" exact element={<HomePage />} />
+               <Route path="/cart" element={<CartPage />} />
                <Route
                   path="/:productSlug/:productId/p"
                   exact

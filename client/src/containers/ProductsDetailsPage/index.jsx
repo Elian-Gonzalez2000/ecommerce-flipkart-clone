@@ -7,6 +7,7 @@ import Layout from "../../components/Layout";
 import { MaterialButton } from "../../components/MaterialUI";
 import { IoIosArrowForward, IoIosStar, IoMdCart } from "react-icons/io";
 import "./style.css";
+import { addToCart } from "../../actions/cart.action";
 
 function ProductsDetailsPage(props) {
    const dispatch = useDispatch();
@@ -72,6 +73,11 @@ function ProductsDetailsPage(props) {
                            marginRight: "5px",
                         }}
                         icon={<IoMdCart />}
+                        onClick={() => {
+                           const { _id, name, price } = product;
+                           const img = product.productPictures[0].img;
+                           dispatch(addToCart({ _id, name, price, img }));
+                        }}
                      />
                      <MaterialButton
                         title="BUY NOW"

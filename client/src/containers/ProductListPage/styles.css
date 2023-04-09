@@ -1,4 +1,4 @@
-.card {
+/* .card {
    width: calc(100% - 20px);
    margin: 0.6rem 0.6rem;
    border: 1px solid #ccc;
@@ -10,7 +10,7 @@
    justify-content: space-between;
    padding: 1.2rem;
    border-bottom: 1px solid #cecece;
-}
+} */
 
 .product-container {
    width: 200px;
