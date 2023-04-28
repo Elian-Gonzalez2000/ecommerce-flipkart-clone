@@ -2,7 +2,20 @@ import React, { useState } from "react";
 import "./styles.css";
 import { genericPublicUrl } from "../../../urlConfig";
 
-function CartItem({ _id, name, price, quantity, img }) {
+function CartItem(props) {
+   const [qty, setQty] = useState(props.cartItem.quantity);
+   const { _id, name, price, quantity, img } = props.cartItem;
+
+   const onQuantityIncrement = () => {
+      setQty(quantity + 1);
+      props.onQuantityInc(_id, qty + 1);
+   };
+
+   const onQuantityDecrement = () => {
+      if (qty <= 1) return;
+      setQty(quantity - 1);
+      props.onQuantityDec(_id, qty - 1);
+   };
    return (
       <div className="cart-item-container">
          <div className="flexRow">
@@ -24,9 +37,9 @@ function CartItem({ _id, name, price, quantity, img }) {
             }}
          >
             <div className="quantity-control">
-               <button>-</button>
+               <button onClick={onQuantityDecrement}>-</button>
                <input value={quantity} readOnly />
-               <button>+</button>
+               <button onClick={onQuantityIncrement}>+</button>
             </div>
             <button className="cart-action-btn">Save for later</button>
             <button className="cart-action-btn">Remove</button>
