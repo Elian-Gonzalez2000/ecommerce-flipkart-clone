@@ -2,11 +2,11 @@ import axios from "../helpers/axios";
 import store from "../store";
 import { cartConstants } from "./constants";
 
-export const addToCart = (product) => {
+export const addToCart = (product, newQty) => {
    return async (dispatch) => {
       const { cartItems } = store.getState().cart;
       const quantity = cartItems[product._id]
-         ? parseInt(cartItems[product._id].quantity + 1)
+         ? parseInt(cartItems[product._id].quantity + newQty)
          : 1;
 
       cartItems[product._id] = {
