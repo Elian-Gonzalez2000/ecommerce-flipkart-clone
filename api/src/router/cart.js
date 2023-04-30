@@ -3,8 +3,10 @@ const {
    requiresSignin,
    userMiddleware,
 } = require("../common-middleware/index.js");
-const { addItemToCart } = require("../controller/cart.js");
+const { addItemToCart, getCartItems } = require("../controller/cart.js");
 const router = express.Router();
+
+router.post("/user/getcartitems", requiresSignin, userMiddleware, getCartItems);
 
 router.post(
    "/user/cart/addtocart",
