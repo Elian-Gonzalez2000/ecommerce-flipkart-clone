@@ -65,7 +65,7 @@ function App() {
 
    useEffect(() => {
       dispatch(updateToCart());
-   }, []);
+   }, [auth.authenticate]);
 
    return (
       <div className="App">

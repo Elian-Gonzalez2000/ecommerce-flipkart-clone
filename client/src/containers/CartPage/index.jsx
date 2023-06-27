@@ -3,10 +3,11 @@ import Layout from "../../components/Layout";
 import Card from "../../components/UI/Card";
 import { useDispatch, useSelector } from "react-redux";
 import CartItem from "./CartItem";
-import { addToCart } from "../../actions";
+import { addToCart, getCartItems } from "../../actions";
 
 function CartPage(props) {
    const cart = useSelector((state) => state.cart);
+   const auth = useSelector((state) => state.auth);
    const dispatch = useDispatch();
    //const cartItems = cart.cartItems;
    const [cartItems, setCartItems] = useState(cart.cartItems);
@@ -14,6 +15,12 @@ function CartPage(props) {
    useEffect(() => {
       setCartItems(cart.cartItems);
    }, [cart.cartItems]);
+
+   useEffect(() => {
+      if (auth.authenticate) {
+         dispatch(getCartItems());
+      }
+   }, [auth.authenticate]);
 
    const onQuantityIncrement = (_id, qty) => {
       //console.log(id, qty);
