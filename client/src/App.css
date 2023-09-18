@@ -1,3 +1,7 @@
 .flexRow {
    display: flex;
 }
+
+.sb {
+   justify-content: space-between;
+}

@@ -16,15 +16,14 @@ export const getAllCategory = () => {
             });
          }
       } catch (err) {
-         console.log(err);
-         /* const { status, data } = err.response;
+         const { status, data } = err.response;
          console.log(data);
          if (status === 400) {
             dispatch({
                type: authConstants.LOGIN_FAILURE,
                payload: { err: data.message },
             });
-         } */
+         }
       }
    };
 };

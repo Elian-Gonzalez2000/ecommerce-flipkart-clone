@@ -1,10 +1,15 @@
+* {
+   box-sizing: border-box;
+}
+
 body {
-  margin: 0;
-  font-family: "Open Sans", sans-serif;
-  scroll-behavior: smooth;
+   margin: 0;
+   font-family: "Open Sans", sans-serif;
+   scroll-behavior: smooth;
+   background-color: #f1f3f6;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+      monospace;
 }

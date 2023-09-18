@@ -6,12 +6,12 @@ const getCartItems = () => {
    return async (dispatch) => {
       try {
          dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
-         const res = await axios.post("/user/getCartItems");
+         const res = await axios.post("/user/getcartitems");
          if (res.status === 200) {
             const { cartItems } = res.data;
             console.log({ getCartItems: cartItems });
             if (cartItems) {
-               disptach({
+               dispatch({
                   type: cartConstants.ADD_TO_CART_SUCCESS,
                   payload: { cartItems },
                });
@@ -23,13 +23,12 @@ const getCartItems = () => {
    };
 };
 
-export const addToCart = (product, newQty) => {
+export const addToCart = (product, newQty = 1) => {
    return async (dispatch) => {
       const {
          cart: { cartItems },
          auth,
       } = store.getState();
-      //const { cartItems } = store.getState().cart;
       const quantity = cartItems[product._id]
          ? parseInt(cartItems[product._id].quantity + newQty)
          : 1;
@@ -42,9 +41,16 @@ export const addToCart = (product, newQty) => {
       if (auth.authenticate) {
          dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
          const payload = {
-            cartItems: [{ product: product._id, quantity }],
+            cartItems: [
+               {
+                  product: product._id,
+                  quantity,
+               },
+            ],
          };
+         console.log(payload);
          const res = await axios.post("/user/cart/addtocart", payload);
+         console.log(res);
          if (res.status === 201) {
             dispatch(getCartItems());
          }
@@ -53,7 +59,6 @@ export const addToCart = (product, newQty) => {
       }
 
       console.log("addToCart::", cartItems);
-
       dispatch({
          type: cartConstants.ADD_TO_CART_SUCCESS,
          payload: { cartItems },
@@ -64,7 +69,7 @@ export const addToCart = (product, newQty) => {
 export const updateToCart = () => {
    return async (dispatch) => {
       const { auth } = store.getState();
-      let cartItems = localStorage.getItem("cart")
+      const cartItems = localStorage.getItem("cart")
          ? JSON.parse(localStorage.getItem("cart"))
          : null;
 
@@ -80,19 +85,19 @@ export const updateToCart = () => {
                }),
             };
             if (Object.keys(cartItems).length > 0) {
-               const res = await axios.post("/user/cart/addtocart", paylaod);
+               const res = await axios.post("/user/cart/addtocart", payload);
                if (res.status === 201) {
                   dispatch(getCartItems());
                }
             }
+         } else {
+            dispatch(getCartItems());
          }
       } else {
-         if (cartItems) {
-            dispatch({
-               type: cartConstants.ADD_TO_CART_SUCCESS,
-               payload: { cartItems },
-            });
-         }
+         dispatch({
+            type: cartConstants.ADD_TO_CART_SUCCESS,
+            payload: { cartItems },
+         });
       }
    };
 };

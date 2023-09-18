@@ -1,12 +1,12 @@
 import React from "react";
 import "./style.css";
 
-function Card(props) {
+function Card({ headerLeft, headerRight, ...props }) {
    return (
       <div className="card" {...props}>
          <div className="card-header">
-            {props.headerLeft && <div>{props.headerLeft}</div>}
-            {props.headerRight && props.headerRight}
+            {headerLeft && <div>{headerLeft}</div>}
+            {headerRight && headerRight}
          </div>
          {props.children}
       </div>

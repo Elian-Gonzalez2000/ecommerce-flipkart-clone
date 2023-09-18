@@ -97,35 +97,37 @@ const Header = (props) => {
                      </p>
                   </div>
                   <div className="rightspace">
-                     <MaterialInput
-                        type="text"
-                        label="Enter Email/Enter Mobile Number"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                     />
+                     <div className="login-input-container">
+                        <MaterialInput
+                           type="text"
+                           label="Enter Email/Enter Mobile Number"
+                           value={email}
+                           onChange={(e) => setEmail(e.target.value)}
+                        />
 
-                     <MaterialInput
-                        type="password"
-                        label="Enter Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        rightElement={<a href="#">Forgot?</a>}
-                     />
-                     <br />
-                     <br />
-                     <MaterialButton
-                        title="Login"
-                        bgColor="#fb641b"
-                        textColor="#ffffff"
-                        onClick={userLogin}
-                     />
-                     <br />
-                     <p>OR</p>
-                     <MaterialButton
-                        title="Request OTP"
-                        bgColor="#ffffff"
-                        textColor="#2874f0"
-                     />
+                        <MaterialInput
+                           type="password"
+                           label="Enter Password"
+                           value={password}
+                           onChange={(e) => setPassword(e.target.value)}
+                           rightElement={<a href="#">Forgot?</a>}
+                        />
+                        <br />
+                        <br />
+                        <MaterialButton
+                           title="Login"
+                           bgColor="#fb641b"
+                           textColor="#ffffff"
+                           onClick={userLogin}
+                        />
+                        <br />
+                        <p style={{ textAlign: "center" }}>OR</p>
+                        <MaterialButton
+                           title="Request OTP"
+                           bgColor="#ffffff"
+                           textColor="#2874f0"
+                        />
+                     </div>
                   </div>
                </div>
             </div>
@@ -166,11 +168,12 @@ const Header = (props) => {
             {/* End search Component */}
 
             {/* Right side menu */}
-            <div className="rightMenu">
+            <div className="rightMenu" style={{ zIndex: "999" }}>
                {auth.authenticate
                   ? renderLoggingInMenu()
                   : renderNotLoggedInMenu()}
                <DropdownMenu
+                  style={{}}
                   menu={
                      <a className="more">
                         <span>More</span>
@@ -186,7 +189,7 @@ const Header = (props) => {
                   ]}
                />
                <div>
-                  <a className="cart">
+                  <a className="cart" href="/cart">
                      <IoIosCart />
                      <span style={{ margin: "0 10px" }}>Cart</span>
                   </a>

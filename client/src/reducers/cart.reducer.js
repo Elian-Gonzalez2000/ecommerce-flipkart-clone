@@ -17,20 +17,20 @@ export default (state = initState, action) => {
       case cartConstants.ADD_TO_CART_SUCCESS:
          state = {
             ...state,
-            cartItems: action.paylaod.cartItems,
+            cartItems: action.payload.cartItems,
             updatingCart: false,
          };
          break;
       case cartConstants.ADD_TO_CART_FAILURE:
          state = {
             ...state,
+            error: action.paylaod.error,
             updatingCart: false,
-            error: action.payload.error,
          };
          break;
       case cartConstants.RESET_CART:
          state = {
-            ...initState,
+            ...initState
          };
          break;
    }
