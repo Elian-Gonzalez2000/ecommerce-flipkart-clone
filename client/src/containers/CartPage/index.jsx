@@ -6,6 +6,8 @@ import CartItem from "./CartItem";
 import { addToCart, getCartItems } from "../../actions";
 import { MaterialButton } from "../../components/MaterialUI";
 import { useNavigate } from "react-router-dom";
+import PriceDetails from "../../components/PriceDetails";
+import "./styles.css";
 
 function CartPage(props) {
    const cart = useSelector((state) => state.cart);
@@ -34,6 +36,24 @@ function CartPage(props) {
       const { name, price, img } = cartItems[_id];
       dispatch(addToCart({ _id, name, price, img }, -1));
    };
+
+   if (props.onlyCartItems) {
+      return (
+         <>
+            {cartItems &&
+               Object.keys(cartItems).map((item, index) => {
+                  return (
+                     <CartItem
+                        key={index}
+                        cartItem={cartItems[item]}
+                        onQuantityInc={onQuantityIncrement}
+                        onQuantityDec={onQuantityDecrement}
+                     />
+                  );
+               })}
+         </>
+      );
+   }
 
    return (
       <Layout>
@@ -73,7 +93,22 @@ function CartPage(props) {
                   </div>
                </div>
             </Card>
-            <Card headerLeft="Price" style={{ width: "380px" }}></Card>
+            <PriceDetails
+               totalItem={Object.keys(cart.cartItems).reduce(function (
+                  qty,
+                  key
+               ) {
+                  return qty + cart.cartItems[key].quantity;
+               },
+               0)}
+               totalPrice={Object.keys(cart.cartItems).reduce(
+                  (totalPrice, key) => {
+                     const { price, quantity } = cart.cartItems[key];
+                     return totalPrice + price * quantity;
+                  },
+                  0
+               )}
+            />
          </div>
       </Layout>
    );

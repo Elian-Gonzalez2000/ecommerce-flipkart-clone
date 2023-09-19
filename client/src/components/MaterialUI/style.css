@@ -137,3 +137,11 @@
    background-color: #f0f0f0;
    cursor: pointer;
 }
+
+/* Anchor Button */
+.anchor-button {
+   background: transparent;
+   border: none;
+   letter-spacing: 1px;
+   height: min-content;
+}
