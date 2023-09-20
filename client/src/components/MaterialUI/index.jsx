@@ -69,13 +69,13 @@ const MaterialButton = (props) => {
    };
 
    return (
-      <div style={{ width: "100%" }}>
+      <div>
          <button
             className="materialButton"
             style={{
-               backgroundColor: props.style.bgColor,
-               color: props.style.textColor,
-               width: props.style.width,
+               backgroundColor: props?.style?.bgColor,
+               color: props?.style?.textColor,
+               width: props?.style?.width,
             }}
             onClick={onClick}
          >

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../components/Layout";
-import { getAddress, getCartItems } from "../../actions";
+import { addOrder, getAddress, getCartItems } from "../../actions";
 import {
    Anchor,
    MaterialButton,
@@ -109,6 +109,9 @@ const CheckoutPage = (props) => {
    const [newAddress, setNewAddress] = useState(false);
    const [confirmAddress, setConfirmAddress] = useState(false);
    const [orderSummary, setOrderSummary] = useState(false);
+   const [orderConfirmation, setOrderConfirmation] = useState(false);
+   const [paymentOption, setPaymentOption] = useState(false);
+   const [confirmOrder, setConfirmOrder] = useState(false);
    const [selectedAddress, setSelectedAddress] = useState(null);
 
    const dispatch = useDispatch();
@@ -141,6 +144,37 @@ const CheckoutPage = (props) => {
          adr._id === addr._id ? { ...adr, edit: true } : { ...adr, edit: false }
       );
       setAddress(updatedAddress);
+   };
+
+   const userOrderConfirmation = () => {
+      setOrderConfirmation(true);
+      setOrderSummary(false);
+      setPaymentOption(true);
+   };
+
+   const onConfirmOrder = () => {
+      const totalAmount = Object.keys(cart.cartItems).reduce(
+         (totalPrice, key) => {
+            const { price, quantity } = cart.cartItems[key];
+            return totalPrice + price * quantity;
+         },
+         0
+      );
+      const items = Object.keys(cart.cartItems).map((key) => ({
+         productId: key,
+         payablePrice: cart.cartItems[key].price,
+         purchasedQty: cart.cartItems[key].quantity,
+      }));
+      console.log(items);
+      const payload = {
+         addressId: selectedAddress._id,
+         totalAmount,
+         items,
+         paymentStatus: "pending",
+      };
+      console.log(payload);
+      dispatch(addOrder(payload));
+      setConfirmOrder(true);
    };
 
    useEffect(() => {
@@ -201,11 +235,11 @@ const CheckoutPage = (props) => {
                      body={
                         <>
                            {confirmAddress ? (
-                              <div>{`${selectedAddress.address} - ${selectedAddress.pinCode}`}</div>
+                              <div className="step-completed">{`${selectedAddress.address} - ${selectedAddress.pinCode}`}</div>
                            ) : (
                               address.map((adr) => (
                                  <Address
-                                    key={`${adr.id}`}
+                                    key={`${adr._id}`}
                                     selectAddress={selectAddress}
                                     enableAddressEditForm={
                                        enableAddressEditForm
@@ -243,36 +277,79 @@ const CheckoutPage = (props) => {
                      title={"ORDER SUMMARY"}
                      active={orderSummary}
                      body={
-                        orderSummary ? <CartPage onlyCartItems={true} /> : null
+                        orderSummary ? (
+                           <CartPage onlyCartItems={true} />
+                        ) : orderConfirmation ? (
+                           <div className="step-completed">Items</div>
+                        ) : null
                      }
                   />
-                  <Card>
-                     <div>
-                        <p>Order confirmation email will be sent to {auth.user.email}</p>
-                        <MaterialButton title={"CONTINUE"}  />
-                     </div>
-                  </Card>
+                  {orderSummary && (
+                     <Card style={{ margin: "10px 0" }}>
+                        <div
+                           className="flexRow sb"
+                           style={{
+                              padding: "1rem 30px",
+                              alignItems: "center",
+                           }}
+                        >
+                           <p style={{ margin: "10px 0" }}>
+                              Order confirmation email will be sent to{" "}
+                              {auth.user.email}
+                           </p>
+                           <MaterialButton
+                              title={"CONTINUE"}
+                              onClick={userOrderConfirmation}
+                              style={{ width: "200px" }}
+                           />
+                        </div>
+                     </Card>
+                  )}
 
-                  <CheckoutStep stepNumber={"4"} title={"PAYMENT OPTIONS"} />
+                  <CheckoutStep
+                     stepNumber={"4"}
+                     title={"PAYMENT OPTIONS"}
+                     active={paymentOption}
+                     body={
+                        paymentOption && (
+                           <div className="step-completed">
+                              <div className="flexRow">
+                                 <input
+                                    type="radio"
+                                    name="paymentOption"
+                                    value="cod"
+                                 />
+                                 <p>Cash on delivery</p>
+                              </div>
+                              <MaterialButton
+                                 title="CONFIRM ORDER"
+                                 onClick={onConfirmOrder}
+                              />
+                           </div>
+                        )
+                     }
+                  />
                </div>
 
                {/* Price Component */}
-               <PriceDetails
-                  totalItem={Object.keys(cart.cartItems).reduce(function (
-                     qty,
-                     key
-                  ) {
-                     return qty + cart.cartItems[key].quantity;
-                  },
-                  0)}
-                  totalPrice={Object.keys(cart.cartItems).reduce(
-                     (totalPrice, key) => {
-                        const { price, quantity } = cart.cartItems[key];
-                        return totalPrice + price * quantity;
+               {
+                  <PriceDetails
+                     totalItem={Object.keys(cart.cartItems).reduce(function (
+                        qty,
+                        key
+                     ) {
+                        return qty + cart.cartItems[key].quantity;
                      },
-                     0
-                  )}
-               />
+                     0)}
+                     totalPrice={Object.keys(cart.cartItems).reduce(
+                        (totalPrice, key) => {
+                           const { price, quantity } = cart.cartItems[key];
+                           return totalPrice + price * quantity;
+                        },
+                        0
+                     )}
+                  />
+               }
             </div>
          }
       </Layout>
