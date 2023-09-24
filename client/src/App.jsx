@@ -8,6 +8,7 @@ import ProductListPage from "./containers/ProductListPage";
 import ProductsDetailsPage from "./containers/ProductsDetailsPage";
 import CartPage from "./containers/CartPage";
 import CheckoutPage from "./containers/CheckoutPage";
+import OrderPage from "./containers/OrderPage";
 
 function App() {
    const url = "http://localhost:3002/api/admin/signin";
@@ -75,6 +76,7 @@ function App() {
                <Route path="/" exact element={<HomePage />} />
                <Route path="/cart" element={<CartPage />} />
                <Route path="/checkout" element={<CheckoutPage />} />
+               <Route path="/account/orders" element={<OrderPage />} />
                <Route
                   path="/:productSlug/:productId/p"
                   exact

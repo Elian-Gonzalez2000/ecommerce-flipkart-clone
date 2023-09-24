@@ -2,8 +2,10 @@ import { userConstants } from "../actions/constants";
 
 const initState = {
    address: [],
+   orders: [],
    error: null,
    loading: false,
+   orderFeching: false,
 };
 
 export default (state = initState, action) => {
@@ -50,6 +52,27 @@ export default (state = initState, action) => {
             ...state,
             error: action.payload.error,
             loading: false,
+         };
+         break;
+
+      case userConstants.GET_USER_ORDER_REQUEST:
+         state = {
+            ...state,
+            orderFeching: true,
+         };
+         break;
+      case userConstants.GET_USER_ORDER_SUCCESS:
+         state = {
+            ...state,
+            orderFeching: false,
+            orders: action.payload.orders,
+         };
+         break;
+      case userConstants.GET_USER_ORDER_FAILURE:
+         state = {
+            ...state,
+            error: action.payload.error,
+            orderFeching: false,
          };
          break;
    }
