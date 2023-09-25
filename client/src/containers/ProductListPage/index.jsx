@@ -5,6 +5,7 @@ import ProductStore from "./ProductStore/index.jsx";
 import ProductPage from "./ProductPage/index.jsx";
 import "./styles.css";
 import getParams from "../../utilities/getParams";
+import ClothingAndAccessories from "./ClothingAndAccessories";
 
 const ProductListPage = (props) => {
    const location = useLocation();
@@ -20,7 +21,8 @@ const ProductListPage = (props) => {
             content = <ProductPage {...props} location={location} />;
             break;
          default:
-            content = null;
+            content = <ClothingAndAccessories {...props} location={location} />;
+            break;
       }
       return content;
    };

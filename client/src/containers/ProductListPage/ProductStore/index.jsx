@@ -5,6 +5,7 @@ import { getProductsBySlug } from "../../../actions";
 import Layout from "../../../components/Layout";
 import { genericPublicUrl } from "../../../urlConfig";
 import Card from "../../../components/UI/Card";
+import { BiRupee } from "react-icons/bi";
 
 function ProductStore(props) {
    const product = useSelector((state) => state.product);
@@ -16,7 +17,6 @@ function ProductStore(props) {
       under30k: 30000,
    });
    const slug = useLocation().pathname.substring(1);
-   //const match = useMatch();
    const params = useParams();
    const dispatch = useDispatch();
    useEffect(() => {
@@ -33,8 +33,10 @@ function ProductStore(props) {
                      headerRight={<button>View all</button>}
                      style={{
                         width: "calc(100% - 20px)",
-                        margin: "40px",
+                        margin: "40px auto",
+                        border: "none",
                      }}
+                     key={self.crypto.randomUUID()}
                   >
                      <div style={{ display: "flex" }}>
                         {product.productsByPrice[key].map((product) => (
@@ -42,6 +44,7 @@ function ProductStore(props) {
                               to={`/${product.slug}/${product._id}/p`}
                               style={{ display: "block" }}
                               className="product-container"
+                              key={self.crypto.randomUUID()}
                            >
                               <div className="product-img-container">
                                  <img
@@ -55,11 +58,9 @@ function ProductStore(props) {
                                  <div style={{ margin: "5px 0" }}>
                                     {product.name}
                                  </div>
-                                 <div>
-                                    <span>4.3</span>&nbsp;
-                                    <span>3353</span>
-                                 </div>
+
                                  <div className="product-price">
+                                    <BiRupee />
                                     {product.price}
                                  </div>
                               </div>
