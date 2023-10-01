@@ -19,6 +19,9 @@ import { login, signout } from "../../actions";
 
 const Header = (props) => {
    const [loginModal, setLoginModal] = useState(false);
+   const [signup, setSignup] = useState(false);
+   const [firstName, setFirstName] = useState("");
+   const [lastName, setLastName] = useState("");
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
    const auth = useSelector((state) => state.auth);
@@ -63,7 +66,13 @@ const Header = (props) => {
       return (
          <DropdownMenu
             menu={
-               <a className="loginButton" onClick={() => setLoginModal(true)}>
+               <a
+                  className="loginButton"
+                  onClick={() => {
+                     setSignup(false);
+                     setLoginModal(true);
+                  }}
+               >
                   Login
                </a>
             }
@@ -85,7 +94,15 @@ const Header = (props) => {
             firstMenu={
                <div className="firstmenu">
                   <span>New Customer?</span>
-                  <a style={{ color: "#2874f0" }}>Sign Up</a>
+                  <a
+                     onClick={() => {
+                        setLoginModal(true);
+                        setSignup(true);
+                     }}
+                     style={{ color: "#2874f0" }}
+                  >
+                     Sign Up
+                  </a>
                </div>
             }
          />
@@ -105,6 +122,28 @@ const Header = (props) => {
                   </div>
                   <div className="rightspace">
                      <div className="login-input-container">
+                        {auth.error && (
+                           <div style={{ color: "red", fontSize: 12 }}>
+                              {auth.error}
+                           </div>
+                        )}
+                        {signup && (
+                           <MaterialInput
+                              type="text"
+                              label="First Name"
+                              value={firstName}
+                              onChange={(e) => setFirstName(e.target.value)}
+                           />
+                        )}
+                        {signup && (
+                           <MaterialInput
+                              type="text"
+                              label="Last Name"
+                              value={lastName}
+                              onChange={(e) => setLastName(e.target.value)}
+                           />
+                        )}
+
                         <MaterialInput
                            type="text"
                            label="Enter Email/Enter Mobile Number"

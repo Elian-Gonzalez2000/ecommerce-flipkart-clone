@@ -26,36 +26,44 @@ const OrderPage = (props) => {
             {user.orders.length > 0 &&
                user.orders.map((order) => {
                   return order.items.map((item) => (
-                     <div className="order-item-container">
-                        <div
-                           style={{
-                              display: "flex",
-                              flex: "1",
-                              justifyContent: "space-between",
-                           }}
+                     <Card style={{ display: "block", margin: "5px 0" }}>
+                        <Link
+                           to={`/order_details/${order._id}`}
+                           className="orderItemContainer"
                         >
-                           <picture
+                           <div
                               style={{
-                                 width: "80px",
-                                 height: "80px",
-                                 overflow: "hidden",
-                                 textAlign: "center",
+                                 display: "flex",
+                                 flex: "1",
+                                 justifyContent: "space-between",
                               }}
                            >
-                              <img
-                                 style={{ maxWidth: "80px", maxHeight: "80px" }}
-                                 src={genericPublicUrl(
-                                    item.productId.productPictures[0].img
-                                 )}
-                              />
-                           </picture>
-                           <p style={{ width: "300px" }}>
-                              {item.productId.name}
-                           </p>
-                           <p>{item.payablePrice}</p>
-                           <p>{order.paymentStatus}</p>
-                        </div>
-                     </div>
+                              <picture
+                                 style={{
+                                    width: "80px",
+                                    height: "80px",
+                                    overflow: "hidden",
+                                    textAlign: "center",
+                                 }}
+                              >
+                                 <img
+                                    style={{
+                                       maxWidth: "80px",
+                                       maxHeight: "80px",
+                                    }}
+                                    src={genericPublicUrl(
+                                       item.productId.productPictures[0].img
+                                    )}
+                                 />
+                              </picture>
+                              <p style={{ width: "300px" }}>
+                                 {item.productId.name}
+                              </p>
+                              <p>{item.payablePrice}</p>
+                              <p>{order.paymentStatus}</p>
+                           </div>
+                        </Link>
+                     </Card>
                   ));
                })}
          </div>

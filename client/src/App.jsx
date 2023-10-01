@@ -78,6 +78,10 @@ function App() {
                <Route path="/checkout" element={<CheckoutPage />} />
                <Route path="/account/orders" element={<OrderPage />} />
                <Route
+                  path="/order-details/:orderId"
+                  component={OrderDetailsPage}
+               />
+               <Route
                   path="/:productSlug/:productId/p"
                   exact
                   element={<ProductsDetailsPage />}
