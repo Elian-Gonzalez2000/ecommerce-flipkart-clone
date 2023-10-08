@@ -10,6 +10,7 @@ const initialState = {
       under20k: [],
       under30k: [],
    },
+   priceRange: {},
    pageRequest: false,
    loading: false,
    page: {},
@@ -22,6 +23,7 @@ export default (state = initialState, action) => {
          state = {
             ...state,
             products: action.payload.products,
+            priceRange: action.payload.priceRange,
             productsByPrice: {
                ...action.payload.productsByPrice,
             },

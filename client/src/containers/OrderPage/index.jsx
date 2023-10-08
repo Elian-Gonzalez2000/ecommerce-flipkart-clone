@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { genericPublicUrl } from "../../urlConfig";
+import { randomUI } from "../../helpers/randomUI";
+import { getOrders } from "../../actions";
 import Layout from "../../components/Layout";
 import Card from "../../components/UI/Card";
-import { useDispatch, useSelector } from "react-redux";
-import { getOrders } from "../../actions";
-import { genericPublicUrl } from "../../urlConfig";
-import "./style.css";
 import { Breed } from "../../components/MaterialUI";
+import "./style.css";
 
 const OrderPage = (props) => {
    const user = useSelector((state) => state.user);
@@ -26,9 +28,12 @@ const OrderPage = (props) => {
             {user.orders.length > 0 &&
                user.orders.map((order) => {
                   return order.items.map((item) => (
-                     <Card style={{ display: "block", margin: "5px 0" }}>
+                     <Card
+                        key={randomUI()}
+                        style={{ display: "block", margin: "5px 0" }}
+                     >
                         <Link
-                           to={`/order_details/${order._id}`}
+                           to={`/order-details/${order._id}`}
                            className="orderItemContainer"
                         >
                            <div

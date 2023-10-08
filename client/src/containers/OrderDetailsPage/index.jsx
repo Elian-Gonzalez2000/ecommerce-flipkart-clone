@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 import { getOrder } from "../../actions";
 import Layout from "../../components/Layout";
 import Card from "../../components/UI/Card";
 import Price from "../../components/UI/Price";
-
 import "./style.css";
+import { genericPublicUrl } from "../../urlConfig";
+import { randomUI } from "../../helpers/randomUI";
 
 /**
  * @author
@@ -14,12 +16,13 @@ import "./style.css";
 
 const OrderDetailsPage = (props) => {
    const dispatch = useDispatch();
+   const params = useParams();
    const orderDetails = useSelector((state) => state.user.orderDetails);
 
    useEffect(() => {
       console.log({ props });
       const payload = {
-         orderId: props.match.params.orderId,
+         orderId: params.orderId,
       };
       dispatch(getOrder(payload));
    }, []);
@@ -78,7 +81,8 @@ const OrderDetailsPage = (props) => {
                         {orderDetails.address.address}
                      </div>
                      <div className="delPhoneNumber">
-                        Phone number {orderDetails.address.mobileNumber}
+                        <strong>Phone number: </strong>{" "}
+                        {orderDetails.address.mobileNumber}
                      </div>
                   </div>
                   <div className="delMoreActionContainer">
@@ -90,28 +94,19 @@ const OrderDetailsPage = (props) => {
 
             {orderDetails.items.map((item, index) => (
                <Card
+                  key={randomUI()}
                   style={{
                      display: "flex",
                      padding: "20px 0",
                      margin: "10px 0",
                   }}
                >
-                  <div className="flexRow">
-                     <div className="delItemImgContainer">
-                        <img
-                           src={item.productId.productPictures[0].img}
-                           alt=""
-                        />
-                     </div>
-                     <div style={{ width: "250px" }}>
-                        <div className="delItemName">{item.productId.name}</div>
-                        <Price value={item.payablePrice} />
-                     </div>
-                  </div>
+                  <div className="flexRow"></div>
                   <div style={{ padding: "25px 50px" }}>
                      <div className="orderTrack">
                         {orderDetails.orderStatus.map((status) => (
                            <div
+                              key={randomUI()}
                               className={`orderStatus ${
                                  status.isCompleted ? "active" : ""
                               }`}

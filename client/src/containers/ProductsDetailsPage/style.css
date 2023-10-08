@@ -26,6 +26,15 @@
 .productDescContainer {
    width: 485px;
 }
+
+.productDescContainer .flexRow {
+   justify-content: space-between;
+}
+
+.productDescContainer .flexRow div {
+   width: 48%;
+}
+
 .productDescImgContainer {
    width: 485px;
    height: 440px;

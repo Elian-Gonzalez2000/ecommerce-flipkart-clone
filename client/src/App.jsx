@@ -9,6 +9,7 @@ import ProductsDetailsPage from "./containers/ProductsDetailsPage";
 import CartPage from "./containers/CartPage";
 import CheckoutPage from "./containers/CheckoutPage";
 import OrderPage from "./containers/OrderPage";
+import OrderDetailsPage from "./containers/OrderDetailsPage";
 
 function App() {
    const url = "http://localhost:3002/api/admin/signin";
@@ -79,7 +80,7 @@ function App() {
                <Route path="/account/orders" element={<OrderPage />} />
                <Route
                   path="/order-details/:orderId"
-                  component={OrderDetailsPage}
+                  element={<OrderDetailsPage />}
                />
                <Route
                   path="/:productSlug/:productId/p"

@@ -3,7 +3,7 @@ import Layout from "../../components/Layout";
 import Card from "../../components/UI/Card";
 import { useDispatch, useSelector } from "react-redux";
 import CartItem from "./CartItem";
-import { addToCart, getCartItems } from "../../actions";
+import { addToCart, getCartItems, removeCartItem } from "../../actions";
 import { MaterialButton } from "../../components/MaterialUI";
 import { useNavigate } from "react-router-dom";
 import PriceDetails from "../../components/PriceDetails";
@@ -35,6 +35,10 @@ function CartPage(props) {
    const onQuantityDecrement = (_id, qty) => {
       const { name, price, img } = cartItems[_id];
       dispatch(addToCart({ _id, name, price, img }, -1));
+   };
+
+   const onRemoveCartItem = (_id) => {
+      dispatch(removeCartItem({ productId: _id }));
    };
 
    if (props.onlyCartItems) {
@@ -71,6 +75,7 @@ function CartPage(props) {
                            cartItem={cartItems[item]}
                            onQuantityInc={onQuantityIncrement}
                            onQuantityDec={onQuantityDecrement}
+                           onRemoveCartItem={onRemoveCartItem}
                         />
                      );
                   })}
@@ -94,20 +99,19 @@ function CartPage(props) {
                </div>
             </Card>
             <PriceDetails
-               totalItem={Object.keys(cart.cartItems).reduce(function (
-                  qty,
-                  key
-               ) {
-                  return qty + cart.cartItems[key].quantity;
-               },
-               0)}
-               totalPrice={Object.keys(cart.cartItems).reduce(
-                  (totalPrice, key) => {
+               totalItem={
+                  cart.cartItems &&
+                  Object.keys(cart.cartItems).reduce(function (qty, key) {
+                     return qty + cart.cartItems[key].quantity;
+                  }, 0)
+               }
+               totalPrice={
+                  cart.cartItems &&
+                  Object.keys(cart.cartItems).reduce((totalPrice, key) => {
                      const { price, quantity } = cart.cartItems[key];
                      return totalPrice + price * quantity;
-                  },
-                  0
-               )}
+                  }, 0)
+               }
             />
          </div>
       </Layout>

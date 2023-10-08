@@ -23,7 +23,7 @@ function ProductsDetailsPage(props) {
 
       dispatch(getProductDetailsById(payload));
    }, []);
-   console.log(product);
+
    if (product && Object.keys(product).length === 0) {
       return null;
    }

@@ -42,7 +42,12 @@ function CartItem(props) {
                <button onClick={onQuantityIncrement}>+</button>
             </div>
             <button className="cart-action-btn">Save for later</button>
-            <button className="cart-action-btn">Remove</button>
+            <button
+               className="cartActionBtn"
+               onClick={() => props.onRemoveCartItem(_id)}
+            >
+               Remove
+            </button>
          </div>
       </div>
    );

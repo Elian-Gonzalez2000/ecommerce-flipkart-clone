@@ -6,6 +6,10 @@ import Layout from "../../../components/Layout";
 import { genericPublicUrl } from "../../../urlConfig";
 import Card from "../../../components/UI/Card";
 import { BiRupee } from "react-icons/bi";
+import { MaterialButton } from "../../../components/MaterialUI";
+import Rating from "../../../components/UI/Rating";
+import Price from "../../../components/UI/Price";
+import "./style.css";
 
 function ProductStore(props) {
    const product = useSelector((state) => state.product);
@@ -55,14 +59,30 @@ function ProductStore(props) {
                                  />
                               </div>
                               <div className="product-info">
-                                 <div style={{ margin: "5px 0" }}>
+                                 <span
+                                    style={{
+                                       margin: "5px 0",
+                                       display: "block",
+                                    }}
+                                 >
                                     {product.name}
+                                 </span>
+                                 <div>
+                                    <Rating value="4.3" />
+
+                                    <span
+                                       style={{
+                                          color: "#777",
+                                          fontWeight: "500",
+                                          fontSize: "12px",
+                                          marginLeft: ".5rem",
+                                       }}
+                                    >
+                                       (3353)
+                                    </span>
                                  </div>
 
-                                 <div className="product-price">
-                                    <BiRupee />
-                                    {product.price}
-                                 </div>
+                                 <Price value={product.price} />
                               </div>
                            </Link>
                         ))}
