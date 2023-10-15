@@ -20,10 +20,18 @@ export const signup = (user) => {
                },
             });
          } else {
-            dispatch({ type: authConstants.SIGNUP_FAILURE });
+            const { error } = res.data;
+            dispatch({
+               type: authConstants.SIGNUP_FAILURE,
+               payload: { error },
+            });
          }
       } catch (error) {
-         console.log(error);
+         const { data } = error.response;
+         dispatch({
+            type: authConstants.SIGNUP_FAILURE,
+            payload: { error: data.error },
+         });
       }
    };
 };

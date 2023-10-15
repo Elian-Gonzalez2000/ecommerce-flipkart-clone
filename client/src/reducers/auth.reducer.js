@@ -55,6 +55,19 @@ export default (state = initialState, action) => {
             loading: false,
          };
          break;
+
+      case authConstants.SIGNUP_REQUEST:
+         break;
+
+      case authConstants.SIGNUP_SUCCESS:
+         break;
+
+      case authConstants.SIGNUP_FAILURE:
+         state = {
+            ...state,
+            error: action.payload.error,
+         };
+         break;
    }
    return state;
 };
