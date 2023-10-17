@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getProductDetailsById } from "../../actions";
 import { genericPublicUrl } from "../../urlConfig";
 import Layout from "../../components/Layout";
@@ -93,19 +93,19 @@ function ProductsDetailsPage(props) {
                <div className="breed">
                   <ul>
                      <li>
-                        <a href="#">Home</a>
+                        <Link to="#">Home</Link>
                         <IoIosArrowForward />
                      </li>
                      <li>
-                        <a href="#">Mobiles</a>
+                        <Link to="#">Mobiles</Link>
                         <IoIosArrowForward />
                      </li>
                      <li>
-                        <a href="#">Samsung</a>
+                        <Link to="#">Samsung</Link>
                         <IoIosArrowForward />
                      </li>
                      <li>
-                        <a href="#">{product && product.name}</a>
+                        <Link to="#">{product && product.name}</Link>
                      </li>
                   </ul>
                   <div className="productDetails">

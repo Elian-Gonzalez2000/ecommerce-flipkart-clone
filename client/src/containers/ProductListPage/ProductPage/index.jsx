@@ -6,6 +6,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from "react-responsive-carousel";
 import { genericPublicUrl } from "../../../urlConfig";
 import Card from "../../../components/UI/Card";
+import { Link } from "react-router-dom";
 
 function ProductPage(props) {
    const dispatch = useDispatch();
@@ -26,16 +27,16 @@ function ProductPage(props) {
          <Carousel renderThumbs={() => {}}>
             {page.banners &&
                page.banners.map((banner, index) => (
-                  <a
+                  <Link
                      key={`${index}-${banner.img}`}
                      style={{ display: "block" }}
-                     href={banner.navigateTo}
+                     to={banner.navigateTo}
                   >
                      <img
                         src={genericPublicUrl(banner.img.split("/")[4])}
                         alt=""
                      />
-                  </a>
+                  </Link>
                ))}
          </Carousel>
          <div
