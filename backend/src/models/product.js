@@ -25,7 +25,7 @@ const productSchema = new mongoose.Schema(
          trim: true,
       },
       offer: { type: Number },
-      productPictures: [{ img: { type: String } }],
+      productPictures: [{ imgUrl: { type: String } }],
       reviews: [
          {
             userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
