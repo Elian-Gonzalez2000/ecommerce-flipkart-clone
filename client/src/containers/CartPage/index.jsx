@@ -28,16 +28,17 @@ function CartPage(props) {
    }, [auth.authenticate]);
 
    const onQuantityIncrement = (_id, qty) => {
-      const { name, price, img } = cartItems[_id];
-      dispatch(addToCart({ _id, name, price, img }, 1));
+      const { name, price, cartItemImg } = cartItems[_id];
+      dispatch(addToCart({ _id, name, price, cartItemImg }, 1));
    };
 
    const onQuantityDecrement = (_id, qty) => {
-      const { name, price, img } = cartItems[_id];
-      dispatch(addToCart({ _id, name, price, img }, -1));
+      const { name, price, cartItemImg } = cartItems[_id];
+      dispatch(addToCart({ _id, name, price, cartItemImg }, -1));
    };
 
    const onRemoveCartItem = (_id) => {
+      console.log(_id);
       dispatch(removeCartItem({ productId: _id }));
    };
 

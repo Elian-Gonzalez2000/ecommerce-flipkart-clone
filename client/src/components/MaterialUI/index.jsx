@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./style.css";
+import { Link } from "react-router-dom";
 
 /**
  * @author Rizwan Khan
@@ -76,7 +77,7 @@ const MaterialInput = (props) => {
    );
 };
 
-const MaterialButton = (props) => {
+const MaterialButton = ({ classNames, ...props }) => {
    const onClick = () => {
       props.onClick && props.onClick();
    };
@@ -84,11 +85,12 @@ const MaterialButton = (props) => {
    return (
       <div>
          <button
-            className="materialButton"
+            className={`${"material-button"} ${classNames ? classNames : ""}`}
             style={{
-               backgroundColor: props?.style?.bgColor,
-               color: props?.style?.textColor,
-               width: props?.style?.width,
+               backgroundColor: props?.bgColor,
+               color: props?.textColor,
+               width: props?.width,
+               padding: props?.padding,
             }}
             onClick={onClick}
          >
@@ -110,8 +112,8 @@ const DropdownMenu = (props) => {
                {props.menus &&
                   props.menus.map((item, index) => (
                      <li key={index}>
-                        <a
-                           href={item.href}
+                        <Link
+                           to={item.href}
                            onClick={(e) => {
                               if (item.onClick) {
                                  e.preventDefault();
@@ -120,7 +122,7 @@ const DropdownMenu = (props) => {
                            }}
                         >
                            {item.label}
-                        </a>
+                        </Link>
                      </li>
                   ))}
             </ul>
@@ -144,7 +146,7 @@ const Breed = (props) => {
             {props.breed &&
                props.breed.map((item, index) => (
                   <li key={index}>
-                     <a href={item.href}>{item.name}</a>
+                     <Link to={item.href}>{item.name}</Link>
                      {props.breedIcon}
                   </li>
                ))}

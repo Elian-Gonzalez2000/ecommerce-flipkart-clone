@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { login, signout, signup as _signup } from "../../actions";
 import Cart from "../UI/Cart";
+import { Link } from "react-router-dom";
 
 /**
  * @author
@@ -64,7 +65,7 @@ const Header = (props) => {
    const renderLoggingInMenu = () => {
       return (
          <DropdownMenu
-            menu={<a className="fullName">{auth.user.fullName}</a>}
+            menu={<Link className="fullName">{auth.user.fullName}</Link>}
             menus={[
                { label: "My Profile", href: "", icon: null },
                { label: "SuperCoins Zone", href: "", icon: null },
@@ -86,7 +87,7 @@ const Header = (props) => {
       return (
          <DropdownMenu
             menu={
-               <a
+               <Link
                   className="loginButton"
                   onClick={() => {
                      setSignup(false);
@@ -94,7 +95,7 @@ const Header = (props) => {
                   }}
                >
                   Login
-               </a>
+               </Link>
             }
             menus={[
                { label: "My Profile", href: "", icon: null },
@@ -114,7 +115,7 @@ const Header = (props) => {
             firstMenu={
                <div className="firstmenu">
                   <span>New Customer?</span>
-                  <a
+                  <Link
                      onClick={() => {
                         setLoginModal(true);
                         setSignup(true);
@@ -122,7 +123,7 @@ const Header = (props) => {
                      style={{ color: "#2874f0" }}
                   >
                      Sign Up
-                  </a>
+                  </Link>
                </div>
             }
          />
@@ -203,14 +204,14 @@ const Header = (props) => {
          </Modal>
          <div className="subHeader">
             <div className="logo">
-               <a href="">
+               <Link to="/">
                   <img src={flipkartLogo} className="logoimage" alt="" />
-               </a>
-               <a style={{ marginTop: "-10px" }}>
+               </Link>
+               <Link style={{ marginTop: "-10px" }}>
                   <span className="exploreText">Explore</span>
                   <span className="plusText">Plus</span>
                   <img src={goldenStar} className="goldenStar" alt="" />
-               </a>
+               </Link>
             </div>
             {/* End logo Component */}
 
@@ -244,10 +245,10 @@ const Header = (props) => {
                <DropdownMenu
                   style={{}}
                   menu={
-                     <a className="more">
+                     <Link className="more">
                         <span>More</span>
                         <IoIosArrowDown />
-                     </a>
+                     </Link>
                   }
                   menus={[
                      { label: "Notification Preference", href: "", icon: null },
@@ -258,14 +259,14 @@ const Header = (props) => {
                   ]}
                />
                <div>
-                  <a className="cart" href="/cart">
+                  <Link className="cart" to="/cart">
                      <Cart
                         count={
                            cart.cartItems && Object.keys(cart.cartItems).length
                         }
                      />
                      <span style={{ margin: "0 10px" }}>Cart</span>
-                  </a>
+                  </Link>
                </div>
             </div>
          </div>

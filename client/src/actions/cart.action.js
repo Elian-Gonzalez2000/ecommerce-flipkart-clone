@@ -29,6 +29,8 @@ export const addToCart = (product, newQty = 1) => {
          cart: { cartItems },
          auth,
       } = store.getState();
+      console.log(product);
+
       const quantity = cartItems[product._id]
          ? parseInt(cartItems[product._id].quantity + newQty)
          : 1;
