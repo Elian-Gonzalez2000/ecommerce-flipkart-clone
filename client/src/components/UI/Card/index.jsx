@@ -1,18 +1,24 @@
 import React from "react";
 import "./style.css";
 
-function Card({ headerLeft, headerRight, ...props }) {
+function Card({ headerLeft, headerRight, cardIcon, priceRange, ...props }) {
    return (
-      <div className="card" {...props}>
+      <article className={`card ${props.classNames}`} {...props}>
          {
             <div className="card-header">
-               {headerLeft && <div>{headerLeft}</div>}
+               {headerLeft && (
+                  <div className="header-left">
+                     {headerLeft}
+                     {cardIcon && cardIcon}
+                     {`${priceRange && priceRange}`}
+                  </div>
+               )}
                {headerRight && headerRight}
             </div>
          }
 
          {props.children}
-      </div>
+      </article>
    );
 }
 

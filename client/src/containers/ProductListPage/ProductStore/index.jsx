@@ -30,11 +30,19 @@ function ProductStore(props) {
    return (
       <>
          {product.productsByPrice &&
-            Object.keys(product.productsByPrice).map((key, index) => {
+            Object.keys(product.productsByPrice).map((key) => {
                return (
                   <Card
-                     headerLeft={`${slug} mobile under ${priceRange[key]}`}
-                     headerRight={<button>View all</button>}
+                     classNames={"product-card"}
+                     headerLeft={`${slug} Mobile under `}
+                     headerRight={
+                        <MaterialButton
+                           classNames="card-button"
+                           title="View all"
+                        />
+                     }
+                     priceRange={priceRange[key]}
+                     cardIcon={<BiRupee />}
                      style={{
                         width: "calc(100% - 20px)",
                         margin: "40px auto",
@@ -42,51 +50,34 @@ function ProductStore(props) {
                      }}
                      key={self.crypto.randomUUID()}
                   >
-                     <div style={{ display: "flex" }}>
+                     <article style={{ display: "flex" }}>
                         {product.productsByPrice[key].map((product) => (
                            <Link
                               to={`/${product.slug}/${product._id}/p`}
-                              style={{ display: "block" }}
                               className="product-container"
                               key={self.crypto.randomUUID()}
                            >
-                              <div className="product-img-container">
+                              <picture className="product-img-container">
                                  <img
                                     src={genericPublicUrl(
                                        product.productPictures[0].img
                                     )}
                                     alt={`${product.name} image`}
                                  />
-                              </div>
+                              </picture>
                               <div className="product-info">
-                                 <span
-                                    style={{
-                                       margin: "5px 0",
-                                       display: "block",
-                                    }}
-                                 >
-                                    {product.name}
-                                 </span>
+                                 <span>{product.name}</span>
                                  <div>
                                     <Rating value="4.3" />
 
-                                    <span
-                                       style={{
-                                          color: "#777",
-                                          fontWeight: "500",
-                                          fontSize: "12px",
-                                          marginLeft: ".5rem",
-                                       }}
-                                    >
-                                       (3353)
-                                    </span>
+                                    <span>(3353)</span>
                                  </div>
 
                                  <Price value={product.price} />
                               </div>
                            </Link>
                         ))}
-                     </div>
+                     </article>
                   </Card>
                );
             })}

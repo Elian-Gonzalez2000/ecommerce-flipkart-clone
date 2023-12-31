@@ -24,7 +24,7 @@ const path = require("path");
 //    },
 // });
 //console.log(path.join(path.dirname(__dirname), "uploads"));
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
 router.post(
    "/product/create",

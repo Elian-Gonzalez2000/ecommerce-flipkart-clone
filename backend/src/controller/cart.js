@@ -70,10 +70,12 @@ exports.getCartItems = (req, res) => {
          if (cart) {
             let cartItems = {};
             cart.cartItems.forEach((item, index) => {
+               const cartImg = item.product.productPictures[0];
+               /* console.log(cartImg); */
                cartItems[item.product._id.toString()] = {
                   _id: item.product._id.toString(),
                   name: item.product.name,
-                  img: item.product.productPictures[0].img,
+                  cartItemImg: cartImg,
                   price: item.product.price,
                   quantity: item.quantity,
                };

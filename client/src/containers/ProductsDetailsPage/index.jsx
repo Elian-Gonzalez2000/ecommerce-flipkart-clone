@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getProductDetailsById } from "../../actions";
@@ -6,13 +6,17 @@ import { genericPublicUrl } from "../../urlConfig";
 import Layout from "../../components/Layout";
 import { MaterialButton } from "../../components/MaterialUI";
 import { IoIosArrowForward, IoIosStar, IoMdCart } from "react-icons/io";
+import { BsLightningFill } from "react-icons/bs";
+import { BiRupee } from "react-icons/bi";
 import "./style.css";
 import { addToCart } from "../../actions/cart.action";
+import { randomUI } from "../../helpers/randomUI";
 
 function ProductsDetailsPage(props) {
    const dispatch = useDispatch();
    const params = useParams();
    const product = useSelector((state) => state.product.productDetails);
+   const [activeImg, setActiveImg] = useState("");
 
    useEffect(() => {
       const payload = {
@@ -24,54 +28,56 @@ function ProductsDetailsPage(props) {
       dispatch(getProductDetailsById(payload));
    }, []);
 
+   useEffect(() => {
+      if (product.productPictures) {
+         //console.log(product);
+         setActiveImg(product.productPictures[0].img);
+      }
+   }, [product]);
+
    if (product && Object.keys(product).length === 0) {
       return null;
    }
 
+   const handleActiveImg = (img) => {
+      console.log(img);
+      setActiveImg(img);
+   };
+
    return (
       <Layout>
          {/* {product.name} */}
-         <div className="productDescriptonContainer">
-            <div className="flexRow">
-               <div className="verticalImageStack">
+         <div className="product-descripton-container">
+            <div className="flex-row">
+               <div className="vertical-image-stack">
                   {product &&
                      product.productPictures.map((thumb, index) => (
-                        <div className="thumbnail active">
+                        <div
+                           key={thumb._id}
+                           className={`thumbnail ${
+                              activeImg == thumb.img ? "active" : ""
+                           }`}
+                           onClick={() => handleActiveImg(thumb.img)}
+                        >
                            <img
                               src={genericPublicUrl(thumb.img)}
                               alt={thumb.img}
                            />
                         </div>
                      ))}
-                  {/* <div className="thumbail active">
-                     {
-                        product.productPictures.map(
-                        (thumb, index) => (
-                           <img
-                              src={genericPublicUrl(thumb.img)}
-                              alt={thumb.img}
-                           />
-                        )
-                     )}
-                  </div> */}
                </div>
-               <div className="productDescContainer">
-                  <div className="productDescImgContainer">
+               <div className="product-desc-container">
+                  <div className="product-desc-img-container">
                      <img
-                        src={genericPublicUrl(
-                           product && product.productPictures[0].img
-                        )}
-                        alt=""
+                        src={genericPublicUrl(activeImg && activeImg)}
+                        alt={`${activeImg}`}
                      />
                   </div>
-                  <div className="flexRow">
+                  <div className="flex-row">
                      <MaterialButton
                         title="ADD TO CART"
                         bgColor="#ff9f00"
                         textColor="#ffffff"
-                        style={{
-                           marginRight: "5px",
-                        }}
                         icon={<IoMdCart />}
                         onClick={() => {
                            const { _id, name, price } = product;
@@ -83,10 +89,7 @@ function ProductsDetailsPage(props) {
                         title="BUY NOW"
                         bgColor="#fb641b"
                         textColor="#ffffff"
-                        style={{
-                           marginLeft: "5px",
-                        }}
-                        /* icon={<AiFillThunderbolt />} */
+                        icon={<BsLightningFill />}
                      />
                   </div>
                </div>
@@ -108,23 +111,23 @@ function ProductsDetailsPage(props) {
                         <Link to="#">{product && product.name}</Link>
                      </li>
                   </ul>
-                  <div className="productDetails">
-                     <p className="productTitle">{product && product.name}</p>
+                  <div className="product-details">
+                     <p className="product-title">{product && product.name}</p>
                      <div>
-                        <span className="ratingCount">
+                        <span className="rating-count">
                            4.3 <IoIosStar />
                         </span>
-                        <span className="ratingNumbersReviews">
+                        <span className="rating-numbers-reviews">
                            72,234 Ratings & 8,140 Reviews
                         </span>
                      </div>
-                     <div className="extraOffer">
+                     <div className="extra-offer">
                         Extra {/* <BiRupee /> */}
                         4500 off{" "}
                      </div>
-                     <div className="flexRow priceContainer">
+                     <div className="flex-row price-container">
                         <span className="price">
-                           {/* <BiRupee /> */}
+                           <BiRupee />
                            {product && product.price}
                         </span>
                         <span className="discount" style={{ margin: "0 10px" }}>

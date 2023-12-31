@@ -1,16 +1,112 @@
-* {
+:root {
+   --first-color: #2874f0;
+   --first-alpha-color: rgb(40, 116, 240, 0.75);
+   --second-color: #fb641b;
+   --second-alpha-color: rgb(251, 100, 27, 0.75);
+   --third-color: #f7f7f7;
+   --third-alpha-color: rgb(247, 247, 247, 0.75);
+   --four-color: #00ad7e;
+   --four-alpha-color: rgba(0, 173, 126, 0.75);
+   --white-color: #fff;
+   --gray-light-color: #f3f3f3;
+   --gray-color: #ccc;
+   --gray-dark-color: #666;
+   --black-gray-color: #222;
+   --black-color: #000;
+   --link-color: #f6f6f6;
+   --title-color: #333;
+   --text-dark-color: #222;
+   --text-light-color: #f3f3f3;
+   --white-alpha-color: rgba(255, 255, 255, 0.5);
+   --black-alpha-color: rgba(0, 0, 0, 0.5);
+   --background-light: #f1f3f6;
+   --background-dark: #111111;
+   --font: "Open Sans", sans-serif;
+   --max-width: 1200px;
+   --header-height: 4rem;
+   --breakpoint-nm: 576px;
+   --breakpoint-md: 768px;
+   --breakpoint-lg: 992px;
+   --breakpoint-xl: 1200px;
+   --breakpoint-xxl: 1560px;
+}
+
+/* ------ Resets ------ */
+html {
    box-sizing: border-box;
+   font-family: var(--font);
+   font-size: 16px;
+   scroll-behavior: smooth;
+}
+
+*,
+*::after,
+*::before {
+   box-sizing: inherit;
+   margin: 0;
+   padding: 0;
 }
 
 body {
    margin: 0;
-   font-family: "Open Sans", sans-serif;
-   scroll-behavior: smooth;
-   background-color: #f1f3f6;
+   overflow-x: hidden;
+   color: var(--text-dark-color);
+   background-color: var(--background-light);
 }
 
 a {
+   /* color: var(--white-color); */
+   transition: all 0.3s ease-out;
    text-decoration: none;
+}
+
+a:hover {
+   /* color: var(--link-color); */
+   opacity: 0.9;
+}
+
+h1 {
+   margin: 0;
+   font-size: 2rem;
+}
+
+h2 {
+   margin: 0;
+   font-size: 1.5rem;
+}
+
+h3 {
+   margin: 0;
+   font-size: 1.25rem;
+}
+
+h4 {
+   margin: 0;
+   font-size: 1rem;
+}
+
+h5 {
+   margin: 0;
+   font-size: 0.85rem;
+}
+
+h6 {
+   margin: 0;
+   font-size: 0.7rem;
+}
+
+img {
+   vertical-align: top;
+   width: 100%;
+   height: auto;
+}
+
+p {
+   line-height: 1.6;
+}
+
+ul {
+   list-style: none;
 }
 
 code {

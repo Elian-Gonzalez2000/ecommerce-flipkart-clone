@@ -4,23 +4,23 @@ import { genericPublicUrl } from "../../../urlConfig";
 
 function CartItem(props) {
    const [qty, setQty] = useState(props.cartItem.quantity);
-   const { _id, name, price, quantity, img } = props.cartItem;
+   const { _id, name, price, quantity, cartItemImg } = props.cartItem;
 
    const onQuantityIncrement = () => {
       setQty(quantity + 1);
-      props.onQuantityInc(_id, qty + 1);
+      props.onQuantityInc(_id, qty);
    };
 
    const onQuantityDecrement = () => {
       if (qty <= 1) return;
       setQty(quantity - 1);
-      props.onQuantityDec(_id, qty - 1);
+      props.onQuantityDec(_id, qty);
    };
    return (
       <div className="cart-item-container">
          <div className="flexRow">
             <div className="cart-pro-img-container">
-               <img src={genericPublicUrl(img)} alt="" />
+               <img src={genericPublicUrl(cartItemImg.img)} alt="" />
             </div>
             <div className="cart-item-details">
                <div>
@@ -38,7 +38,7 @@ function CartItem(props) {
          >
             <div className="quantity-control">
                <button onClick={onQuantityDecrement}>-</button>
-               <input value={quantity} readOnly />
+               <input value={qty} readOnly />
                <button onClick={onQuantityIncrement}>+</button>
             </div>
             <button className="cart-action-btn">Save for later</button>
