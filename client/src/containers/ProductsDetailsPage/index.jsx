@@ -10,12 +10,13 @@ import { BsLightningFill } from "react-icons/bs";
 import { BiRupee } from "react-icons/bi";
 import "./style.css";
 import { addToCart } from "../../actions/cart.action";
-import { randomUI } from "../../helpers/randomUI";
+import Loader from "../../components/UI/Loader";
 
 function ProductsDetailsPage(props) {
    const dispatch = useDispatch();
    const params = useParams();
    const product = useSelector((state) => state.product.productDetails);
+   const isLoading = useSelector((state) => state.product.loading);
    const [activeImg, setActiveImg] = useState("");
 
    useEffect(() => {
@@ -30,7 +31,6 @@ function ProductsDetailsPage(props) {
 
    useEffect(() => {
       if (product.productPictures) {
-         //console.log(product);
          setActiveImg(product.productPictures[0].img);
       }
    }, [product]);
@@ -46,6 +46,7 @@ function ProductsDetailsPage(props) {
 
    return (
       <Layout>
+         {isLoading && <Loader />}
          {/* {product.name} */}
          <div className="product-descripton-container">
             <div className="flex-row">

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Layout from "../../components/Layout";
 import { addOrder, getAddress, getCartItems } from "../../actions";
 import {
@@ -12,6 +13,7 @@ import Card from "../../components/UI/Card";
 import "./style.css";
 import PriceDetails from "../../components/PriceDetails";
 import CartPage from "../CartPage";
+import Loader from "../../components/UI/Loader";
 
 const CheckoutStep = (props) => {
    return (
@@ -101,10 +103,11 @@ const Address = ({
    );
 };
 
-const CheckoutPage = (props) => {
+const CheckoutPage = () => {
    const user = useSelector((state) => state.user);
    const auth = useSelector((state) => state.auth);
    const cart = useSelector((state) => state.cart);
+   const navigate = useNavigate();
    const [address, setAddress] = useState([]);
    const [newAddress, setNewAddress] = useState(false);
    const [confirmAddress, setConfirmAddress] = useState(false);
@@ -181,6 +184,7 @@ const CheckoutPage = (props) => {
    useEffect(() => {
       auth.authenticate && dispatch(getAddress());
       auth.authenticate && dispatch(getCartItems());
+      if (!auth.authenticate) navigate("/");
    }, [auth.authenticate]);
 
    useEffect(() => {
@@ -195,6 +199,7 @@ const CheckoutPage = (props) => {
 
    return (
       <Layout>
+         {user.loading && <Loader />}
          {
             <div
                className="cart-container"

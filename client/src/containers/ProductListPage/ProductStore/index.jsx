@@ -10,9 +10,11 @@ import { MaterialButton } from "../../../components/MaterialUI";
 import Rating from "../../../components/UI/Rating";
 import Price from "../../../components/UI/Price";
 import "./style.css";
+import Loader from "../../../components/UI/Loader";
 
 function ProductStore(props) {
    const product = useSelector((state) => state.product);
+   const auth = useSelector((state) => state.auth);
    const [priceRange, setPriceRange] = useState({
       under5k: 5000,
       under10k: 10000,
@@ -29,6 +31,7 @@ function ProductStore(props) {
    console.log(useLocation(), product, params);
    return (
       <>
+         {product.loading && <Loader />}
          {product.productsByPrice &&
             Object.keys(product.productsByPrice).map((key) => {
                return (

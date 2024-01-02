@@ -8,13 +8,13 @@ import { MaterialButton } from "../../components/MaterialUI";
 import { useNavigate } from "react-router-dom";
 import PriceDetails from "../../components/PriceDetails";
 import "./styles.css";
+import Loader from "../../components/UI/Loader";
 
 function CartPage(props) {
    const cart = useSelector((state) => state.cart);
    const auth = useSelector((state) => state.auth);
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   //const cartItems = cart.cartItems;
    const [cartItems, setCartItems] = useState(cart.cartItems);
 
    useEffect(() => {
@@ -63,6 +63,7 @@ function CartPage(props) {
    return (
       <Layout>
          <div className="cart-container">
+            {cart.updatingCart && <Loader />}
             <Card
                headerLeft={"My Cart"}
                headerRight={<div>Delivered to</div>}
