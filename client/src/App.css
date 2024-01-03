@@ -1,7 +1,55 @@
-.flexRow {
+/* Wrappers or Container */
+.container {
+   margin-left: auto;
+   margin-right: auto;
+   max-width: var(--max-width);
+   width: 90%;
+   margin-bottom: 2rem;
+}
+
+.container-large {
+   width: 100vw;
+   max-width: var(--breakpoint-xxl);
+   padding: 0 1rem;
+   margin: 20px auto;
+}
+
+.flex-row {
    display: flex;
 }
 
 .sb {
    justify-content: space-between;
+}
+
+.sa {
+   justify-content: space-around;
+}
+
+.se {
+   justify-content: space-evenly;
+}
+
+.ac {
+   align-items: center;
+}
+
+.container-loader {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
+   background-color: var(--white-alpha-color);
+   transition: 0.5s all ease-in-out;
+   z-index: 9999;
+}
+
+.container-loader img {
+   width: 8rem;
+   height: 8rem;
 }

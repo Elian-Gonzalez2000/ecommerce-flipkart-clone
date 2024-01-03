@@ -87,7 +87,7 @@ const Header = (props) => {
       return (
          <DropdownMenu
             menu={
-               <Link
+               <button
                   className="loginButton"
                   onClick={() => {
                      setSignup(false);
@@ -95,7 +95,7 @@ const Header = (props) => {
                   }}
                >
                   Login
-               </Link>
+               </button>
             }
             menus={[
                { label: "My Profile", href: "", icon: null },
@@ -133,7 +133,7 @@ const Header = (props) => {
    return (
       <div className="header">
          <Modal visible={loginModal} onClose={() => setLoginModal(false)}>
-            <div className="authContainer">
+            <div className="auth-container">
                <div className="row">
                   <div className="leftspace">
                      <h2>Login</h2>

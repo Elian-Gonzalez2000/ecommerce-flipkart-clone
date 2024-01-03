@@ -1,17 +1,23 @@
 const Product = require("../models/product.js");
 const Category = require("../models/category.js");
+const env = require("dotenv");
 const multer = require("multer");
 const shortid = require("shortid");
 const slugify = require("slugify");
+const axios = require("axios");
+var fs = require("fs");
+
+const { API_KEY_IMGBB } = process.env;
 
 exports.createProduct = (req, res) => {
-   //res.status(200).json({ file: req.files, body: req.body });
-   const { name, price, description, category, quantity, createdBy } = req.body;
+   /* return res.status(200).json({ file: req.files[0], body: req.body }); */
+   const { name, price, description, category, quantity, images, createdBy } =
+      req.body;
    let productPictures = [];
 
-   if (req.files.length > 0) {
-      productPictures = req.files.map((file) => {
-         return { img: file.filename };
+   if (req.body.images.length > 0) {
+      productPictures = images.map((url) => {
+         return { imgUrl: url };
       });
    }
 

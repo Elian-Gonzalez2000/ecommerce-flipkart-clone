@@ -1,81 +1,101 @@
-.productDescriptionContainer {
+.product-descripton-container {
    display: flex;
    box-sizing: border-box;
-   padding: 10px;
+   padding: 0 10px;
 }
-.verticalImageStack {
+
+.vertical-image-stack {
    width: 67px;
    display: flex;
    flex-direction: column;
+   margin-right: 0.5rem;
 }
+
 .thumbnail {
    width: 63px;
    height: 63px;
-   border: 1px solid #f0f0f0;
+   border: 1px solid transparent;
+   margin-bottom: 0.5rem;
    overflow: hidden;
    text-align: center;
 }
+
 .thumbnail img {
    max-width: 100%;
    max-height: 100%;
    object-fit: contain;
 }
+
 .thumbnail.active {
-   border: 2px solid #2874f0;
+   border: 1px solid #2874f0;
+   padding: 0.2rem;
 }
-.productDescContainer {
+
+.product-desc-container {
    width: 485px;
 }
 
-.productDescContainer .flexRow {
+.product-desc-container .flex-row {
    justify-content: space-between;
 }
 
-.productDescContainer .flexRow div {
+.product-desc-container .flex-row div {
    width: 48%;
 }
 
-.productDescImgContainer {
+.product-desc-container .flex-row div {
+   width: 48%;
+}
+
+.product-desc-img-container {
    width: 485px;
    height: 440px;
    overflow: hidden;
    text-align: center;
+   margin-bottom: 1rem;
    border: 1px solid #f0f0f0;
 }
-.productDescImgContainer > img {
+
+.product-desc-img-container > img {
    max-width: 100%;
    max-height: 100%;
    object-fit: contain;
 }
+
 .breed ul {
    padding: 0;
    margin: 0;
+   margin-bottom: 0.5rem;
    display: flex;
    align-items: center;
 }
+
 .breed ul li {
    list-style: none;
    margin-right: 5px;
    display: flex;
    align-items: center;
-   font-size: 12px;
+   font-size: 0.7rem;
+   color: var(--gray-dark-color);
 }
+
 .breed ul li a {
-   text-decoration: none;
-   color: #777;
+   color: var(--gray-dark-color);
    display: inline-block;
-   font-size: 12px;
    margin: 0 10px;
 }
-.productDetails {
+
+.product-details {
    margin: 0 10px;
 }
-.productDetails .productTitle {
+
+.product-details .product-title {
    font-size: 18px;
    color: #212121;
    font-weight: 400;
 }
-.ratingCount {
+
+.rating-count {
    display: inline-block;
    background: #388e3c;
    color: #fff;
@@ -84,23 +104,27 @@
    border-radius: 3px;
    padding: 2px 5px;
 }
-.ratingNumbersReviews {
+
+.rating-numbers-reviews {
    font-size: 12px;
    color: #777;
    font-weight: 600;
    display: inline-block;
    margin: 0 10px;
 }
-.extraOffer,
+
+.extra-offer,
 .discount {
    color: #388e3c;
    font-size: 12px;
    margin: 10px 0px;
    font-weight: 600;
 }
-.priceContainer {
+
+.price-container {
    align-items: center;
 }
+
 .price {
    font-size: 28px;
    font-weight: 600;

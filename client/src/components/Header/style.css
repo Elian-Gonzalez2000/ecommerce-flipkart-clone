@@ -1,7 +1,7 @@
 .header {
    width: 100%;
    height: 56px;
-   background: #2874f0;
+   background: var(--first-color);
 }
 .subHeader {
    max-width: 1100px;
@@ -43,7 +43,7 @@
 .searchInputContainer {
    width: 560px;
    position: relative;
-   background: #fff;
+   background: var(--white-color);
    height: 36px;
    border-radius: 1px;
    overflow: hidden;
@@ -73,10 +73,11 @@
    display: block;
    width: 100px;
    height: 30px;
-   background: #fff;
+   background: var(--white-color);
+   border: 0;
    text-align: center;
    line-height: 30px;
-   color: #2874f0;
+   color: var(--first-color);
    font-weight: 500;
    font-size: 16px;
    cursor: pointer;
@@ -84,7 +85,7 @@
 .more,
 .fullName {
    font-weight: bold;
-   color: #fff;
+   color: var(--white-color);
    display: flex;
    align-items: center;
    margin: 0 20px;
@@ -92,15 +93,15 @@
 }
 .cart {
    font-weight: bold;
-   color: #fff;
+   color: var(--white-color);
    display: flex;
    align-items: center;
    justify-content: center;
    margin: 0 20px;
 }
 
-.authContainer {
-   color: #212121;
+.auth-container {
+   color: var(--text-dark-color);
    margin: 0 auto;
    border-radius: 2px;
    height: 528px;
@@ -119,10 +120,10 @@
 .leftspace {
    width: 40%;
    height: 100%;
-   color: #fff;
+   color: var(--white-color);
    letter-spacing: 1px;
    background-image: url("../../images/login-image.png");
-   background-color: #2874f0;
+   background-color: var(--first-color);
    background-repeat: no-repeat;
    background-position: center 85%;
    padding: 40px 33px;

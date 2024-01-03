@@ -8,13 +8,13 @@ import { MaterialButton } from "../../components/MaterialUI";
 import { useNavigate } from "react-router-dom";
 import PriceDetails from "../../components/PriceDetails";
 import "./styles.css";
+import Loader from "../../components/UI/Loader";
 
 function CartPage(props) {
    const cart = useSelector((state) => state.cart);
    const auth = useSelector((state) => state.auth);
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   //const cartItems = cart.cartItems;
    const [cartItems, setCartItems] = useState(cart.cartItems);
 
    useEffect(() => {
@@ -28,16 +28,17 @@ function CartPage(props) {
    }, [auth.authenticate]);
 
    const onQuantityIncrement = (_id, qty) => {
-      const { name, price, img } = cartItems[_id];
-      dispatch(addToCart({ _id, name, price, img }, 1));
+      const { name, price, cartItemImg } = cartItems[_id];
+      dispatch(addToCart({ _id, name, price, cartItemImg }, 1));
    };
 
    const onQuantityDecrement = (_id, qty) => {
-      const { name, price, img } = cartItems[_id];
-      dispatch(addToCart({ _id, name, price, img }, -1));
+      const { name, price, cartItemImg } = cartItems[_id];
+      dispatch(addToCart({ _id, name, price, cartItemImg }, -1));
    };
 
    const onRemoveCartItem = (_id) => {
+      console.log(_id);
       dispatch(removeCartItem({ productId: _id }));
    };
 
@@ -62,8 +63,9 @@ function CartPage(props) {
    return (
       <Layout>
          <div className="cart-container">
+            {cart.updatingCart && <Loader />}
             <Card
-               headerLeft={"My Cart"}
+               headerLeft={`My Cart  (${Object.keys(cartItems).length})`}
                headerRight={<div>Delivered to</div>}
                style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
             >

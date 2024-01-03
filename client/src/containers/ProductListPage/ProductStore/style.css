@@ -1,10 +1,12 @@
 .product-container {
+   display: block;
    width: 200px;
-   margin: 0 0.6rem;
+   margin: 0.6rem;
    text-decoration: none;
 }
 
 .product-container .product-img-container {
+   display: block;
    width: 150px;
    height: 150px;
    overflow: hidden;
@@ -21,7 +23,19 @@
 .product-info {
    text-align: center;
    font-size: 0.8rem;
-   color: black;
+   color: var(--text-dark-color);
+}
+
+.product-info > span {
+   display: block;
+   margin: 0.4rem 0;
+}
+
+.product-info div span:nth-child(2) {
+   color: #777;
+   font-weight: 500;
+   font-size: 12px;
+   margin-left: 0.35rem;
 }
 
 .product-price {
@@ -29,4 +43,21 @@
    font-weight: bold;
    font-size: 0.9rem;
    margin: 0.3rem 0;
+}
+
+.card-button {
+   padding: 0.3rem 0.6rem;
+   color: var(--text-light-color);
+   background-color: var(--first-color);
+   border: none;
+}
+
+.card.product-card .header-left {
+   font-size: 1.1rem;
+   font-weight: 500;
+}
+
+.card.product-card .header-left svg {
+   width: 1.3rem;
+   height: auto;
 }

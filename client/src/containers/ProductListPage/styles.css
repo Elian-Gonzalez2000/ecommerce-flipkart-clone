@@ -11,34 +11,3 @@
    padding: 1.2rem;
    border-bottom: 1px solid #cecece;
 } */
-
-.product-container {
-   width: 200px;
-   margin: 0 0.6rem;
-}
-
-.product-container .product-img-container {
-   width: 150px;
-   height: 150px;
-   overflow: hidden;
-   text-align: center;
-   margin: 0.6rem auto;
-}
-
-.product-container .product-img-container img {
-   max-width: 100%;
-   max-height: 100%;
-   object-fit: contain;
-}
-
-.product-info {
-   text-align: center;
-   font-size: 0.8rem;
-}
-
-.product-price {
-   text-align: center;
-   font-weight: bold;
-   font-size: 0.9rem;
-   margin: 0.3rem 0;
-}
