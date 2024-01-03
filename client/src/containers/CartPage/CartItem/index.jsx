@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./styles.css";
 import { genericPublicUrl } from "../../../urlConfig";
+import { BiRupee } from "react-icons/bi";
 
 function CartItem(props) {
    const [qty, setQty] = useState(props.cartItem.quantity);
@@ -17,25 +18,25 @@ function CartItem(props) {
       props.onQuantityDec(_id, qty);
    };
    return (
-      <div className="cart-item-container">
-         <div className="flexRow">
-            <div className="cart-pro-img-container">
+      <article className="cart-item-container">
+         <div className="cart-item-data-container">
+            <picture className="cart-pro-img-container">
                <img src={genericPublicUrl(cartItemImg.img)} alt="" />
-            </div>
+            </picture>
             <div className="cart-item-details">
                <div>
                   <p>{name}</p>
-                  <p>Rs. {price}</p>
+                  <p className="item-price">
+                     <BiRupee />
+                     {price}
+                  </p>
                </div>
-               <div>Delivered in ...</div>
+               <div className="delivered-in">
+                  <span>Delivered in ...</span>
+               </div>
             </div>
          </div>
-         <div
-            style={{
-               display: "flex",
-               margin: "5px 0",
-            }}
-         >
+         <div className="cart-quantity-container">
             <div className="quantity-control">
                <button onClick={onQuantityDecrement}>-</button>
                <input value={qty} readOnly />
@@ -43,13 +44,14 @@ function CartItem(props) {
             </div>
             <button className="cart-action-btn">Save for later</button>
             <button
-               className="cartActionBtn"
+               className="cart-action-btn"
+               style={{ color: "var(--first-color)" }}
                onClick={() => props.onRemoveCartItem(_id)}
             >
                Remove
             </button>
          </div>
-      </div>
+      </article>
    );
 }
 

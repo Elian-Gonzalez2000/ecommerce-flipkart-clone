@@ -22,6 +22,18 @@
    justify-content: space-between;
 }
 
+.sa {
+   justify-content: space-around;
+}
+
+.se {
+   justify-content: space-evenly;
+}
+
+.ac {
+   align-items: center;
+}
+
 .container-loader {
    position: fixed;
    top: 0;

@@ -1,16 +1,23 @@
 import React from "react";
 import "./style.css";
 
-function Card({ headerLeft, headerRight, cardIcon, priceRange, ...props }) {
+function Card({
+   headerLeft,
+   headerRight,
+   cardIcon,
+   priceRange,
+   classNames,
+   ...props
+}) {
    return (
-      <article className={`card ${props.classNames}`} {...props}>
+      <article className={`card ${classNames ? classNames : ""}`} {...props}>
          {
             <div className="card-header">
                {headerLeft && (
                   <div className="header-left">
                      {headerLeft}
                      {cardIcon && cardIcon}
-                     {`${priceRange && priceRange}`}
+                     {priceRange && priceRange}
                   </div>
                )}
                {headerRight && headerRight}

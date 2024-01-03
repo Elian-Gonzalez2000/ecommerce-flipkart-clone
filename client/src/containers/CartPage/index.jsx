@@ -65,7 +65,7 @@ function CartPage(props) {
          <div className="cart-container">
             {cart.updatingCart && <Loader />}
             <Card
-               headerLeft={"My Cart"}
+               headerLeft={`My Cart  (${Object.keys(cartItems).length})`}
                headerRight={<div>Delivered to</div>}
                style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
             >

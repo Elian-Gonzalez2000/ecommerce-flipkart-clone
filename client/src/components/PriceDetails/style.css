@@ -1,0 +1,19 @@
+.price-details-card {
+   max-width: 380px;
+   height: min-content;
+}
+
+.price-details-container {
+   padding: 1rem 2rem;
+   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.price-details-container div {
+   margin: 20px 0;
+}
+
+.price-details-container .total-amount {
+   margin-top: 2rem;
+   font-size: 1.1rem;
+   font-weight: 500;
+}
