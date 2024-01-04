@@ -1,6 +1,24 @@
+.order-details-container {
+   width: var(--breakpoint-lg);
+   margin: 1rem auto;
+}
+
+.order-details-container .user-details-container {
+   margin: 1.5rem 0;
+}
+
+.order-details-container .send-order-timeline {
+   display: flex;
+   padding: 1rem 0;
+   margin: 0.5rem 0;
+}
+
 .delAdrContainer {
    display: flex;
    box-sizing: border-box;
+}
+.delAdrContainer span {
+   display: block;
 }
 .delTitle {
    font-size: 15px;
@@ -89,4 +107,12 @@
 
 .orderInfo .date {
    font-size: 10px;
+}
+
+.finish-order-date {
+   font-size: 0.9rem;
+   font-weight: 500;
+   margin-top: 0.5rem;
+   margin-bottom: 0;
+   padding-left: 2rem;
 }

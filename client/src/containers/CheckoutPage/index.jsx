@@ -293,7 +293,7 @@ const CheckoutPage = () => {
                   {orderSummary && (
                      <Card style={{ margin: "10px 0" }}>
                         <div
-                           className="flexRow sb"
+                           className="flex-row sb"
                            style={{
                               padding: "1rem 30px",
                               alignItems: "center",
@@ -306,7 +306,8 @@ const CheckoutPage = () => {
                            <MaterialButton
                               title={"CONTINUE"}
                               onClick={userOrderConfirmation}
-                              style={{ width: "200px" }}
+                              width={"200px"}
+                              classNames={"order-summary-button"}
                            />
                         </div>
                      </Card>
@@ -319,17 +320,20 @@ const CheckoutPage = () => {
                      body={
                         paymentOption && (
                            <div className="step-completed">
-                              <div className="flexRow">
+                              <div className="flex-row ac">
                                  <input
                                     type="radio"
                                     name="paymentOption"
                                     value="cod"
                                  />
-                                 <p>Cash on delivery</p>
+                                 <p style={{ margin: "0 0 0 .5rem" }}>
+                                    Cash on delivery
+                                 </p>
                               </div>
                               <MaterialButton
                                  title="CONFIRM ORDER"
                                  onClick={onConfirmOrder}
+                                 width={"200px"}
                               />
                            </div>
                         )

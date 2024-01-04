@@ -34,6 +34,11 @@
    align-items: center;
 }
 
+.f-center {
+   justify-content: center;
+   align-items: center;
+}
+
 .container-loader {
    position: fixed;
    top: 0;

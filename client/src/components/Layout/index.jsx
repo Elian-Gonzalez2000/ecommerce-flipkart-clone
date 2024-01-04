@@ -7,7 +7,9 @@ const Layout = (props) => {
       <>
          <Header />
          <MenuHeader />
-         <section className={`container-large ${props.className}`}>
+         <section
+            className={`container-large ${props.className && props.className}`}
+         >
             {props.children}
          </section>
       </>

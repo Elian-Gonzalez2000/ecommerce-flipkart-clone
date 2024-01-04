@@ -1,4 +1,57 @@
-.order-item-container {
-   padding: 10px;
-   display: flex;
+.order-page-container {
+   max-width: var(--breakpoint-xl);
+   width: 90vw;
+}
+
+.order-page-container .breed {
+   margin: 1rem 0;
+}
+
+.order-page-container .order-page-card {
+   margin: 1rem 0;
+   margin-left: 10px;
+   padding: 1.5rem 4rem;
+}
+
+.order-page-container .order-item-container {
+   display: grid;
+   grid-template-columns: 1fr 40% 25% 25%;
+}
+
+.order-page-container .order-item-container p {
+   padding-left: 0.5rem;
+   font-size: 0.9rem;
+   color: var(--text-dark-color);
+   text-transform: capitalize;
+}
+
+.order-page-container .order-item-container .payment-status-icon-pending {
+   display: inline-block;
+   width: 9px;
+   height: 9px;
+   border-radius: 50%;
+   border: 2px solid #e3662c;
+   margin-right: 0.5rem;
+}
+
+.order-page-container .order-item-container .payment-status-icon-completed {
+   display: inline-block;
+   width: 9px;
+   height: 9px;
+   border-radius: 50%;
+   background-color: #26a541;
+   margin-right: 0.5rem;
+}
+
+.order-page-container picture {
+   width: 80px;
+   height: 80px;
+   overflow: hidden;
+   text-align: center;
+}
+
+.order-page-container picture img {
+   width: auto;
+   max-width: 80px;
+   max-height: 80px;
 }

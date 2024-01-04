@@ -11,18 +11,18 @@ function Card({
 }) {
    return (
       <article className={`card ${classNames ? classNames : ""}`} {...props}>
-         {
+         {headerLeft && (
             <div className="card-header">
-               {headerLeft && (
-                  <div className="header-left">
-                     {headerLeft}
-                     {cardIcon && cardIcon}
-                     {priceRange && priceRange}
-                  </div>
+               <div className="header-left">
+                  {headerLeft}
+                  {cardIcon && cardIcon}
+                  {priceRange && priceRange}
+               </div>
+               {headerRight && (
+                  <div className="header-right">{headerRight}</div>
                )}
-               {headerRight && headerRight}
             </div>
-         }
+         )}
 
          {props.children}
       </article>

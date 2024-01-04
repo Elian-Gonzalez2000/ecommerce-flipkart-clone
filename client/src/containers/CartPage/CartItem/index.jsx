@@ -21,7 +21,10 @@ function CartItem(props) {
       <article className="cart-item-container">
          <div className="cart-item-data-container">
             <picture className="cart-pro-img-container">
-               <img src={genericPublicUrl(cartItemImg.img)} alt="" />
+               <img
+                  src={genericPublicUrl(cartItemImg.img)}
+                  alt={"IMG: " + cartItemImg.img}
+               />
             </picture>
             <div className="cart-item-details">
                <div>
