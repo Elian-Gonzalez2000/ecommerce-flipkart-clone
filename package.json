@@ -1,6 +1,6 @@
 {
   "workspaces": [
-    "packages/*"
+    "*"
   ],
   "scripts": {
     "co": "sui-mono commit"
