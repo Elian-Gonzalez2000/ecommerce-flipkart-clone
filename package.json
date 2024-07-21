@@ -1,0 +1,11 @@
+{
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "co": "sui-mono commit"
+  },
+  "devDependencies": {
+    "@s-ui/mono": "2.45.0"
+  }
+}
