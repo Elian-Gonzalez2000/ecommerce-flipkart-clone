@@ -1,0 +1,17 @@
+{
+  "workspaces": [
+    "./admin-app",
+    "./backend",
+    "./client"
+  ],
+  "scripts": {
+    "co": "sui-mono commit",
+    "start": "npm run start --workspace=backend",
+    "dev:b": "npm run dev --workspace=backend",
+    "dev:a": "npm run dev --workspace=admin-app",
+    "dev:c": "npm run dev --workspace=client"
+  },
+  "devDependencies": {
+    "@s-ui/mono": "^2.45.0"
+  }
+}
