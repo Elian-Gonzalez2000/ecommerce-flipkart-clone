@@ -5,12 +5,6 @@ import { useParams } from "react-router";
 import { confirmSignup } from "../../actions";
 
 const SignupConfirm = () => {
-  // const { token } = useParams();
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(confirmSignup(token));
-  // }, []);
-
   return (
     <Container>
       <p class="alert-error">&#x2611; Cuenta confirmada correctamente</p>
