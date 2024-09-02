@@ -1,10 +1,11 @@
 import React from "react";
+import { Container } from "react-bootstrap";
 
 const SignupError = () => {
   return (
-    <section class="container">
-      <p class="alert_success">&#x2611; Cuenta confirmada correctamente</p>
-    </section>
+    <Container>
+      <p class="alert-success">&#x2611; Error al confirmar su cuenta</p>
+    </Container>
   );
 };
 
