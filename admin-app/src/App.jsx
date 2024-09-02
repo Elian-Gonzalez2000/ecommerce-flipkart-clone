@@ -87,10 +87,7 @@ function App() {
         />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/signup/admin/confirm/:token"
-          element={<SignupConfirm />}
-        />
+        <Route path="/signup/admin/confirm" element={<SignupConfirm />} />
         <Route path="/signup/admin/error" element={<SignupError />} />
       </Routes>
     </div>
