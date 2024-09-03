@@ -25,6 +25,10 @@ const Signup = (props) => {
     }
   }, [user.loading]);
 
+  useEffect(() => {
+    if (user.error) alert(user.error.message);
+  }, [user.error]);
+
   const userSignup = (e) => {
     e.preventDefault();
     const user = {
@@ -41,15 +45,10 @@ const Signup = (props) => {
     return <Navigate to={"/"} replace={true} />;
   }
 
-  if (user.loading) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <Layout>
-      {user.loading && <p>Loading...</p>}
-      {user.message}
-      <Row style={{ marginTop: "3.5rem" }}>
+      <Row style={{ marginTop: "4.5rem" }}>
+        {user.loading && <p>Loading...</p>}
         <Col md={{ span: 6, offset: 3 }}>
           <Form onSubmit={userSignup}>
             <Row>
