@@ -1,13 +1,27 @@
-import React, { useEffect } from "react";
-import { Container } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import React from "react";
 
 const SignupConfirm = () => {
   return (
-    <Container>
-      <p class="alert-error">&#x2611; Cuenta confirmada correctamente</p>
-    </Container>
+    <div style={styles}>
+      <p style={messageStyles}>&#x2611; Cuenta confirmada correctamente</p>
+    </div>
   );
+};
+
+const styles = {
+  height: "100vh",
+  weidth: "100vw",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  fontSize: "2rem",
+};
+const messageStyles = {
+  backgroundColor: "green",
+  textAlign: "center",
+  padding: "2rem 1.5rem",
+  borderRadius: "4px",
+  color: "#fff",
 };
 
 export default SignupConfirm;
