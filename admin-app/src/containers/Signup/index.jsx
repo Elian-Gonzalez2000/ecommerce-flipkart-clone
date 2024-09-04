@@ -65,8 +65,8 @@ const Signup = (props) => {
                   placeholder="First Name..."
                   type="text"
                   register={register("firstName")}
+                  errorMessage={errors.firstName?.message}
                 />
-                <p>{errors.firstName?.message}</p>
               </Col>
               <Col md={6}>
                 <Input
@@ -74,8 +74,8 @@ const Signup = (props) => {
                   placeholder="Last Name..."
                   type="text"
                   register={register("lastName")}
+                  errorMessage={errors.lastName?.message}
                 />
-                <p>{errors.lastName?.message}</p>
               </Col>
             </Row>
             <Input
@@ -83,16 +83,15 @@ const Signup = (props) => {
               placeholder="Email Address..."
               type="email"
               register={register("email")}
+              errorMessage={errors.email?.message}
             />
-            <p>{errors.email?.message}</p>
-
             <Input
               label="Password"
               placeholder="Password..."
               type="password"
               register={register("password")}
+              errorMessage={errors.password?.message}
             />
-            <p>{errors.password?.message}</p>
             <Button variant="primary" type="submit">
               Submit
             </Button>
