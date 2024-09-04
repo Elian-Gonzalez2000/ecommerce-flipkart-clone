@@ -6,7 +6,8 @@ import { Form } from "react-bootstrap";
    Use the bootstrap components for styles
 */
 const Input = (props) => {
-  const { label, type, placeholder, value, onChange, errorMessage } = props;
+  const { label, type, placeholder, value, onChange, errorMessage, register } =
+    props;
 
   let input = null;
   switch (type) {
@@ -45,6 +46,7 @@ const Input = (props) => {
             value={value}
             onChange={onChange}
             className={props.className}
+            {...register}
           />
           <Form.Text className="text-muted">{errorMessage}</Form.Text>
         </Form.Group>
