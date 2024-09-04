@@ -8,6 +8,7 @@ import { signup } from "../../actions";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import Loader from "../../components/UI/Loader/Loader";
 
 const schema = yup
   .object({
@@ -19,23 +20,9 @@ const schema = yup
   .required();
 
 const Signup = (props) => {
-  // const [firstName, setFirstName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [error, setError] = useState("");
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   if (!user.loading) {
-  //     setFirstName("");
-  //     setLastName("");
-  //     setEmail("");
-  //     setPassword("");
-  //   }
-  // }, [user.loading]);
 
   useEffect(() => {
     if (user.error) alert(user.error.message);
@@ -68,7 +55,7 @@ const Signup = (props) => {
   return (
     <Layout>
       <Row style={{ marginTop: "4.5rem" }}>
-        {user.loading && <p>Loading...</p>}
+        {user.loading && <Loader styles={{ width: "4rem", height: "4rem" }} />}
         <Col md={{ span: 6, offset: 3 }}>
           <Form onSubmit={handleSubmit(userSignup)}>
             <Row>
@@ -76,12 +63,7 @@ const Signup = (props) => {
                 <Input
                   label="First Name"
                   placeholder="First Name..."
-                  /* value={firstName} */
                   type="text"
-                  /* onChange={(e) => {
-                    setFirstName(e.target.value);
-                    console.log(firstName);
-                  }} */
                   register={register("firstName")}
                 />
                 <p>{errors.firstName?.message}</p>
@@ -90,9 +72,7 @@ const Signup = (props) => {
                 <Input
                   label="Last Name"
                   placeholder="Last Name..."
-                  // value={lastName}
                   type="text"
-                  // onChange={(e) => setLastName(e.target.value)}
                   register={register("lastName")}
                 />
                 <p>{errors.lastName?.message}</p>
@@ -101,9 +81,7 @@ const Signup = (props) => {
             <Input
               label="Email Address"
               placeholder="Email Address..."
-              // value={email}
               type="email"
-              // onChange={(e) => setEmail(e.target.value)}
               register={register("email")}
             />
             <p>{errors.email?.message}</p>
@@ -111,9 +89,7 @@ const Signup = (props) => {
             <Input
               label="Password"
               placeholder="Password..."
-              // value={password}
               type="password"
-              // onChange={(e) => setPassword(e.target.value)}
               register={register("password")}
             />
             <p>{errors.password?.message}</p>
