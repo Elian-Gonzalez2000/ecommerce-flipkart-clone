@@ -15,6 +15,12 @@ export const signup = (user) => {
           type: userConstants.USER_REGISTER_SUCCESS,
           payload: { message },
         });
+        dispatch({
+          type: authConstants.LOGIN_REQUEST,
+          payload: {
+            ...user,
+          },
+        });
       }
     } catch (error) {
       const { status, data } = error.response;
@@ -26,12 +32,5 @@ export const signup = (user) => {
         });
       }
     }
-
-    dispatch({
-      type: authConstants.LOGIN_REQUEST,
-      payload: {
-        ...user,
-      },
-    });
   };
 };
