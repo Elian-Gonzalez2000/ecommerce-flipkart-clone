@@ -15,17 +15,18 @@ const schema = yup
     firstName: yup.string().required(),
     lastName: yup.string().required(),
     email: yup.string().email().required(),
-    password: yup.string().min(8).required(),
+    password: yup.string().required().min(6),
   })
   .required();
 
 const Signup = (props) => {
+  const [error, setError] = useState("");
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user.error) alert(user.error.message);
+    if (user.error) setError(user.error.message);
   }, [user.error]);
 
   const userSignup = (data) => {
@@ -49,6 +50,7 @@ const Signup = (props) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
+    mode: "onBlur",
     resolver: yupResolver(schema),
   });
 
@@ -66,6 +68,7 @@ const Signup = (props) => {
                   type="text"
                   register={register("firstName")}
                   errorMessage={errors.firstName?.message}
+                  onChange={(e) => setError("")}
                 />
               </Col>
               <Col md={6}>
@@ -98,6 +101,7 @@ const Signup = (props) => {
           </Form>
         </Col>
       </Row>
+      {error && <p className="mt-4 text-danger">{error}</p>}
     </Layout>
   );
 };
