@@ -20,6 +20,8 @@ export const login = (user) => {
         });
       }
     } catch (error) {
+      console.log(error.response);
+
       if (error.response.status === 400) {
         dispatch({
           type: authConstants.LOGIN_FAILURE,
@@ -43,7 +45,7 @@ export const isUserLoggedIn = () => {
     } else {
       dispatch({
         type: authConstants.LOGIN_FAILURE,
-        payload: { error: "Fail to login" },
+        payload: { message: "Fail to login" },
       });
     }
   };
@@ -51,19 +53,24 @@ export const isUserLoggedIn = () => {
 
 export const signout = () => {
   return async (dispatch) => {
-    dispatch({ type: authConstants.LOGOUT_REQUEST });
-    const res = await axios.post("/admin/signout");
+    try {
+      dispatch({ type: authConstants.LOGOUT_REQUEST });
+      const res = await axios.post("/admin/signout");
 
-    if (res.status === 200) {
-      localStorage.clear();
-      dispatch({
-        type: authConstants.LOGOUT_SUCCESS,
-      });
-    } else {
-      dispatch({
-        type: authConstants.LOGOUT_FAILURE,
-        payload: { error: res.data.error },
-      });
+      if (res.status === 200) {
+        localStorage.clear();
+        dispatch({
+          type: authConstants.LOGOUT_SUCCESS,
+        });
+      }
+    } catch (error) {
+      const { status, data } = error;
+      if (status === 400) {
+        dispatch({
+          type: authConstants.LOGOUT_FAILURE,
+          payload: { error: data },
+        });
+      }
     }
   };
 };
