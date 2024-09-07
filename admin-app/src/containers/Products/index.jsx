@@ -17,6 +17,7 @@ const Products = () => {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [categoryOption, setCategoryOption] = useState("");
   const [productPictures, setProductPictures] = useState([]);
   const [productDetail, setProductDetail] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -25,7 +26,8 @@ const Products = () => {
   const [imgURL, setImgUrl] = useState([]);
   const category = useSelector((state) => state.category);
   const product = useSelector((state) => state.product);
-  const [show, setShow] = useState(false);
+  const [showAdd, setShowAdd] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -54,7 +56,7 @@ const Products = () => {
     };
     dispatch(addProduct(form, data));
     //console.log(imgURL);
-    setShow(false);
+    setShowAdd(false);
     setName("");
     setQuantity("");
     setPrice("");
@@ -64,7 +66,38 @@ const Products = () => {
     setProductPictures([]);
   };
 
-  const handleShow = () => setShow(true);
+  const handleCloseEdit = () => {
+    setName(prod.name);
+    setQuantity(prod.quantity);
+    setPrice(prod.price);
+    setDescription(prod.description);
+    setCategoryId(prod.category);
+    setImgUrl(prod.productPictures);
+    setProductPictures([]);
+    const data = {
+      name,
+      quantity,
+      price,
+      description,
+      category: categoryId,
+      images: imgURL,
+    };
+    dispatch(addProduct(form, data));
+    //console.log(imgURL);
+    setShowEdit(false);
+    setName("");
+    setQuantity("");
+    setPrice("");
+    setDescription("");
+    setCategoryId("");
+    setImgUrl([]);
+    setProductPictures([]);
+  };
+
+  const handleShow = (modal) => {
+    if (modal === "edit") return setShowEdit(true);
+    if (modal === "add") return setShowAdd(true);
+  };
 
   const handleProductPictures = (e) => {
     // Save multiples files
@@ -126,10 +159,27 @@ const Products = () => {
                     <td>
                       <button
                         onClick={(e) => {
-                          showProductDetailsModal(product);
+                          e.stopPropagation();
+                          showProductDetailsModal(prod);
+                          console.log(e.target);
                         }}
                       >
-                        info
+                        Info
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleShow("edit");
+                          setName(prod.name);
+                          setQuantity(prod.quantity);
+                          setPrice(prod.price);
+                          setDescription(prod.description);
+                          setCategoryId(prod.category);
+                          setImgUrl(prod.productPictures);
+                          console.log(prod);
+                        }}
+                      >
+                        Edit
                       </button>
                       <button
                         onClick={(e) => {
@@ -155,9 +205,18 @@ const Products = () => {
   const renderAddProductModal = () => {
     return (
       <Modal
-        show={show}
+        show={showAdd}
         onSubmit={handleClose}
-        handleClose={() => setShow(false)}
+        handleClose={() => {
+          setShowAdd(false);
+          setName("");
+          setQuantity("");
+          setPrice("");
+          setDescription("");
+          setCategoryId("");
+          setImgUrl([]);
+          setProductPictures([]);
+        }}
         modalTitle={"Add new product"}
         buttonDisabled={buttonDisabled}
       >
@@ -191,6 +250,76 @@ const Products = () => {
           onChange={(e) => setCategoryId(e.target.value)}
         >
           <option>Select Category</option>
+          {createCategoryList(category.categories).map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.name}
+            </option>
+          ))}
+        </select>
+        {productPictures.length > 0
+          ? productPictures.map((pic, index) => (
+              <div key={randomUI()}>{pic.name}</div>
+            ))
+          : null}
+        <input
+          type="file"
+          name="productPicture"
+          accept="image/*"
+          multiple
+          onChange={handleProductPictures}
+        />
+      </Modal>
+    );
+  };
+
+  const renderEditProductModal = () => {
+    return (
+      <Modal
+        show={showEdit}
+        onSubmit={handleCloseEdit}
+        handleClose={() => {
+          setShowEdit(false);
+          setName("");
+          setQuantity("");
+          setPrice("");
+          setDescription("");
+          setCategoryId("");
+          setImgUrl([]);
+          setProductPictures([]);
+        }}
+        modalTitle={"Edit product"}
+        buttonDisabled={buttonDisabled}
+      >
+        <Input
+          label="Name"
+          value={name}
+          placeholder={"Product Name"}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input
+          label="Quantity"
+          value={quantity}
+          placeholder={"Quantity"}
+          onChange={(e) => setQuantity(e.target.value)}
+        />
+        <Input
+          label="Price"
+          value={price}
+          placeholder={"Price"}
+          onChange={(e) => setPrice(e.target.value)}
+        />
+        <Input
+          label="Description"
+          value={description}
+          placeholder={"Description"}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <select
+          className="form-control"
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+        >
+          <option>{categoryId.name}</option>
           {createCategoryList(category.categories).map((option) => (
             <option key={option.value} value={option.value}>
               {option.name}
@@ -288,15 +417,23 @@ const Products = () => {
             }}
           >
             <h3>Product</h3>
-            <Button onClick={handleShow}>Add</Button>
+            <Button
+              onClick={() => {
+                handleShow("add");
+                renderAddProductModal();
+              }}
+            >
+              Add
+            </Button>
           </div>
         </Col>
       </Row>
       <Row>
         <Col>{renderProducts()}</Col>
       </Row>
-      {renderAddProductModal()}
-      {renderShowProductDetailsModal()}
+      {showAdd ? renderAddProductModal() : ""}
+      {showEdit ? renderEditProductModal(productDetail) : ""}
+      {productDetailModal ? renderShowProductDetailsModal() : ""}
     </Layout>
   );
 };
