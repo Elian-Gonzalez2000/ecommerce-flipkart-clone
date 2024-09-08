@@ -12,3 +12,17 @@
   height: auto;
   max-height: 350px;
 }
+
+.cancel-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: 1px solid black;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  cursor: pointer;
+}
