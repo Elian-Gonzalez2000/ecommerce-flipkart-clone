@@ -16,8 +16,8 @@ exports.createProduct = (req, res) => {
   let productPictures = [];
 
   if (req.body.images.length > 0) {
-    productPictures = images.map((url) => {
-      return { imgUrl: url };
+    productPictures = images.map((file) => {
+      return { imgUrl: file.imgUrl, name: file.name };
     });
   }
 
