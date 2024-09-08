@@ -102,9 +102,9 @@ const Products = () => {
     // Save multiples files
     if (!e.target.files || !e.target.files.length) return alert("Algo");
     const files = Array.from(e.target.files);
-    const promises = files.map((file) => {
+    const promises = files.map(async (file) => {
       console.log(file);
-      const fileImage = uploadImage(file);
+      const fileImage = await uploadImage(file);
       setProductPictures([...productPictures, file]);
       return fileImage;
     });
@@ -260,8 +260,25 @@ const Products = () => {
           multiple
           onChange={handleProductPictures}
         />
+        <div className="pictures-container mt-3">
+          {imgURL
+            ? imgURL.map((img) => {
+                // console.log(img);
+                return (
+                  // i miss the property img.imgUrl to img.imgURL, i stay with this for two ours trying work
+                  <picture key={self.crypto.randomUUID()}>
+                    <img src={`${img.imgUrl}`} alt={`${img.imgUrl}`} />
+                  </picture>
+                );
+              })
+            : null}
+        </div>
       </Modal>
     );
+  };
+
+  const deleteImages = (img) => {
+    console.log(img);
   };
 
   const renderEditProductModal = () => {
@@ -330,20 +347,23 @@ const Products = () => {
           multiple
           onChange={handleProductPictures}
         />
-        {imgURL
-          ? imgURL.map((img) => {
-              return (
-                // i miss the property img.imgUrl to img.imgURL, i stay with this for two ours trying work
-                <picture className="picture-container">
-                  <img
+        <div className="pictures-container mt-3 ">
+          {imgURL
+            ? imgURL.map((img) => {
+                return (
+                  // i miss the property img.imgUrl to img.imgURL, i stay with this for two ours trying work
+                  <picture
                     key={self.crypto.randomUUID()}
-                    src={`${img.imgUrl}`}
-                    alt={`${img.imgUrl}`}
-                  />
-                </picture>
-              );
-            })
-          : null}
+                    className="position-relative"
+                    onClick={() => deleteImages(img)}
+                  >
+                    <span className="cancel-btn">X</span>
+                    <img src={`${img.imgUrl}`} alt={`${img.name}`} />
+                  </picture>
+                );
+              })
+            : null}
+        </div>
       </Modal>
     );
   };
