@@ -3,7 +3,7 @@ import Layout from "../../components/Layout";
 import { Container, Row, Col, Button, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "../../components/UI/Input";
-import { addProduct, deleteProductById } from "../../actions";
+import { addProduct, deleteProductById, EditProductById } from "../../actions";
 import Modal from "../../components/UI/Modal";
 import { genericPublicUrl } from "../../urlConfig";
 import { randomUI } from "../../helpers/randomUI";
@@ -17,7 +17,6 @@ const Products = () => {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [categoryOption, setCategoryOption] = useState("");
   const [productPictures, setProductPictures] = useState([]);
   const [productDetail, setProductDetail] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -82,7 +81,7 @@ const Products = () => {
       category: categoryId,
       images: imgURL,
     };
-    dispatch(addProduct(form, data));
+    dispatch(EditProductById(data));
     //console.log(imgURL);
     setShowEdit(false);
     setName("");
@@ -169,14 +168,7 @@ const Products = () => {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleShow("edit");
-                          setName(prod.name);
-                          setQuantity(prod.quantity);
-                          setPrice(prod.price);
-                          setDescription(prod.description);
-                          setCategoryId(prod.category);
-                          setImgUrl(prod.productPictures);
-                          console.log(prod);
+                          showEditproductModal(prod);
                         }}
                       >
                         Edit
@@ -326,11 +318,11 @@ const Products = () => {
             </option>
           ))}
         </select>
-        {productPictures.length > 0
+        {/* {productPictures.length > 0
           ? productPictures.map((pic, index) => (
               <div key={randomUI()}>{pic.name}</div>
             ))
-          : null}
+          : null} */}
         <input
           type="file"
           name="productPicture"
@@ -338,6 +330,20 @@ const Products = () => {
           multiple
           onChange={handleProductPictures}
         />
+        {imgURL
+          ? imgURL.map((img) => {
+              return (
+                // i miss the property img.imgUrl to img.imgURL, i stay with this for two ours trying work
+                <picture className="picture-container">
+                  <img
+                    key={self.crypto.randomUUID()}
+                    src={`${img.imgUrl}`}
+                    alt={`${img.imgUrl}`}
+                  />
+                </picture>
+              );
+            })
+          : null}
       </Modal>
     );
   };
@@ -349,6 +355,17 @@ const Products = () => {
   const showProductDetailsModal = (prod) => {
     setProductDetail(prod);
     setProductDetailModal(true);
+  };
+
+  const showEditproductModal = (prod) => {
+    console.log([...prod.productPictures]);
+    setName(prod.name);
+    setQuantity(prod.quantity);
+    setPrice(prod.price);
+    setDescription(prod.description);
+    setCategoryId(prod.category);
+    setImgUrl([...prod.productPictures]);
+    handleShow("edit");
   };
 
   const renderShowProductDetailsModal = () => {
@@ -432,7 +449,7 @@ const Products = () => {
         <Col>{renderProducts()}</Col>
       </Row>
       {showAdd ? renderAddProductModal() : ""}
-      {showEdit ? renderEditProductModal(productDetail) : ""}
+      {showEdit ? renderEditProductModal() : ""}
       {productDetailModal ? renderShowProductDetailsModal() : ""}
     </Layout>
   );
