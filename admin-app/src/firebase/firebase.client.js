@@ -1,5 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  deleteObject,
+  getMetadata,
+} from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBHiAkVnjPO_17EUPKKoYfie0leCFHLvBM",
@@ -13,14 +20,24 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
-export const uploadImage = (file) => {
+export const uploadImage = async (file) => {
   const imgRef = ref(storage, `images/${file.name}`);
 
-  const imgURL = uploadBytes(imgRef, file).then((res) => {
-    //console.log("Imagen subida", res);
-    return getDownloadURL(imgRef);
-  });
+  const imgUrl = await uploadBytes(imgRef, file)
+    .then((res) => {
+      // console.log("Imagen subida", res.metadata);
+      return getDownloadURL(imgRef);
+    })
+    .then((imgUpload) => {
+      //console.log(imgUpload);
+      return imgUpload;
+    });
   //console.log("referencia: ", imgRef);
+  const getMetadataImg = await getMetadata(imgRef).then((metadata) => metadata);
 
-  return imgURL ? imgURL : undefined;
+  return imgUrl && getMetadataImg
+    ? { imgUrl, name: getMetadataImg.name }
+    : undefined;
 };
+
+export const deleteFirebaseImage = (imgUrl) => {};
