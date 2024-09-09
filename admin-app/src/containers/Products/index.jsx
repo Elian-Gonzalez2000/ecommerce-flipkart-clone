@@ -3,11 +3,14 @@ import Layout from "../../components/Layout";
 import { Container, Row, Col, Button, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "../../components/UI/Input";
-import { addProduct, deleteProductById, EditProductById } from "../../actions";
+import { addProduct, deleteProductById, editProductById } from "../../actions";
 import Modal from "../../components/UI/Modal";
 import { genericPublicUrl } from "../../urlConfig";
 import { randomUI } from "../../helpers/randomUI";
-import { uploadImage } from "../../firebase/firebase.client";
+import {
+  deleteFirebaseImage,
+  uploadImage,
+} from "../../firebase/firebase.client";
 import "./styles.css";
 import { getDownloadURL } from "firebase/storage";
 
@@ -72,7 +75,6 @@ const Products = () => {
     setDescription(prod.description);
     setCategoryId(prod.category);
     setImgUrl(prod.productPictures);
-    setProductPictures([]);
     const data = {
       name,
       quantity,
@@ -81,7 +83,7 @@ const Products = () => {
       category: categoryId,
       images: imgURL,
     };
-    dispatch(EditProductById(data));
+    dispatch(editProductById(data));
     //console.log(imgURL);
     setShowEdit(false);
     setName("");
@@ -118,6 +120,17 @@ const Products = () => {
     setTask(fileImage);
     setProductPictures([...productPictures, e.target.files[0]]);
     console.log(e.target.files, productPictures); */
+  };
+
+  const handleDeleteImage = (img) => {
+    // console.log(img);
+    const imgFiltered = imgURL.filter(
+      (filterImg) => filterImg.name === img.name
+    );
+    const imgURLFiltered = imgURL.filter(
+      (filterImg) => filterImg.name !== img.name
+    );
+    if (imgFiltered) setImgUrl([...imgURLFiltered]);
   };
 
   const createCategoryList = (categories, options = []) => {
@@ -277,10 +290,6 @@ const Products = () => {
     );
   };
 
-  const deleteImages = (img) => {
-    console.log(img);
-  };
-
   const renderEditProductModal = () => {
     return (
       <Modal
@@ -355,7 +364,7 @@ const Products = () => {
                   <picture
                     key={self.crypto.randomUUID()}
                     className="position-relative"
-                    onClick={() => deleteImages(img)}
+                    onClick={() => handleDeleteImage(img)}
                   >
                     <span className="cancel-btn">X</span>
                     <img src={`${img.imgUrl}`} alt={`${img.name}`} />
