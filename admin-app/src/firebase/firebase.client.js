@@ -40,4 +40,12 @@ export const uploadImage = async (file) => {
     : undefined;
 };
 
-export const deleteFirebaseImage = (imgUrl) => {};
+export const deleteFirebaseImage = (name) => {
+  const imgRef = ref(storage, `images/${name}`);
+
+  const imgDeleted = deleteObject(imgRef)
+    .then((res) => res)
+    .catch((error) => error);
+
+  return imgDeleted;
+};
