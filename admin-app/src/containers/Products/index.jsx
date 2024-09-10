@@ -26,6 +26,7 @@ const Products = () => {
   const [task, setTask] = useState([]);
   const [productDetailModal, setProductDetailModal] = useState(false);
   const [imgURL, setImgUrl] = useState([]);
+  const [deletedImage, setDeletedImage] = useState(null);
   const category = useSelector((state) => state.category);
   const product = useSelector((state) => state.product);
   const [showAdd, setShowAdd] = useState(false);
@@ -57,7 +58,6 @@ const Products = () => {
       images: imgURL,
     };
     dispatch(addProduct(form, data));
-    //console.log(imgURL);
     setShowAdd(false);
     setName("");
     setQuantity("");
@@ -69,13 +69,8 @@ const Products = () => {
   };
 
   const handleCloseEdit = () => {
-    setName(prod.name);
-    setQuantity(prod.quantity);
-    setPrice(prod.price);
-    setDescription(prod.description);
-    setCategoryId(prod.category);
-    setImgUrl(prod.productPictures);
     const data = {
+      _id: productDetail._id,
       name,
       quantity,
       price,
@@ -83,8 +78,7 @@ const Products = () => {
       category: categoryId,
       images: imgURL,
     };
-    dispatch(editProductById(data));
-    //console.log(imgURL);
+    dispatch(editProductById(data, deletedImage));
     setShowEdit(false);
     setName("");
     setQuantity("");
@@ -130,7 +124,10 @@ const Products = () => {
     const imgURLFiltered = imgURL.filter(
       (filterImg) => filterImg.name !== img.name
     );
-    if (imgFiltered) setImgUrl([...imgURLFiltered]);
+    if (imgFiltered) {
+      setImgUrl([...imgURLFiltered]);
+    }
+    setDeletedImage(imgFiltered[0]);
   };
 
   const createCategoryList = (categories, options = []) => {
@@ -294,7 +291,7 @@ const Products = () => {
     return (
       <Modal
         show={showEdit}
-        onSubmit={handleCloseEdit}
+        onSubmit={() => handleCloseEdit()}
         handleClose={() => {
           setShowEdit(false);
           setName("");
@@ -387,7 +384,7 @@ const Products = () => {
   };
 
   const showEditproductModal = (prod) => {
-    console.log([...prod.productPictures]);
+    setProductDetail(prod);
     setName(prod.name);
     setQuantity(prod.quantity);
     setPrice(prod.price);
