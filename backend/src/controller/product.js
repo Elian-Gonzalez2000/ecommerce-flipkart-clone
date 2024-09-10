@@ -42,6 +42,7 @@ exports.createProduct = (req, res) => {
 
 exports.editProductById = (req, res) => {
   const { _id } = req.body;
+
   const productUpdate = {
     name: req.body.name,
     slug: slugify(req.body.name),
@@ -49,14 +50,14 @@ exports.editProductById = (req, res) => {
     description: req.body.description,
     category: req.body.category,
     quantity: req.body.quantity,
-    images: req.body.images,
+    productPictures: req.body.images,
   };
-  Product.findByIdAndUpdate({ _id: _id }, productUpdate, { new: true }).exec(
-    (error, productUpdated) => {
-      if (error) return res.status(400).json({ error });
-      return res.status(200).json({ productUpdated });
-    }
-  );
+  Product.findByIdAndUpdate({ _id: _id }, productUpdate, {
+    new: true,
+  }).exec((error, productUpdated) => {
+    if (error) return res.status(400).json({ error });
+    if (productUpdated) return res.status(200).json({ productUpdated });
+  });
 };
 
 exports.getProductsBySlug = (req, res) => {
