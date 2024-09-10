@@ -1,3 +1,4 @@
+import { deleteFirebaseImage } from "../firebase/firebase.client.js";
 import axios from "../helpers/axios.js";
 import { API_IMBGG_UPLOAD } from "../urlConfig.js";
 import { productConstants } from "./constants.js";
@@ -43,13 +44,21 @@ export const addProduct = (form, data) => {
   };
 };
 
-export const EditProductById = (data) => {
+export const editProductById = (data, deletedImg) => {
   return async (dispatch) => {
     try {
       const res = await axios.post(`product/editproduct`, data);
+
       if (res.status === 200) {
-        dispatch({ type: productConstants.EDIT_PRODUCT_SUCCESS });
+        dispatch({
+          type: productConstants.EDIT_PRODUCT_SUCCESS,
+        });
         dispatch(getProducts());
+        if (deletedImg?.name) {
+          await deleteFirebaseImage(deletedImg.name)
+            .then((res) => console.log(res))
+            .catch((error) => console.log(error));
+        }
       }
     } catch (error) {
       const { status, data } = error.response;
