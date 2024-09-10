@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
     case productConstants.EDIT_PRODUCT_SUCCESS:
       state = {
         ...state,
-        products: action.payload.products,
+        // products: action.payload.data.products,
       };
       break;
   }
