@@ -9,7 +9,10 @@ const Price = (props) => {
     margin: "5px 0",
   };
   return (
-    <span style={styles}>
+    <span
+      className={props.className ? props.className : ""}
+      style={!props.className ? styles : {}}
+    >
       {/* <BiRupee /> */}
       {formatCurrency(
         { currency: "INR", value: props.value },
