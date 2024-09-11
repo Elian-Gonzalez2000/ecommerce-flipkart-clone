@@ -41,11 +41,39 @@ export const uploadImage = async (file) => {
 };
 
 export const deleteFirebaseImage = (name) => {
-  const imgRef = ref(storage, `images/${name}`);
+  if (Array.isArray(name)) {
+    // Si es un array, usamos Promise.all para ejecutar todas las promesas de eliminaciónç
+    const deletePromises = name.map((img) => {
+      const imgRef = ref(storage, `images/${img.name}`);
+      return deleteObject(imgRef)
+        .then((res) => res)
+        .catch((error) => error);
+    });
 
-  const imgDeleted = deleteObject(imgRef)
-    .then((res) => res)
-    .catch((error) => error);
+    return Promise.all(deletePromises)
+      .then((results) => {
+        console.log("Todas las imágenes fueron eliminadas correctamente");
+        return results;
+      })
+      .catch((error) => {
+        console.error({
+          message: "Error al eliminar alguna de las imágenes",
+          error,
+        });
+        return error;
+      });
+  } else {
+    // Si no es un array, elimina una sola imagen
+    const imgRef = ref(storage, `images/${name}`);
 
-  return imgDeleted;
+    return deleteObject(imgRef)
+      .then((res) => {
+        console.log("Imagen eliminada correctamente ");
+        return res;
+      })
+      .catch((error) => {
+        console.log("Error al eliminar imagen");
+        return error;
+      });
+  }
 };
