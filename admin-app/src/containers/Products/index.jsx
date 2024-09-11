@@ -189,7 +189,9 @@ const Products = () => {
                           const payload = {
                             productId: prod._id,
                           };
-                          dispatch(deleteProductById(payload));
+                          dispatch(
+                            deleteProductById(payload, prod.productPictures)
+                          );
                         }}
                       >
                         del
