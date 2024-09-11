@@ -55,9 +55,7 @@ export const editProductById = (data, deletedImg) => {
         });
         dispatch(getProducts());
         if (deletedImg?.name) {
-          await deleteFirebaseImage(deletedImg.name)
-            .then((res) => console.log(res))
-            .catch((error) => console.log(error));
+          await deleteFirebaseImage(deletedImg.name);
         }
       }
     } catch (error) {
@@ -69,7 +67,7 @@ export const editProductById = (data, deletedImg) => {
   };
 };
 
-export const deleteProductById = (payload) => {
+export const deleteProductById = (payload, deletedFirebaseImages) => {
   return async (dispatch) => {
     try {
       const res = await axios.delete(`product/deleteproductbyid`, {
@@ -79,6 +77,7 @@ export const deleteProductById = (payload) => {
       if (res.status === 202) {
         dispatch({ type: productConstants.DELETE_PRODUCT_BY_ID_SUCCESS });
         dispatch(getProducts());
+        await deleteFirebaseImage(deletedFirebaseImages);
       } else {
         const { error } = res.data;
         dispatch({
