@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getProductDetailsById } from "../../actions";
-import { genericPublicUrl } from "../../urlConfig";
 import Layout from "../../components/Layout";
 import { MaterialButton } from "../../components/MaterialUI";
 import { IoIosArrowForward, IoIosStar, IoMdCart } from "react-icons/io";
 import { BsLightningFill } from "react-icons/bs";
-import { BiRupee } from "react-icons/bi";
 import "./style.css";
 import { addToCart } from "../../actions/cart.action";
 import Loader from "../../components/UI/Loader";
@@ -76,9 +74,10 @@ function ProductsDetailsPage(props) {
                 textColor="#ffffff"
                 icon={<IoMdCart />}
                 onClick={() => {
+                  console.log(product);
                   const { _id, name, price } = product;
-                  const img = product.productPictures[0].imgUrl;
-                  dispatch(addToCart({ _id, name, price, img }));
+                  const cartItemImg = product.productPictures[0];
+                  dispatch(addToCart({ _id, name, price, cartItemImg }));
                 }}
               />
               <MaterialButton
