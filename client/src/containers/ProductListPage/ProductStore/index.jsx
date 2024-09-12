@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams, Link } from "react-router-dom";
 import { getProductsBySlug } from "../../../actions";
-import Layout from "../../../components/Layout";
-import { genericPublicUrl } from "../../../urlConfig";
 import Card from "../../../components/UI/Card";
 import { BiRupee } from "react-icons/bi";
 import { MaterialButton } from "../../../components/MaterialUI";
