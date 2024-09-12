@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./styles.css";
 import { genericPublicUrl } from "../../../urlConfig";
 import { BiRupee } from "react-icons/bi";
+import formatCurrency from "../../../utilities/formatCurrency";
 
 function CartItem(props) {
   const [qty, setQty] = useState(props.cartItem.quantity);
@@ -21,14 +22,14 @@ function CartItem(props) {
     <article className="cart-item-container">
       <div className="cart-item-data-container">
         <picture className="cart-pro-img-container">
-          <img src={genericPublicUrl(cartItemImg.img)} alt="" />
+          <img src={cartItemImg.imgUrl} alt={name} />
         </picture>
         <div className="cart-item-details">
           <div>
             <p>{name}</p>
             <p className="item-price">
               {formatCurrency(
-                { currency: "INR", value: props.value },
+                { currency: "INR", value: price },
                 { trailingZeroDisplay: "stripIfInteger" }
               )}
             </p>
