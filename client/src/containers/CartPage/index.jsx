@@ -40,6 +40,7 @@ function CartPage(props) {
   const onRemoveCartItem = (_id) => {
     console.log(_id);
     dispatch(removeCartItem({ productId: _id }));
+    if (!auth.authenticate) setCartItems(cart.cartItems);
   };
 
   if (props.onlyCartItems) {
