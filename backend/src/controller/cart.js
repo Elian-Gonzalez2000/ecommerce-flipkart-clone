@@ -87,7 +87,7 @@ exports.getCartItems = (req, res) => {
 
 exports.removeCartItems = (req, res) => {
   const { productId } = req.body.payload;
-  if (productId) {
+  if (productId && req?.user._id) {
     Cart.update(
       { user: req.user._id },
       {
