@@ -41,7 +41,9 @@ export default (state = initState, action) => {
     case cartConstants.REMOVE_CART_ITEM_SUCCESS:
       state = {
         ...state,
-        cartItems: action.payload.cartItems,
+        cartItems: action.payload?.cartItems
+          ? action.payload.cartItems
+          : { ...state.cartItems },
         updatingCart: false,
       };
       break;
