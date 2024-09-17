@@ -9,7 +9,7 @@ const getCartItems = () => {
       const res = await axios.post("/user/getcartitems");
       if (res.status === 200) {
         const { cartItems } = res.data;
-        console.log("Carrito GET:  ", { getCartItems: cartItems });
+        console.log("Carrito GET: ", { getCartItems: cartItems });
         if (cartItems) {
           dispatch({
             type: cartConstants.ADD_TO_CART_SUCCESS,
@@ -62,7 +62,7 @@ export const addToCart = (product, newQty = 1) => {
       localStorage.setItem("cart", JSON.stringify(updatedCartItems));
     }
 
-    console.log("addToCart::", updatedCartItems);
+    //console.log("addToCart::", updatedCartItems);
     dispatch({
       type: cartConstants.ADD_TO_CART_SUCCESS,
       payload: { cartItems: updatedCartItems },
@@ -94,12 +94,13 @@ export const removeCartItem = (payload) => {
         });
       }
     } catch (error) {
-      const { status, data } = error.response;
-      if (status == 400)
+      if (error.response?.status == 400) {
+        const { status, data } = error.response;
         dispatch({
           type: cartConstants.REMOVE_CART_ITEM_FAILURE,
           payload: { data },
         });
+      }
     }
   };
 };
@@ -121,6 +122,7 @@ export const updateToCart = () => {
               product: cartItems[key]._id,
             };
           }),
+          updateToCart: true,
         };
         if (Object.keys(cartItems).length > 0) {
           const res = await axios.post("/user/cart/addtocart", payload);
