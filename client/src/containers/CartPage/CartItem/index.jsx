@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { genericPublicUrl } from "../../../urlConfig";
 import { BiRupee } from "react-icons/bi";
@@ -8,6 +8,9 @@ function CartItem(props) {
   const [qty, setQty] = useState(props.cartItem.quantity);
   const { _id, name, price, quantity, cartItemImg } = props.cartItem;
 
+  useEffect(() => {
+    setQty(props.cartItem.quantity);
+  }, [quantity]);
   const onQuantityIncrement = () => {
     setQty(quantity + 1);
     props.onQuantityInc(_id, qty);
@@ -42,7 +45,7 @@ function CartItem(props) {
       <div className="cart-quantity-container">
         <div className="quantity-control">
           <button onClick={onQuantityDecrement}>-</button>
-          <input value={qty} readOnly />
+          <input value={quantity && quantity} readOnly />
           <button onClick={onQuantityIncrement}>+</button>
         </div>
         <button className="cart-action-btn">Save for later</button>
