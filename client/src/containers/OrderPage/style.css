@@ -28,3 +28,9 @@
 .order-item-container .order-item-status.completed {
   color: rgb(5, 188, 32);
 }
+
+.no-more-orders {
+  margin-top: 1rem;
+  text-align: center;
+  color: #696666;
+}

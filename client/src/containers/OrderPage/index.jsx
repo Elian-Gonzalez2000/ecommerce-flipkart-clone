@@ -63,6 +63,9 @@ const OrderPage = (props) => {
               </Card>
             ));
           })}
+        <div className="no-more-orders">
+          <p>No more orders</p>
+        </div>
       </div>
     </Layout>
   );
