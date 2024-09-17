@@ -45,6 +45,10 @@ app.use(
   })
 ); // Allow everyone to share resources
 app.use(express.static(path.join(__dirname, "./public")));
+app.use((req, res, next) => {
+  console.log(`Se ha realizado una petición a la ruta: ${req.path}`);
+  next(); // Continuar al siguiente middleware o ruta
+});
 app.use("/api", authRoutes);
 app.use("/api", addressRoutes);
 app.use("/api", adminRoutes);
