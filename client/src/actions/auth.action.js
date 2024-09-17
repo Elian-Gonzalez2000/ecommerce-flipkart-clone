@@ -1,5 +1,6 @@
 import { authConstants, cartConstants } from "./constants";
 import axios from "../helpers/axios.js";
+import { updateToCart } from "./cart.action.js";
 
 // new update signup action
 export const signup = (user) => {
@@ -46,7 +47,6 @@ export const login = (user) => {
       const res = await axios.post("/signin", {
         ...user,
       });
-      //console.log(res);
       if (res.status === 200) {
         /* Take the token and user from the response, then save in localStorage with setItem, this permite use the token easly in the application */
         const { token, user } = res.data;
@@ -56,9 +56,11 @@ export const login = (user) => {
           type: authConstants.LOGIN_SUCCESS,
           payload: { token, user },
         });
+        // Necesito Actualizar el quantity del carrito del backend antes de añadir el carrito guardado en local storage
+        dispatch(updateToCart());
       }
     } catch (error) {
-      if (error.response.status === 400) {
+      if (error.response?.status === 400) {
         dispatch({
           type: authConstants.LOGIN_FAILURE,
           payload: { error: error.response.data.message },
