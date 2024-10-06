@@ -38,6 +38,7 @@ mongoose
   })
   .catch((error) => console.log(error.message));
 
+// This is the route for the Stripe webhook endpoint and is before the express.json() middleware so that the bodyParser middleware can parse the raw body of the request
 app.use("/api", express.raw({ type: "application/json" }), stripeRoutes);
 app.use(express.json());
 app.use(
