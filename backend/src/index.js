@@ -8,12 +8,15 @@ const authRoutes = require("./router/auth.js");
 const addressRoutes = require("./router/address.js");
 const adminRoutes = require("./router/admin/auth.js");
 const categoryRoutes = require("./router/category.js");
+const stripeRoutes = require("./router/stripe.js");
 const productRoutes = require("./router/product.js");
 const cartRoutes = require("./router/cart.js");
 const initialDataRoutes = require("./router/admin/initialData.js");
 const pageRoutes = require("./router/admin/page.js");
 const orderRoutes = require("./router/order.js");
 const adminOrderRoute = require("./router/admin/order.routes.js");
+const fs = require("fs");
+const https = require("https");
 
 env.config();
 
@@ -35,6 +38,7 @@ mongoose
   })
   .catch((error) => console.log(error.message));
 
+app.use("/api", express.raw({ type: "application/json" }), stripeRoutes);
 app.use(express.json());
 app.use(
   cors({
@@ -62,10 +66,22 @@ app.use("/api", adminOrderRoute);
 
 app.get("/", (req, res, next) => {
   return res.status(200).json({
-    message: "hello from server",
+    message: `hello from server: ${req.protocol + "://" + req.get("host")}`,
   });
 });
 
-app.listen(PORT || 3001, () => {
-  console.log(`Server is running on PORT ${PORT || 3001}`);
+/* https
+  .createServer(
+    {
+      cert: fs.readFileSync("local.crt"),
+      key: fs.readFileSync("local.key"),
+    },
+    app
+  )
+  .listen(PORT, function () {
+    console.log(`Server HTTPS is running on PORT ${PORT || 3001}`);
+  }); */
+
+app.listen(PORT, function () {
+  console.log(`Server HTTP is running on PORT ${PORT || 3001}`);
 });
