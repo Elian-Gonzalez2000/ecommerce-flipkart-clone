@@ -133,3 +133,18 @@ export const getOrder = (payload) => {
     }
   };
 };
+
+export const deleteOrder = (payload) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post(`/delete-order`, payload);
+      dispatch({ type: userConstants.DELETE_USER_ORDER_REQUEST });
+      if (res.status === 202) {
+        dispatch({
+          type: userConstants.DELETE_USER_ORDER_SUCCESS,
+          payload: res.data.message,
+        });
+      }
+    } catch (error) {}
+  };
+};
