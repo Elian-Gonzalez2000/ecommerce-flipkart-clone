@@ -113,6 +113,8 @@ exports.getCartItems = (req, res) => {
           };
         });
         res.status(200).json({ cartItems });
+      } else {
+        res.status(400).json({ message: "No items in cart" });
       }
     });
 };
