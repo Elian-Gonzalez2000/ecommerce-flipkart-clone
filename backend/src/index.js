@@ -17,6 +17,7 @@ const orderRoutes = require("./router/order.js");
 const adminOrderRoute = require("./router/admin/order.routes.js");
 const fs = require("fs");
 const https = require("https");
+const { getStripeCheckoutSessionWebhook } = require("./controller/stripe.js");
 
 env.config();
 
@@ -39,7 +40,11 @@ mongoose
   .catch((error) => console.log(error.message));
 
 // This is the route for the Stripe webhook endpoint and is before the express.json() middleware so that the bodyParser middleware can parse the raw body of the request
-
+app.post(
+  "/api/stripe/webhook-stripe/checkout-session",
+  express.raw({ type: "application/json" }),
+  getStripeCheckoutSessionWebhook
+);
 app.use(express.json());
 app.use(
   cors({
@@ -64,7 +69,7 @@ app.use("/api", initialDataRoutes);
 app.use("/api", pageRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", adminOrderRoute);
-app.use("/api/stripe", express.raw({ type: "application/json" }), stripeRoutes);
+app.use("/api/stripe", stripeRoutes);
 
 app.get("/", (req, res, next) => {
   return res.status(200).json({
