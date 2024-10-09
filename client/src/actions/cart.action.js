@@ -19,6 +19,13 @@ const getCartItems = () => {
       }
     } catch (error) {
       console.log(error);
+      const { status, data } = error.response;
+      if (status === 400) {
+        dispatch({
+          type: cartConstants.ADD_TO_CART_FAILURE,
+          payload: { error: data },
+        });
+      }
     }
   };
 };
