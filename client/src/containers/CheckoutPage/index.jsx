@@ -35,7 +35,7 @@ const CheckoutStep = (props) => {
         </div>
       </div>
       {props.body && props.body}
-      {props.stepNumber === "4" ? (
+      {props.stepNumber === "4" && props.active ? (
         <div className="step-completed">
           <div className="flexRow">
             <input
@@ -214,7 +214,7 @@ const CheckoutPage = () => {
       if (payload.paymentType === "stripe") {
         // Realiza una petición al backend para generar la sesión de Stripe
         const response = await axios.post(
-          "https://localhost:3002/api/create-checkout-session-stripe",
+          "http://localhost:3002/api/stripe/create-checkout-session-stripe",
           payload
         );
 
