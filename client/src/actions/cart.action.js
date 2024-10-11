@@ -149,4 +149,23 @@ export const updateToCart = () => {
   };
 };
 
+export const resetCart = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post(`/user/cart/removeitem`, {
+        payload: { deleteAllCartItems: true },
+      });
+      if (res.status === 202) {
+        // console.log("reset cart", res.data);
+        dispatch({ type: cartConstants.RESET_CART });
+      }
+    } catch (error) {
+      const { status, data } = error.response;
+      if (status === 400) {
+        console.log(data);
+      }
+    }
+  };
+};
+
 export { getCartItems };
