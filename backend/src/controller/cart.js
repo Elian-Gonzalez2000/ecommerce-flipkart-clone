@@ -120,7 +120,22 @@ exports.getCartItems = (req, res) => {
 };
 
 exports.removeCartItems = (req, res) => {
+  // Delete all items in cart when in the payload deleteAllCartItems is passed
+  if (req?.user._id && req.body?.payload?.deleteAllCartItems) {
+    Cart.updateOne({ user: req.user._id }, { $set: { cartItems: [] } }).exec(
+      (error, result) => {
+        if (error) return res.status(400).json({ error });
+        if (result) {
+          return res
+            .status(202)
+            .json({ message: "All items cart deleted", result });
+        }
+      }
+    );
+  }
+
   const { productId } = req.body.payload;
+
   if (productId && req?.user._id) {
     Cart.update(
       { user: req.user._id },
