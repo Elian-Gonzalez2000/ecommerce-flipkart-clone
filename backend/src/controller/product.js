@@ -61,6 +61,7 @@ exports.editProductById = (req, res) => {
 };
 
 exports.getProductsBySlug = (req, res) => {
+  // when the category dont have products, it will return nothing
   const { slug } = req.params;
   Category.findOne({ slug: slug })
     .select("_id")
