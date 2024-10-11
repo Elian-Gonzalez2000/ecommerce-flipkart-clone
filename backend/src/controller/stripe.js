@@ -31,7 +31,7 @@ exports.addStripeOrder = async (req, res) => {
         quantity: item.purchasedQty,
       })),
       mode: "payment",
-      success_url: "http://localhost:2000/checkout/success",
+      success_url: `http://localhost:2000/checkout/success/${order.data.order._id}`,
       cancel_url: `http://localhost:2000/checkout/cancel/${order.data.order._id}`,
     });
 
