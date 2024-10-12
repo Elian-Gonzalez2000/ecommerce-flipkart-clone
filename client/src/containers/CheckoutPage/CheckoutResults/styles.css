@@ -1,3 +1,4 @@
+/* Checkout Success Container Information*/
 .checkout-success-container {
   background-color: var(--first-color);
   display: flex;
@@ -15,12 +16,14 @@
 
 .checkout-success-container a {
   border-bottom: 2px solid transparent;
+  color: var(--text-light-color);
 }
 
-.checkout-success-container a:hover {
+.checkout-success-container a svg:hover {
   border-bottom: 2px solid var(--text-light-color);
 }
 
+/* Checkout success Items in the order */
 .products-section {
   display: flex;
   flex-wrap: wrap;
@@ -82,4 +85,30 @@
   font-weight: bold;
   font-size: 0.9rem;
   margin: 0.3rem 0;
+}
+
+/* Checkout cancel container */
+.checkout-cancel-container {
+  background-color: var(--first-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: var(--text-light-color);
+  min-width: 100vw;
+  min-height: 50vh;
+  letter-spacing: 0.5px;
+}
+.checkout-cancel-container h2 {
+  margin-bottom: 1rem;
+}
+
+.checkout-cancel-container a {
+  border-bottom: 2px solid transparent;
+  color: var(--text-light-color);
+}
+
+.checkout-cancel-container a:hover svg {
+  transition: all 0.3s ease-out;
+  stroke-width: 1px;
 }
