@@ -142,9 +142,10 @@ export const deleteOrder = (payload) => {
       if (res.status === 202) {
         dispatch({
           type: userConstants.DELETE_USER_ORDER_SUCCESS,
-          payload: res.data.message,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
