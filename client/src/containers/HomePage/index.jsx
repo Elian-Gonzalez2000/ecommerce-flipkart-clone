@@ -1,12 +1,13 @@
 import React from "react";
 import Layout from "../../components/Layout";
+import Carrousel from "../../components/UI/Carrousel/Carrousel";
 
 const HomePage = (props) => {
-   return (
-      <Layout>
-         <h1>Home page</h1>
-      </Layout>
-   );
+  return (
+    <Layout>
+      <Carrousel />
+    </Layout>
+  );
 };
 
 export default HomePage;
