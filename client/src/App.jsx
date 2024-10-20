@@ -34,7 +34,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <main className="App">
       <Router>
         <Routes>
           <Route path="/" exact element={<HomePage />} />
@@ -63,7 +63,7 @@ function App() {
           />
         </Routes>
       </Router>
-    </div>
+    </main>
   );
 }
 
