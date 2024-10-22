@@ -1,12 +1,13 @@
 import React from "react";
 import "./style.css";
 import { Link } from "react-router-dom";
+import { BsFacebook, BsTwitterX, BsYoutube } from "react-icons/bs";
 
 const Footer = () => {
   return (
     <>
       <footer className="footer">
-        <div>
+        <div className="footer-information">
           <div className="footer-about">
             <h4>ABOUT</h4>
             <span>
@@ -83,7 +84,7 @@ const Footer = () => {
             </span>
           </div>
           <div className="footer-mail-socials">
-            <div>
+            <div className="footer-mail-us">
               <h4>Mail Us:</h4>
               <p>Flipkart Internet Private Limited,</p>
               <p>Buildings Alyssa, Begonia &</p>
@@ -92,13 +93,17 @@ const Footer = () => {
               <p>Bengaluru, 560103,</p>
               <p>Karnataka, India</p>
             </div>
-            <div>
-              <h4>Socials:</h4>
-              <p></p>
+            <div className="footer-social">
               <h4>Social</h4>
-              <span>facebook</span>
-              <span>twitter</span>
-              <span>youtebe</span>
+              <span>
+                <BsFacebook />
+              </span>
+              <span>
+                <BsTwitterX />
+              </span>
+              <span>
+                <BsYoutube />
+              </span>
             </div>
           </div>
           <div className="footer-office-address">
