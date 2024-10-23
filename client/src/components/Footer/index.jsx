@@ -1,7 +1,16 @@
 import React from "react";
 import "./style.css";
 import { Link } from "react-router-dom";
-import { BsFacebook, BsTwitterX, BsYoutube } from "react-icons/bs";
+import {
+  BsFacebook,
+  BsTwitterX,
+  BsYoutube,
+  BsBagFill,
+  BsBookmarkStarFill,
+  BsGiftFill,
+  BsFillQuestionCircleFill,
+} from "react-icons/bs";
+import paymentsMethods from "../../images/payment-method_69e7ec.svg";
 
 const Footer = () => {
   return (
@@ -118,7 +127,30 @@ const Footer = () => {
             <p>Telephone: 044-45614700 / 044-67415800</p>
           </div>
         </div>
-        <div></div>
+        <div className="footer-copyright">
+          <div>
+            <BsBagFill />
+            <Link to="/">Become a Seller</Link>
+          </div>
+          <div>
+            <BsBookmarkStarFill />
+            <Link to="/">Advertise</Link>
+          </div>
+          <div>
+            <BsGiftFill />
+            <Link to="/">Gift Cards</Link>
+          </div>
+          <div>
+            <BsFillQuestionCircleFill />
+            <Link to="/">Help Center</Link>
+          </div>
+          <div style={{ fontSize: ".9rem" }}>
+            <span>© 2007-2024 Flipkart.com</span>
+          </div>
+          <div>
+            <img src={paymentsMethods} alt="Payments Methods" />
+          </div>
+        </div>
       </footer>
     </>
   );
