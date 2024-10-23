@@ -1,6 +1,5 @@
 import { deleteFirebaseImage } from "../firebase/firebase.client.js";
 import axios from "../helpers/axios.js";
-import { API_IMBGG_UPLOAD } from "../urlConfig.js";
 import { productConstants } from "./constants.js";
 
 const getProducts = () => {
