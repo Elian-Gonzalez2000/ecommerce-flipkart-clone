@@ -2,6 +2,8 @@ const User = require("../models/auth.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const shortid = require("shortid");
+const { getToken, getTokenData } = require("../config/jwt.config.js");
+const { getTemplateUser, sendEmail } = require("../config/mail.config.js");
 
 const generateJwtToken = (_id, role) => {
   return jwt.sign({ _id, role }, process.env.JWT_SECRET, {
@@ -11,39 +13,45 @@ const generateJwtToken = (_id, role) => {
 
 // exports something with specific name
 exports.signup = (req, res) => {
-  User.findOne({ email: req.body.email }).exec(async (error, user) => {
-    if (user)
-      return res.status(400).json({
-        error: "User already registered",
+  User.findOne({ email: req.body.email, role: "user" }).exec(
+    async (error, user) => {
+      if (user)
+        return res.status(400).json({
+          error: "User already registered",
+        });
+
+      const { firstName, lastName, email, password } = req.body;
+      const hash_password = await bcrypt.hash(password, 10);
+      const _user = new User({
+        firstName,
+        lastName,
+        email,
+        hash_password,
+        username: shortid.generate(),
       });
 
-    const { firstName, lastName, email, password } = req.body;
-    const hash_password = await bcrypt.hash(password, 10);
-    const _user = new User({
-      firstName,
-      lastName,
-      email,
-      hash_password,
-      username: shortid.generate(),
-    });
+      _user.save((error, user) => {
+        if (error) {
+          return res.status(400).json({
+            message: "Something went wrong",
+            error,
+          });
+        }
 
-    _user.save((error, user) => {
-      if (error) {
-        return res.status(400).json({
-          message: "Something went wrong",
-        });
-      }
-
-      if (user) {
-        const token = generateJwtToken(user._id, user.role);
-        const { _id, firstName, lastName, email, role, fullName } = user;
-        return res.status(201).json({
-          token,
-          user: { _id, firstName, lastName, email, role, fullName },
-        });
-      }
-    });
-  });
+        if (user) {
+          const { _id, firstName, lastName, email, role, fullName } = user;
+          const token = getToken({ email: email, _id: _id });
+          const template = getTemplateUser(email, token);
+          sendEmail(email, "Email de prueba", template);
+          return res.status(201).json({
+            message: "User created  successfuly but need to confirm it",
+            token,
+            user: { _id, firstName, lastName, email, role, fullName },
+          });
+        }
+      });
+    }
+  );
 };
 
 exports.signin = (req, res) => {
@@ -68,11 +76,43 @@ exports.signin = (req, res) => {
         });
       } else {
         return res.status(400).json({
-          message: "Something went wrong",
+          message: "Invalid password",
         });
       }
     } else {
       return res.status(400).json({ message: "Something went wront" });
     }
+  });
+};
+
+exports.confirm = async (req, res) => {
+  const { token } = req.params;
+
+  const data = getTokenData(token);
+
+  if (data === null)
+    return res.json({ success: false, msg: "Error to obtain data" });
+
+  const { email, _id } = data.data;
+
+  User.findOne({ email }).exec((error, user) => {
+    if (!user) return res.status(400).json({ error });
+    console.log(_id, user._id.toString());
+    if (user._id.toString() !== _id)
+      return res.redirect("http://localhost:2000/signup/user/error");
+
+    user.status = "VERIFIED";
+    user.save((error, result) => {
+      if (error) {
+        return res.status(400).json({
+          message: "Something went wrong ",
+          error: error,
+        });
+      }
+
+      if (result) {
+        return res.redirect("http://localhost:2000/signup/user/success");
+      }
+    });
   });
 };
