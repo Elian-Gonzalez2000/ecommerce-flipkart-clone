@@ -32,6 +32,11 @@
   width: 95%;
 }
 
+.footer-information .footer-mail-socials {
+  border-left: 1px solid var(--gray-dark-color);
+  padding-left: 1rem;
+}
+
 .footer-information .footer-mail-us {
   margin-bottom: 1rem;
 }
@@ -44,6 +49,7 @@
   display: inline-block;
   width: 1.35rem;
   height: 1.35rem;
+  margin: 0 0.5rem;
 }
 
 .footer-information .footer-social span svg {
@@ -53,4 +59,26 @@
 
 .footer-information .footer-office-address p {
   margin-bottom: 0;
+}
+
+.footer-copyright {
+  display: flex;
+  justify-content: space-evenly;
+  border-top: 1px solid var(--gray-dark-color);
+  font-size: 1rem;
+  padding: 1.5rem 0;
+}
+
+.footer-copyright div {
+  display: flex;
+  align-items: center;
+}
+
+.footer-copyright div svg {
+  color: #fbca1b;
+}
+
+.footer-copyright a {
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
 }
