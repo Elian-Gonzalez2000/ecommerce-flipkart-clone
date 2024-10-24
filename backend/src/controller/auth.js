@@ -42,7 +42,11 @@ exports.signup = (req, res) => {
           const { _id, firstName, lastName, email, role, fullName } = user;
           const token = getToken({ email: email, _id: _id });
           const template = getTemplateUser(email, token);
-          sendEmail(email, "Email de prueba", template);
+          sendEmail(
+            email,
+            "Confirmation instructions to your Flipkart account",
+            template
+          );
           return res.status(201).json({
             message: "User created  successfuly but need to confirm it",
             token,

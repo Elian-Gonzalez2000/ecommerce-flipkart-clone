@@ -38,7 +38,11 @@ exports.signup = (req, res) => {
       if (data) {
         const token = getToken({ email: data.email, _id: data._id });
         const template = getTemplate(email, token);
-        sendEmail(email, "Email de prueba", template);
+        sendEmail(
+          email,
+          "Confirmation instructions to your Flipkart account",
+          template
+        );
         return res.status(201).json({
           message: "Admin created  successfuly but need to confirm it",
         });

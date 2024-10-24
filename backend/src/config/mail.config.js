@@ -25,7 +25,7 @@ const sendEmail = async (email, subject, html) => {
       from: `eliancarlogm2@gmail.com`, // sender address
       to: email, // list of receivers
       subject, // Subject line
-      text: "Pruebas del login con la app Flipkart Clone", // plain text body
+      text: "Confirmation instructions to your Flipkart account", // plain text body
       html, // html body
     });
   } catch (error) {
@@ -40,13 +40,13 @@ const getTemplate = (name, token) => {
         </head>
         
         <div id="email___content">
-            <img src="https://i.imgur.com/eboNR82.png" alt="">
-            <h2>Hola ${name}</h2>
-            <p>Para confirmar tu cuenta, ingresa al siguiente enlace</p>
+            <img src="https://raw.githubusercontent.com/Elian-Gonzalez2000/ecommerce-flipkart-clone/refs/heads/update-flipkart-clone/client/src/images/login-image.png" alt="">
+            <h2>Welcome ${name}</h2>
+            <p>You can confirm your account email through the link below: </p>
             <a
                 href="http://localhost:3002/api/admin/confirm/${token}"
                 target="_blank"
-            >Confirmar Cuenta</a>
+            >Confirm account</a>
         </div>
       `;
 };
@@ -58,13 +58,13 @@ const getTemplateUser = (name, token) => {
         </head>
         
         <div id="email___content">
-            <img src="https://i.imgur.com/eboNR82.png" alt="">
-            <h2>Hola ${name}</h2>
-            <p>Para confirmar tu cuenta, ingresa al siguiente enlace</p>
+            <img src="https://raw.githubusercontent.com/Elian-Gonzalez2000/ecommerce-flipkart-clone/refs/heads/update-flipkart-clone/client/src/images/login-image.png" alt="">
+            <h2>Welcome ${name}</h2>
+            <p>You can confirm your account email through the link below:</p>
             <a
                 href="http://localhost:3002/api/user/confirm/${token}"
                 target="_blank"
-            >Confirmar Cuenta</a>
+            >Confirm account</a>
         </div>
       `;
 };
