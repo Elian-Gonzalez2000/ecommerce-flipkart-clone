@@ -13,7 +13,7 @@ import OrderDetailsPage from "./containers/OrderDetailsPage";
 import SuccessCheckout from "./containers/CheckoutPage/CheckoutResults/Success";
 import CancelCheckout from "./containers/CheckoutPage/CheckoutResults/Cancel";
 import Error from "./containers/Signup/Error";
-import Success from "./containers/Signup/Confirm";
+import Confirm from "./containers/Signup/Confirm";
 
 function App() {
   const url = "http://localhost:3002/api/admin/signin";
@@ -63,8 +63,8 @@ function App() {
             exact
             element={<CancelCheckout />}
           />
-          <Route path="/signup/user/success" exact element={<Error />} />
-          <Route path="/signup/user/error" exact element={<Success />} />
+          <Route path="/signup/user/error" exact element={<Error />} />
+          <Route path="/signup/user/success" exact element={<Confirm />} />
         </Routes>
       </Router>
     </main>
