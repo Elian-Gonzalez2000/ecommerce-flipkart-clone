@@ -20,6 +20,7 @@ const PremiumProducts = () => {
             if (prod.price >= 20000)
               return (
                 <Link
+                  key={prod._id}
                   to={`/${prod.slug}/${prod._id}/p`}
                   className="premium-products-card"
                 >
