@@ -39,9 +39,13 @@ exports.signup = (req, res) => {
         }
 
         if (user) {
+          let expireTimeToken = 1000 * 60;
           const { _id, firstName, lastName, email, role, fullName } = user;
-          const token = getToken({ email: email, _id: _id });
-          const template = getTemplateUser(email, token);
+          const token = getToken(
+            { email: email, _id: _id },
+            `${expireTimeToken}`
+          );
+          const template = getTemplateUser(email, token, email);
           sendEmail(
             email,
             "Confirmation instructions to your Flipkart account",
@@ -90,33 +94,40 @@ exports.signin = (req, res) => {
 };
 
 exports.confirm = async (req, res) => {
-  const { token } = req.params;
+  const { token, userEmail } = req.params;
 
   const data = getTokenData(token);
 
-  if (data === null)
-    return res.json({ success: false, msg: "Error to obtain data" });
-
-  const { email, _id } = data.data;
-
-  User.findOne({ email }).exec((error, user) => {
-    if (!user) return res.status(400).json({ error });
-    console.log(_id, user._id.toString());
-    if (user._id.toString() !== _id)
-      return res.redirect("http://localhost:2000/signup/user/error");
-
-    user.status = "VERIFIED";
-    user.save((error, result) => {
-      if (error) {
-        return res.status(400).json({
-          message: "Something went wrong ",
-          error: error,
-        });
-      }
-
-      if (result) {
-        return res.redirect("http://localhost:2000/signup/user/success");
-      }
+  if (data === null || data?.error) {
+    User.deleteOne({ email: userEmail }).exec((error, result) => {
+      if (result)
+        return res.redirect(
+          `http://localhost:2000/signup/user/error/${data?.error}`
+        );
     });
-  });
+  }
+  if (data?.data) {
+    const { email, _id } = data.data;
+
+    User.findOne({ email }).exec((error, user) => {
+      if (!user) return res.status(400).json({ error });
+      console.log(_id, user._id.toString());
+      if (user._id.toString() !== _id)
+        return res.redirect("http://localhost:2000/signup/user/error");
+
+      user.status = "VERIFIED";
+      user.save((error, result) => {
+        if (error) {
+          return res.status(400).json({
+            message: "Something went wrong ",
+            error: error,
+          });
+        }
+
+        if (result) {
+          return res.redirect("http://localhost:2000/signup/user/success");
+        }
+      });
+    });
+  }
 };
