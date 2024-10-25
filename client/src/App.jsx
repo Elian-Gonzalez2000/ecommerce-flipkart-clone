@@ -63,7 +63,7 @@ function App() {
             exact
             element={<CancelCheckout />}
           />
-          <Route path="/signup/user/error" exact element={<Error />} />
+          <Route path="/signup/user/error/:error" exact element={<Error />} />
           <Route path="/signup/user/success" exact element={<Confirm />} />
         </Routes>
       </Router>
