@@ -12,7 +12,7 @@ router.post("/signin", validateSigninRequest, isRequestValidated, signin);
 
 router.post("/signup", validateSignupRequest, isRequestValidated, signup);
 
-router.get("/user/confirm/:token", confirm);
+router.get("/user/confirm/:token/:userEmail", confirm);
 
 router.post("/profile", requiresSignin, (req, res) => {
   res.status(200).json({ user: "profile" });
