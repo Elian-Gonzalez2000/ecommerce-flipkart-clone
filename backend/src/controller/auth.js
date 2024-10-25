@@ -39,7 +39,7 @@ exports.signup = (req, res) => {
         }
 
         if (user) {
-          let expireTimeToken = 1000 * 60;
+          let expireTimeToken = "1h";
           const { _id, firstName, lastName, email, role, fullName } = user;
           const token = getToken(
             { email: email, _id: _id },
