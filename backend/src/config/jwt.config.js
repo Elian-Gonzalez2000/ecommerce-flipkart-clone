@@ -16,7 +16,7 @@ const getTokenData = (token) => {
   let data = null;
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      console.log("Error al obtener data del token");
+      data = { error: err.name };
     } else {
       data = decoded;
     }
