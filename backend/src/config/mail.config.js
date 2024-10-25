@@ -21,15 +21,17 @@ let transporter = nodemailer.createTransport({
 
 const sendEmail = async (email, subject, html) => {
   try {
-    await transporter.sendMail({
+    const transporterEmail = await transporter.sendMail({
       from: `eliancarlogm2@gmail.com`, // sender address
       to: email, // list of receivers
       subject, // Subject line
       text: "Confirmation instructions to your Flipkart account", // plain text body
       html, // html body
     });
+    return transporterEmail;
   } catch (error) {
     console.log("Algo no va bien con el email", error);
+    return error;
   }
 };
 
@@ -51,7 +53,7 @@ const getTemplate = (name, token) => {
       `;
 };
 
-const getTemplateUser = (name, token) => {
+const getTemplateUser = (name, token, email) => {
   return `
         <head>
             <link rel="stylesheet" href="./style.css">
@@ -62,7 +64,7 @@ const getTemplateUser = (name, token) => {
             <h2>Welcome ${name}</h2>
             <p>You can confirm your account email through the link below:</p>
             <a
-                href="http://localhost:3002/api/user/confirm/${token}"
+                href="http://localhost:3002/api/user/confirm/${token}/${email}"
                 target="_blank"
             >Confirm account</a>
         </div>
