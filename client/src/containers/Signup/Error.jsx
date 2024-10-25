@@ -1,9 +1,21 @@
 import React from "react";
+import { useParams } from "react-router";
 
 const Error = () => {
+  const { error } = useParams();
+
   return (
     <div style={styles}>
-      <p style={messageStyles}>&#x2611; Error to confirm your account</p>
+      {error === "TokenExpiredError" ? (
+        <p style={messageStyles}>
+          &#x2611; Your token has expired. Please return to signup and try
+          again.
+        </p>
+      ) : (
+        <p style={messageStyles}>
+          &#x2611; Something went wrong. Please try again.
+        </p>
+      )}
     </div>
   );
 };
