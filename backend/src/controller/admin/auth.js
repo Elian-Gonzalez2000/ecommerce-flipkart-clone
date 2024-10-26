@@ -36,10 +36,14 @@ exports.signup = (req, res) => {
       }
 
       if (data) {
-        const token = getToken({ email: data.email, _id: data._id });
-        const template = getTemplate(email, token);
+        let expireTimeToken = "1h";
+        const token = getToken(
+          { email: data.email, _id: data._id },
+          `${expireTimeToken}`
+        );
+        const template = getTemplate(data.email, token);
         sendEmail(
-          email,
+          data.email,
           "Confirmation instructions to your Flipkart account",
           template
         );
@@ -97,35 +101,40 @@ exports.signout = (req, res) => {
 };
 
 exports.confirm = async (req, res) => {
-  const { token } = req.params;
+  const { token, adminEmail } = req.params;
 
   const data = getTokenData(token);
 
-  if (data === null)
-    return res.json({ success: false, msg: "Error to obtain data" });
-
-  const { email, _id } = data.data;
-
-  User.findOne({ email }).exec((error, user) => {
-    if (!user) return res.status(400).json({ error });
-    console.log(_id, user._id.toString());
-    if (user._id.toString() !== _id)
-      return res.redirect("http://localhost:3000/signup/admin/error");
-
-    user.status = "VERIFIED";
-    user.save((error, result) => {
-      if (error) {
-        return res.status(400).json({
-          message: "Something went wrong ",
-          error: error,
-        });
-      }
-
-      if (result) {
-        return res.redirect("http://localhost:3000/signup/admin/confirm");
-      }
+  if (data === null || data?.error) {
+    User.deleteOne({ email: adminEmail }).exec((error, result) => {
+      if (result)
+        return res.redirect(
+          `http://localhost:3000/signup/admin/error/${data?.error}`
+        );
     });
-  });
+  }
+  if (data?.data) {
+    const { email, _id } = data.data;
+
+    User.findOne({ email }).exec((error, user) => {
+      if (!user) return res.status(400).json({ error });
+      console.log(_id, user._id.toString());
+
+      user.status = "VERIFIED";
+      user.save((error, result) => {
+        if (error) {
+          return res.status(400).json({
+            message: "Something went wrong ",
+            error: error,
+          });
+        }
+
+        if (result) {
+          return res.redirect("http://localhost:3000/signup/admin/confirm");
+        }
+      });
+    });
+  }
   /* try {
     // Obtener el token
     const { token } = req.params;
