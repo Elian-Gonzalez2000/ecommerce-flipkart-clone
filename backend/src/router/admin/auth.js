@@ -19,6 +19,6 @@ router.post("/admin/signup", validateSignupRequest, isRequestValidated, signup);
 
 router.post("/admin/signout", signout);
 
-router.get("/admin/confirm/:token", confirm);
+router.get("/admin/confirm/:token/:adminEmail", confirm);
 
 module.exports = router;
