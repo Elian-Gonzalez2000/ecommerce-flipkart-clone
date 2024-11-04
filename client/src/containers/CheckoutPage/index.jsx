@@ -75,61 +75,88 @@ const Address = ({
   adr,
 }) => {
   return (
-    <div className="flexRow address-container">
-      <div>
-        <input name="address" type="radio" onClick={() => selectAddress(adr)} />
-      </div>
-      <div className="flexRow sb address-info">
-        {!adr.edit ? (
-          <div className="address-detail">
-            <div>
-              <div
-                style={{
-                  marginBottom: "1rem",
-                }}
-              >
-                <span className="address-name">{adr.name}</span>
+    <div className="address-container">
+      {!adr.edit ? (
+        <div className="address-detail-container">
+          <div className="address-detail-header">
+            <label className="address-radio">
+              <input
+                name="address"
+                type="radio"
+                onClick={() => selectAddress(adr)}
+              />
+              <span className="checkMark"></span>
+            </label>
+            <div className="address-name">
+              <h4>
+                {adr.name}{" "}
                 <span className="address-type">{adr.addressType}</span>
-                <span className="address-mobile-number">
-                  {adr.mobileNumber}
-                </span>
-              </div>
-
-              <div className="full-address">
-                {adr.address} <br />
-                {`${adr.state} - ${adr.pinCode}`}
-              </div>
+              </h4>
+            </div>
+            <div className="address-edit">
               {adr.selected && (
-                <MaterialButton
-                  title="DELIVERY HERE"
-                  onClick={() => confirmDeliveryAddress(adr)}
-                  style={{
-                    width: "250px",
-                    margin: "10px 0",
-                  }}
+                <Anchor
+                  name="EDIT"
+                  onClick={() => enableAddressEditForm(adr)}
                 />
               )}
             </div>
-            {adr.selected && (
-              <Anchor
-                name="EDIT"
-                onClick={() => enableAddressEditForm(adr)}
-                style={{
-                  fontWeight: "500",
-                  color: "#2874f0",
-                }}
-              />
-            )}
           </div>
-        ) : (
+          <div className="address-detail-info">
+            <div className="address-mobile-number">
+              <p>
+                <h6>Mobile Number: </h6>
+                {adr.mobileNumber}
+              </p>
+              <p>
+                <h6>Alternative Phone: </h6>
+                {adr.alternatePhone}
+              </p>
+            </div>
+
+            <div className="full-address">
+              <h5 style={{ marginBottom: ".4rem" }}>Address </h5>
+              <span>
+                <h6> Full address: </h6> {adr.address}
+              </span>{" "}
+              <br />
+              <span>
+                <h6>State: </h6> {` ${adr.state}`}
+              </span>{" "}
+              <br />
+              <span>
+                <h6>Pincode: </h6> {` ${adr.pinCode}`}
+              </span>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <h4>Edit Address</h4>
+            <Anchor
+              name="CANCEL EDIT"
+              onClick={() => enableAddressEditForm(adr, 1)}
+            />
+          </div>
           <AddressForm
             withoutLayout={true}
             onSubmitForm={onAddressSubmit}
             initialData={adr}
-            onCancel={() => {}}
+            onCancel={() => props.onCancel()}
           />
-        )}
-      </div>
+        </>
+      )}
+      {adr.selected && !adr.edit && (
+        <MaterialButton
+          title="DELIVERY HERE"
+          onClick={() => confirmDeliveryAddress(adr)}
+          style={{
+            width: "250px",
+            margin: "10px 0",
+          }}
+        />
+      )}
     </div>
   );
 };
@@ -173,9 +200,11 @@ const CheckoutPage = () => {
     console.log("adr", address);
   };
 
-  const enableAddressEditForm = (addr) => {
+  const enableAddressEditForm = (addr, cancel = false) => {
     const updatedAddress = address.map((adr) =>
-      adr._id === addr._id ? { ...adr, edit: true } : { ...adr, edit: false }
+      adr._id === addr._id && cancel === false
+        ? { ...adr, edit: true }
+        : { ...adr, edit: false }
     );
     setAddress(updatedAddress);
   };
@@ -288,6 +317,21 @@ const CheckoutPage = () => {
                 }
               />
 
+              {confirmAddress ? null : newAddress ? (
+                <AddressForm
+                  onSubmitForm={onAddressSubmit}
+                  onCancel={() => setNewAddress(false)}
+                  active={true}
+                />
+              ) : auth.authenticate ? (
+                <CheckoutStep
+                  stepNumber={"+"}
+                  title={"ADD NEW ADDRESS"}
+                  active={newAddress}
+                  onClick={() => setNewAddress(true)}
+                />
+              ) : null}
+
               <CheckoutStep
                 stepNumber={"2"}
                 title={"DELIVERY ADDRESS"}
@@ -313,20 +357,6 @@ const CheckoutPage = () => {
               />
 
               {/* Address Form */}
-
-              {confirmAddress ? null : newAddress ? (
-                <AddressForm
-                  onSubmitForm={onAddressSubmit}
-                  onCancel={() => {}}
-                />
-              ) : auth.authenticate ? (
-                <CheckoutStep
-                  stepNumber={"+"}
-                  title={"ADD NEW ADDRESS"}
-                  active={false}
-                  onClick={() => setNewAddress(true)}
-                />
-              ) : null}
 
               <CheckoutStep
                 stepNumber={"3"}
