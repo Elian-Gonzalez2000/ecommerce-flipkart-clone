@@ -8,10 +8,13 @@ import * as Yup from "yup";
 
 // Formik and Yup schema validation
 const addressFormSchema = Yup.object().shape({
-  name: Yup.string().required("Required"),
+  name: Yup.string()
+    .matches(/^[A-Za-z]+$/, "Only admit letters")
+    .required("Required"),
   mobileNumber: Yup.string()
-    .min(10, "Invalid phone number")
-    .max(13, "Invalid phone number")
+    .typeError("Solo se permiten números")
+    .matches(/^[0-9]+$/, "Must be a number")
+    .length(10, "Must have 10 digits")
     .required("Required"),
   pinCode: Yup.string().required("Required"),
   locality: Yup.string().required("Required"),
@@ -22,7 +25,7 @@ const addressFormSchema = Yup.object().shape({
   alternatePhone: Yup.string()
     .min(10, "Invalid phone number")
     .max(13, "Invalid phone number")
-    .required("Required"),
+    .optional(),
 });
 
 const AddressForm = (props) => {
@@ -30,9 +33,9 @@ const AddressForm = (props) => {
   const { initialData } = props;
   const [id, setId] = useState(initialData ? initialData._id : "");
   const [name, setName] = useState(initialData ? initialData.name : "");
-  const [mobileNumber, setMobileNumber] = useState(
+  /* const [mobileNumber, setMobileNumber] = useState(
     initialData ? initialData.mobileNumber : ""
-  );
+  ); */
   const [pinCode, setPinCode] = useState(
     initialData ? initialData.pinCode : ""
   );
@@ -163,6 +166,7 @@ const AddressForm = (props) => {
                 /* onChange={(e) => setMobileNumber(e.target.value)} */
               >
                 <Field name="mobileNumber" />
+                {console.log(errors.mobileNumber)}
                 {errors.mobileNumber && touched.mobileNumber ? (
                   <div className="input-error">{errors.mobileNumber}</div>
                 ) : null}
