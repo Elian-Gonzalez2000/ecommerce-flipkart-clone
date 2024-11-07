@@ -38,32 +38,6 @@ const AddressForm = (props) => {
 
   const [formData, setFormData] = useState(null);
   const [id, setId] = useState(initialData ? initialData._id : "");
-  const [name, setName] = useState(initialData ? initialData.name : "");
-  /* const [mobileNumber, setMobileNumber] = useState(
-    initialData ? initialData.mobileNumber : ""
-  ); */
-  const [pinCode, setPinCode] = useState(
-    initialData ? initialData.pinCode : ""
-  );
-  const [locality, setLocality] = useState(
-    initialData ? initialData.locality : ""
-  );
-  const [address, setAddress] = useState(
-    initialData ? initialData.address : ""
-  );
-  const [cityDistrictTown, setCityDistrictTown] = useState(
-    initialData ? initialData.cityDistrictTown : ""
-  );
-  const [state, setState] = useState(initialData ? initialData.state : "");
-  const [landmark, setLandmark] = useState(
-    initialData ? initialData.landmark : ""
-  );
-  const [alternatePhone, setAlternatePhone] = useState(
-    initialData ? initialData.alternatePhone : ""
-  );
-  const [addressType, setAddressType] = useState(
-    initialData ? initialData.addressType : ""
-  );
   const [submitFlag, setSubmitFlag] = useState(false);
   const dispatch = useDispatch();
 
@@ -73,7 +47,7 @@ const AddressForm = (props) => {
   };
 
   const onAddressSubmit = (values) => {
-    console.log(values);
+    // console.log(values);
     const {
       name,
       mobileNumber,
@@ -100,7 +74,6 @@ const AddressForm = (props) => {
         addressType,
       },
     };
-    console.log(payload);
     if (id) {
       payload.address._id = id;
     }
@@ -110,7 +83,7 @@ const AddressForm = (props) => {
   };
 
   useEffect(() => {
-    console.log("address count: ", user.address);
+    // console.log("address count: ", user.address);
     if (submitFlag) {
       const {
         name,
@@ -124,7 +97,7 @@ const AddressForm = (props) => {
         alternatePhone,
         addressType,
       } = formData.address;
-      console.log("where we are ", formData);
+      // console.log("where we are ", formData);
       let _address = {};
       if (id) {
         _address = {
@@ -176,11 +149,6 @@ const AddressForm = (props) => {
                 touched={touched.name && touched.name}
                 values={values.name && values.name}
                 style={inputContainer}
-                /* onChange={(e) => {
-                    console.log(e.target.value);
-
-                    setName(e.target.value);
-                  }} */
               >
                 <Field name="name" />
                 {errors.name && touched.name ? (
@@ -195,7 +163,6 @@ const AddressForm = (props) => {
                 touched={touched.mobileNumber && touched.mobileNumber}
                 values={values.mobileNumber && values.mobileNumber}
                 style={inputContainer}
-                /* onChange={(e) => setMobileNumber(e.target.value)} */
               >
                 <Field name="mobileNumber" />
                 {errors.mobileNumber && touched.mobileNumber ? (
@@ -211,7 +178,6 @@ const AddressForm = (props) => {
                 touched={touched.pinCode && touched.pinCode}
                 values={values.pinCode && values.pinCode}
                 style={inputContainer}
-                /* onChange={(e) => setPinCode(e.target.value)} */
               >
                 <Field name="pinCode" />
                 {errors.pinCode && touched.pinCode ? (
@@ -269,7 +235,6 @@ const AddressForm = (props) => {
                 touched={touched.state && touched.state}
                 values={values.state && values.state}
                 style={inputContainer}
-                /* onChange={(e) => setState(e.target.value)} */
               >
                 <Field name="state" />
                 {errors.state && touched.state ? (
@@ -285,7 +250,6 @@ const AddressForm = (props) => {
                 touched={touched.landmark && touched.landmark}
                 values={values.landmark && values.landmark}
                 style={inputContainer}
-                /* onChange={(e) => setLandmark(e.target.value)} */
               >
                 <Field name="landmark" />
                 {errors.landmark && touched.landmark ? (
@@ -300,7 +264,6 @@ const AddressForm = (props) => {
                 touched={touched.alternatePhone && touched.alternatePhone}
                 values={values.alternatePhone && values.alternatePhone}
                 style={inputContainer}
-                /* onChange={(e) => setAlternatePhone(e.target.value)} */
               >
                 <Field name="alternatePhone" />
                 {errors.alternatePhone && touched.alternatePhone ? (
@@ -314,7 +277,6 @@ const AddressForm = (props) => {
                 <label>
                   <Field
                     type="radio"
-                    /* onClick={() => setAddressType("home")} */
                     name="addressType"
                     value="home"
                     checked={values ? values.addressType === "home" : false}
@@ -324,7 +286,6 @@ const AddressForm = (props) => {
                 <label>
                   <Field
                     type="radio"
-                    /* onClick={() => setAddressType("work")} */
                     name="addressType"
                     value="work"
                     checked={values ? values.addressType === "work" : false}
