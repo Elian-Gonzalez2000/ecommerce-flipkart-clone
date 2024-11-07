@@ -42,7 +42,7 @@ const MaterialInput = (props) => {
   return (
     <div className={`materialInput`}>
       <label
-        className={`label ${touched && values ? "focus" : ""}`}
+        className={`label ${touched || values ? "focus" : ""}`}
         htmlFor={name ? name : ""}
         style={{
           top: 0,
