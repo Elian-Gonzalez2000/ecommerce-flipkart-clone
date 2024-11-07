@@ -16,21 +16,27 @@ const addressFormSchema = Yup.object().shape({
     .matches(/^[0-9]+$/, "Must be a number")
     .length(10, "Must have 10 digits")
     .required("Required"),
-  pinCode: Yup.string().required("Required"),
+  pinCode: Yup.string()
+    .matches(/^[0-9]+$/, "Must be a number")
+    .required("Required"),
   locality: Yup.string().required("Required"),
   address: Yup.string().required("Required"),
   cityDistrictTown: Yup.string().required("Required"),
   state: Yup.string().required("Required"),
   landmark: Yup.string().required("Required"),
   alternatePhone: Yup.string()
-    .min(10, "Invalid phone number")
-    .max(13, "Invalid phone number")
-    .optional(),
+    .typeError("Solo se permiten números")
+    .matches(/^[0-9]+$/, "Must be a number")
+    .length(10, "Must have 10 digits")
+    .required("Required"),
 });
 
 const AddressForm = (props) => {
   const user = useSelector((state) => state.user);
   const { initialData } = props;
+  if (initialData) console.log(initialData);
+
+  const [formData, setFormData] = useState(null);
   const [id, setId] = useState(initialData ? initialData._id : "");
   const [name, setName] = useState(initialData ? initialData.name : "");
   /* const [mobileNumber, setMobileNumber] = useState(
@@ -66,9 +72,20 @@ const AddressForm = (props) => {
     marginRight: 10,
   };
 
-  const onAddressSubmit = (e) => {
-    console.log(e);
-    return;
+  const onAddressSubmit = (values) => {
+    console.log(values);
+    const {
+      name,
+      mobileNumber,
+      pinCode,
+      locality,
+      address,
+      cityDistrictTown,
+      state,
+      landmark,
+      alternatePhone,
+      addressType,
+    } = values;
     const payload = {
       address: {
         name,
@@ -87,6 +104,7 @@ const AddressForm = (props) => {
     if (id) {
       payload.address._id = id;
     }
+    setFormData(payload);
     dispatch(addAddress(payload));
     setSubmitFlag(true);
   };
@@ -94,7 +112,19 @@ const AddressForm = (props) => {
   useEffect(() => {
     console.log("address count: ", user.address);
     if (submitFlag) {
-      console.log("where we are ", user);
+      const {
+        name,
+        mobileNumber,
+        pinCode,
+        locality,
+        address,
+        cityDistrictTown,
+        state,
+        landmark,
+        alternatePhone,
+        addressType,
+      } = formData.address;
+      console.log("where we are ", formData);
       let _address = {};
       if (id) {
         _address = {
@@ -121,21 +151,23 @@ const AddressForm = (props) => {
     return (
       <Formik
         initialValues={{
-          name: "",
-          mobileNumber: "",
-          pinCode: "",
-          locality: "",
-          address: "",
-          cityDistrictTown: "",
-          state: "",
-          landmark: "",
-          alternatePhone: "",
+          name: initialData ? initialData.name : "",
+          mobileNumber: initialData ? initialData.mobileNumber : "",
+          pinCode: initialData ? initialData.pinCode : "",
+          locality: initialData ? initialData.locality : "",
+          address: initialData ? initialData.address : "",
+          cityDistrictTown: initialData ? initialData.cityDistrictTown : "",
+          state: initialData ? initialData.state : "",
+          landmark: initialData ? initialData.landmark : "",
+          alternatePhone: initialData ? initialData.alternatePhone : "",
+          addressType: initialData ? initialData.addressType : "",
         }}
         validationSchema={addressFormSchema}
         onSubmit={onAddressSubmit}
       >
         {({ errors, touched, values }) => (
           <Form>
+            {console.log(values)}
             <div className="flexRow">
               <MaterialInput
                 label={"name"}
@@ -166,7 +198,6 @@ const AddressForm = (props) => {
                 /* onChange={(e) => setMobileNumber(e.target.value)} */
               >
                 <Field name="mobileNumber" />
-                {console.log(errors.mobileNumber)}
                 {errors.mobileNumber && touched.mobileNumber ? (
                   <div className="input-error">{errors.mobileNumber}</div>
                 ) : null}
@@ -233,8 +264,12 @@ const AddressForm = (props) => {
 
               <MaterialInput
                 label={"State"}
-                value={state}
-                onChange={(e) => setState(e.target.value)}
+                name="state"
+                type="state"
+                touched={touched.state && touched.state}
+                values={values.state && values.state}
+                style={inputContainer}
+                /* onChange={(e) => setState(e.target.value)} */
               >
                 <Field name="state" />
                 {errors.state && touched.state ? (
@@ -245,8 +280,12 @@ const AddressForm = (props) => {
             <div className="flexRow">
               <MaterialInput
                 label={"Landmark (Optional)"}
-                value={landmark}
-                onChange={(e) => setLandmark(e.target.value)}
+                name="landmark"
+                type="landmark"
+                touched={touched.landmark && touched.landmark}
+                values={values.landmark && values.landmark}
+                style={inputContainer}
+                /* onChange={(e) => setLandmark(e.target.value)} */
               >
                 <Field name="landmark" />
                 {errors.landmark && touched.landmark ? (
@@ -256,8 +295,12 @@ const AddressForm = (props) => {
 
               <MaterialInput
                 label={"Alternate Phone (Optional)"}
-                value={alternatePhone}
-                onChange={(e) => setAlternatePhone(e.target.value)}
+                name="alternatePhone"
+                type="alternatePhone"
+                touched={touched.alternatePhone && touched.alternatePhone}
+                values={values.alternatePhone && values.alternatePhone}
+                style={inputContainer}
+                /* onChange={(e) => setAlternatePhone(e.target.value)} */
               >
                 <Field name="alternatePhone" />
                 {errors.alternatePhone && touched.alternatePhone ? (
@@ -271,18 +314,20 @@ const AddressForm = (props) => {
                 <label>
                   <Field
                     type="radio"
-                    onClick={() => setAddressType("home")}
+                    /* onClick={() => setAddressType("home")} */
                     name="addressType"
                     value="home"
+                    checked={values ? values.addressType === "home" : false}
                   />
                   <span>Home</span>
                 </label>
                 <label>
                   <Field
                     type="radio"
-                    onClick={() => setAddressType("work")}
+                    /* onClick={() => setAddressType("work")} */
                     name="addressType"
                     value="work"
+                    checked={values ? values.addressType === "work" : false}
                   />
                   <span>Work</span>
                 </label>
