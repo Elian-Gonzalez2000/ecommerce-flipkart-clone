@@ -28,41 +28,48 @@ const OrderPage = (props) => {
           ]}
           breedIcon={<IoIosArrowForward />}
         />
-        {user.orders.length > 0 &&
-          user.orders.map((order) => {
-            return order.items.map((item) => (
-              <Card
-                key={randomUI()}
-                style={{ display: "block", margin: "5px 0" }}
-              >
-                <Link
-                  to={`/order-details/${order._id}`}
-                  className="order-item-container"
+        <div style={{ marginTop: "1rem" }}>
+          {user.orders.length > 0 &&
+            user.orders.map((order) => {
+              return order.items.map((item) => (
+                <Card
+                  key={randomUI()}
+                  header={false}
+                  style={{ width: "99%", margin: "1rem auto" }}
                 >
-                  {/* {console.log(item)} */}
-                  <div className="order-item-details">
-                    <picture>
-                      <img
-                        src={item.productId.productPictures[0].imgUrl}
-                        alt={item.productId.name}
-                      />
-                    </picture>
-                    <p className="order-item-name">{item.productId.name}</p>
-                    <p>
-                      {<Price value={item.payablePrice * item.purchasedQty} />}
-                    </p>
-                    <p
-                      className={`order-item-status ${
-                        order?.paymentStatus && order.paymentStatus
-                      }`}
-                    >
-                      {order.paymentStatus}
-                    </p>
-                  </div>
-                </Link>
-              </Card>
-            ));
-          })}
+                  <Link
+                    to={`/order-details/${order._id}`}
+                    className="order-item-container"
+                  >
+                    {/* {console.log(item)} */}
+                    <div className="order-item-details">
+                      <picture>
+                        <img
+                          src={item.productId.productPictures[0].imgUrl}
+                          alt={item.productId.name}
+                        />
+                      </picture>
+                      <p className="order-item-name">{item.productId.name}</p>
+                      <p>
+                        {
+                          <Price
+                            value={item.payablePrice * item.purchasedQty}
+                          />
+                        }
+                      </p>
+                      <p
+                        className={`order-item-status ${
+                          order?.paymentStatus && order.paymentStatus
+                        }`}
+                      >
+                        {order.paymentStatus}
+                      </p>
+                    </div>
+                  </Link>
+                </Card>
+              ));
+            })}
+        </div>
         <div className="no-more-orders">
           <p>No more orders</p>
         </div>
