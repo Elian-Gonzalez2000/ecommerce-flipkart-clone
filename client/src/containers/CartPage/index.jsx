@@ -72,19 +72,20 @@ function CartPage(props) {
           headerRight={<div>Delivered to</div>}
           style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
         >
-          {cartItems &&
-            Object.keys(cartItems).map((item, index) => {
-              return (
-                <CartItem
-                  key={index}
-                  cartItem={cartItems[item]}
-                  onQuantityInc={onQuantityIncrement}
-                  onQuantityDec={onQuantityDecrement}
-                  onRemoveCartItem={onRemoveCartItem}
-                />
-              );
-            })}
-
+          <div style={{ minHeight: "200px" }}>
+            {cartItems &&
+              Object.keys(cartItems).map((item, index) => {
+                return (
+                  <CartItem
+                    key={index}
+                    cartItem={cartItems[item]}
+                    onQuantityInc={onQuantityIncrement}
+                    onQuantityDec={onQuantityDecrement}
+                    onRemoveCartItem={onRemoveCartItem}
+                  />
+                );
+              })}
+          </div>
           <div
             style={{
               width: "100%",
