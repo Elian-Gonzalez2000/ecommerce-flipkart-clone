@@ -28,8 +28,8 @@ const OrderPage = (props) => {
           ]}
           breedIcon={<IoIosArrowForward />}
         />
-        <div style={{ marginTop: "1rem" }}>
-          {user.orders.length > 0 &&
+        <div style={{ marginTop: "1rem", minHeight: "100px" }}>
+          {user.orders.length > 0 ? (
             user.orders.map((order) => {
               return order.items.map((item) => (
                 <Card
@@ -68,7 +68,16 @@ const OrderPage = (props) => {
                   </Link>
                 </Card>
               ));
-            })}
+            })
+          ) : (
+            <Card
+              key={randomUI()}
+              header={false}
+              style={{ width: "99%", margin: "1rem auto", minHeight: "100px" }}
+            >
+              <p>No orders</p>
+            </Card>
+          )}
         </div>
         <div className="no-more-orders">
           <p>No more orders</p>
