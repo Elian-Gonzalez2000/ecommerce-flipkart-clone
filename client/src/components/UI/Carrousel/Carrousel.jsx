@@ -7,6 +7,7 @@ const Carrousel = () => {
   return (
     <>
       <Carousel
+        style={{ minHeight: "250px" }}
         wrap="true"
         touch={false}
         interval={1000}
