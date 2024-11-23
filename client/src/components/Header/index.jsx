@@ -12,7 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { login, signout, signup as _signup } from "../../actions";
 import Cart from "../UI/Cart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
@@ -36,8 +36,10 @@ const signupSchema = Yup.object().shape({
 const Header = (props) => {
   const [loginModal, setLoginModal] = useState(false);
   const [signup, setSignup] = useState(false);
+  const [redirectAfterLogin, setRedirectAfterLogin] = useState("");
   const auth = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const userLogin = (data) => {
@@ -47,6 +49,11 @@ const Header = (props) => {
     } else {
       const { email, password } = data;
       dispatch(login({ email, password }));
+      console.log(redirectAfterLogin);
+
+      if (redirectAfterLogin) {
+        navigate(redirectAfterLogin);
+      }
     }
   };
 
@@ -103,7 +110,9 @@ const Header = (props) => {
             href: "/account/orders",
             icon: null,
             onClick: () => {
+              // We need to check if the user is authenticated and set the redirectAfterLogin to the correct path to redirect the user to the correct page
               !auth.authenticate && setLoginModal(true);
+              setRedirectAfterLogin("/account/orders");
             },
           },
           { label: "Wishlist", href: "/", icon: null },
