@@ -96,7 +96,7 @@ function CartPage(props) {
               padding: "10px 0",
             }}
           >
-            <div style={{ width: "250px" }}>
+            <div style={{ width: "250px", marginRight: "1rem" }}>
               <MaterialButton
                 title="PLACE ORDER"
                 onClick={() => navigate("/checkout")}

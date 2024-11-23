@@ -78,6 +78,7 @@ const MaterialButton = ({ classNames, ...props }) => {
           color: props?.textColor,
           width: props?.width,
           padding: props?.padding,
+          margin: props?.margin,
         }}
         onClick={onClick && onClick}
         type={props.type ? props.type : "button"}
