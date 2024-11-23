@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { genericPublicUrl } from "../../urlConfig";
 import { randomUI } from "../../helpers/randomUI";
 import { getOrders } from "../../actions";
 import Layout from "../../components/Layout";
@@ -13,10 +13,15 @@ import { IoIosArrowForward } from "react-icons/io";
 
 const OrderPage = (props) => {
   const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(getOrders());
-  }, []);
+    auth.authenticate && dispatch(getOrders());
+    if (!auth.authenticate && !auth.authenticating) navigate("/");
+  }, [auth.authenticate]);
+
   return (
     <Layout>
       <div>
