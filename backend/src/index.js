@@ -48,7 +48,7 @@ app.post(
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: ["http://localhost:2000", "http://localhost:2000"],
     credentials: true,
     methods: ["GET", "POST", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
