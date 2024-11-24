@@ -42,6 +42,7 @@ mongoose
 // This is the route for the Stripe webhook endpoint and is before the express.json() middleware so that the bodyParser middleware can parse the raw body of the request
 app.post(
   "/api/stripe/webhook-stripe/checkout-session",
+  cors(),
   express.raw({ type: "application/json" }),
   getStripeCheckoutSessionWebhook
 );
