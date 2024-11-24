@@ -49,3 +49,25 @@ exports.getAddress = (req, res) => {
     }
   });
 };
+
+exports.deleteAddress = async (req, res) => {
+  const { addressId } = req.body; // Extraemos el ID de la dirección a eliminar
+
+  if (!addressId) {
+    return res.status(400).json({ error: "Address ID is required" });
+  }
+
+  UserAddress.findOneAndUpdate(
+    { user: req.user._id }, // Filtramos por el usuario autenticado
+    { $pull: { address: { _id: addressId } } }, // Eliminamos el subdocumento del array
+    { new: true } // Devuelve el documento actualizado
+  ).exec((error, addressDeleted) => {
+    if (error) return res.status(400).json({ error });
+    if (addressDeleted) {
+      res.status(202).json({
+        message: "Address deleted successfully",
+        addressDeleted,
+      });
+    }
+  });
+};
