@@ -43,7 +43,7 @@ mongoose
 app.options("*", cors());
 app.use(
   cors({
-    origin: ["http://localhost:2000", "http://localhost:3002/api"],
+    origin: ["*"],
     credentials: true,
     methods: ["GET", "POST", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
