@@ -122,7 +122,7 @@ const DropdownMenu = (props) => {
 
 const Anchor = (props) => {
   return (
-    <button {...props} className="anchor-button">
+    <button {...props} className="anchor-button" style={props.styles}>
       {props.name}
     </button>
   );

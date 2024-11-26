@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../components/Layout";
-import { addOrder, getAddress, getCartItems } from "../../actions";
+import {
+  addOrder,
+  deleteAddress,
+  getAddress,
+  getCartItems,
+} from "../../actions";
 import {
   Anchor,
   MaterialButton,
@@ -32,27 +37,38 @@ const CheckoutStep = (props) => {
         <div>
           <span className="step-number">{props.stepNumber}</span>
           <span className="step-title">{props.title}</span>
+          {props.changeData && !props.active ? (
+            <span className="step-change" onClick={props.changeData.onClick}>
+              {props.changeData.text}
+            </span>
+          ) : null}
         </div>
       </div>
       {props.body && props.body}
       {props.stepNumber === "4" && props.active ? (
         <div className="step-completed">
           <div className="flexRow">
-            <input
-              type="radio"
-              name="paymentOption"
-              value="stripe"
-              onClick={(e) => setInputValue(e.target.value)}
-            />
+            <label className="address-radio">
+              <input
+                type="radio"
+                name="paymentOption"
+                value="stripe"
+                onClick={(e) => setInputValue(e.target.value)}
+              />
+              <span className="checkMark"></span>
+            </label>
             <p>Stripe</p>
           </div>
           <div className="flexRow">
-            <input
-              type="radio"
-              name="paymentOption"
-              value="cod"
-              onClick={(e) => setInputValue(e.target.value)}
-            />
+            <label className="address-radio">
+              <input
+                type="radio"
+                name="paymentOption"
+                value="cod"
+                onClick={(e) => setInputValue(e.target.value)}
+              />
+              <span className="checkMark"></span>
+            </label>
             <p>Cash on delivery</p>
           </div>
           <MaterialButton
@@ -70,6 +86,7 @@ const CheckoutStep = (props) => {
 const Address = ({
   selectAddress,
   enableAddressEditForm,
+  deleteAddressForm,
   confirmDeliveryAddress,
   onAddressSubmit,
   adr,
@@ -95,10 +112,17 @@ const Address = ({
             </div>
             <div className="address-edit">
               {adr.selected && (
-                <Anchor
-                  name="EDIT"
-                  onClick={() => enableAddressEditForm(adr)}
-                />
+                <>
+                  <Anchor
+                    styles={{ marginRight: "1rem" }}
+                    name="EDIT"
+                    onClick={() => enableAddressEditForm(adr)}
+                  />
+                  <Anchor
+                    name="DELETE"
+                    onClick={() => deleteAddressForm(adr)}
+                  />
+                </>
               )}
             </div>
           </div>
@@ -209,6 +233,11 @@ const CheckoutPage = () => {
     setAddress(updatedAddress);
   };
 
+  const deleteAddressForm = (addrToDelete) => {
+    dispatch(deleteAddress(addrToDelete));
+    console.log("adr deleted", addrToDelete);
+  };
+
   const userOrderConfirmation = () => {
     setOrderConfirmation(true);
     setOrderSummary(false);
@@ -302,11 +331,11 @@ const CheckoutPage = () => {
                 active={!auth.authenticate}
                 body={
                   auth.authenticate ? (
-                    <div className="logged-in-id">
-                      <span style={{ fontWeight: "500" }}>
+                    <div className="logged-in-id step-completed">
+                      <span className="logged-fullname d-inline-block me-3">
                         {auth.user.fullName}
                       </span>
-                      <span style={{ margin: "0 5px" }}>{auth.user.email}</span>
+                      <span className="logged-email">{auth.user.email}</span>
                     </div>
                   ) : (
                     <div>
@@ -336,6 +365,19 @@ const CheckoutPage = () => {
                 stepNumber={"2"}
                 title={"DELIVERY ADDRESS"}
                 active={!confirmAddress && auth.authenticate}
+                changeData={
+                  confirmAddress &&
+                  orderSummary && {
+                    onClick: () => {
+                      setOrderSummary(
+                        orderConfirmation && setOrderSummary(false)
+                      );
+                      setConfirmAddress(false);
+                      setPaymentOption(false);
+                    },
+                    text: "Change Address",
+                  }
+                }
                 body={
                   <>
                     {confirmAddress ? (
@@ -346,6 +388,7 @@ const CheckoutPage = () => {
                           key={`${adr._id}`}
                           selectAddress={selectAddress}
                           enableAddressEditForm={enableAddressEditForm}
+                          deleteAddressForm={deleteAddressForm}
                           confirmDeliveryAddress={confirmDeliveryAddress}
                           onAddressSubmit={onAddressSubmit}
                           adr={adr}
@@ -362,11 +405,23 @@ const CheckoutPage = () => {
                 stepNumber={"3"}
                 title={"ORDER SUMMARY"}
                 active={orderSummary}
+                changeData={
+                  orderConfirmation && {
+                    onClick: () => {
+                      setOrderSummary(true);
+                      setOrderConfirmation(false);
+                      setPaymentOption(false);
+                      setNewAddress(false);
+                      setConfirmAddress(true);
+                    },
+                    text: "Change summary",
+                  }
+                }
                 body={
                   orderSummary ? (
                     <CartPage onlyCartItems={true} />
                   ) : orderConfirmation ? (
-                    <div className="step-completed">Items</div>
+                    <div className="step-completed">{"Ready to checkout"}</div>
                   ) : null
                 }
               />

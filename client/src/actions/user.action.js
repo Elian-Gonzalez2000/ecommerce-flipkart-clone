@@ -55,6 +55,25 @@ export const addAddress = (payload) => {
   };
 };
 
+export const deleteAddress = (address) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post("/user/address/delete", {
+        addressId: address._id,
+      });
+      console.log(address);
+      if (res.status === 202) {
+        console.log(res);
+      }
+    } catch (error) {
+      const { status, data } = error.response;
+      if (status === 400) {
+        console.log(data);
+      }
+    }
+  };
+};
+
 export const addOrder = (payload) => {
   return async (dispatch) => {
     try {
@@ -63,6 +82,7 @@ export const addOrder = (payload) => {
       if (res.status === 201) {
         console.log(res);
         dispatch({ type: cartConstants.RESET_CART });
+        location.href = `/checkout/success/${res.data.order._id}`;
         // const {
         //   address: { address },
         // } = res.data;
@@ -71,11 +91,12 @@ export const addOrder = (payload) => {
         //   payload: { address },
         // });
       } else {
-        const { error } = res.data;
+        location.href = `/checkout/success/${res.data.order._id}`;
+        /* const { error } = res.data;
         dispatch({
           type: userConstants.ADD_USER_ORDER_FAILURE,
           payload: { error },
-        });
+        }); */
       }
     } catch (error) {
       console.log(error);
