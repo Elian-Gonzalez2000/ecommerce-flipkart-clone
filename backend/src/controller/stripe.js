@@ -10,7 +10,7 @@ exports.addStripeOrder = async (req, res) => {
   try {
     const order = await axios({
       method: "POST",
-      baseURL: "http://localhost:3002/api",
+      baseURL: "https://flipkart-rest-server-jvxd.onrender.com/api",
       url: "/add-order",
       data: req.body,
       headers: {
