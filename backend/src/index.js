@@ -51,14 +51,13 @@ app.use(
 );
 app.post(
   "/api/stripe/webhook-stripe/checkout-session",
-  cors(),
   express.raw({ type: "application/json" }),
   getStripeCheckoutSessionWebhook
 );
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:2000", "http://localhost:2000"],
+    origin: ["http://localhost:2000", "http://localhost:3000"],
     credentials: true,
     methods: ["GET", "POST", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
