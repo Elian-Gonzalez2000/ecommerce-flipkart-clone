@@ -269,10 +269,13 @@ const CheckoutPage = () => {
       dispatch(addOrder(payload));
     }
     try {
+      const BASEURLSTRIPE = false
+        ? "http://localhost:3002/api"
+        : "https://flipkart-rest-server-jvxd.onrender.com/api";
       if (payload.paymentType === "stripe") {
         // Realiza una petición al backend para generar la sesión de Stripe
         const response = await axios.post(
-          "http://localhost:3002/api/stripe/create-checkout-session-stripe",
+          `${BASEURLSTRIPE}/stripe/create-checkout-session-stripe`,
           payload
         );
 
