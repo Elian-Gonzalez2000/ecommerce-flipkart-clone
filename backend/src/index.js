@@ -40,12 +40,12 @@ mongoose
   .catch((error) => console.log(error.message));
 
 // This is the route for the Stripe webhook endpoint and is before the express.json() middleware so that the bodyParser middleware can parse the raw body of the request
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   console.log(`Request Method: ${req.method}`);
   console.log(`Request URL: ${req.url}`);
   console.log("Request Headers:", req.headers);
   next();
-});
+}); */
 app.options("*", cors());
 app.use(
   cors({
