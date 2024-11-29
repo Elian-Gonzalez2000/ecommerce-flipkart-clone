@@ -19,6 +19,13 @@ const initialState = {
 
 export default (state = initialState, action) => {
    switch (action.type) {
+      case productConstants.GET_PRODUCTS_BY_SLUG_REQUEST:
+         state = {
+            ...state,
+            loading: true,
+         };
+         break;
+
       case productConstants.GET_PRODUCTS_BY_SLUG:
          state = {
             ...state,
@@ -27,6 +34,15 @@ export default (state = initialState, action) => {
             productsByPrice: {
                ...action.payload.productsByPrice,
             },
+            loading: false,
+         };
+         break;
+
+      case productConstants.GET_PRODUCTS_BY_SLUG_FAILURE:
+         state = {
+            ...state,
+            loading: false,
+            error: action.payload.error,
          };
          break;
       case productConstants.GET_PRODUCTS_PAGE_REQUEST:

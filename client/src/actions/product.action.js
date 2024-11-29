@@ -4,6 +4,7 @@ import { productConstants } from "./constants";
 export const getProductsBySlug = (slug) => {
    return async (dispatch) => {
       try {
+         dispatch({ type: productConstants.GET_PRODUCTS_BY_SLUG_REQUEST });
          const res = await axios.post(`/products/${slug}`);
          console.log(res);
          if (res.status === 200) {
@@ -13,7 +14,14 @@ export const getProductsBySlug = (slug) => {
             });
          }
       } catch (err) {
-         console.log(err);
+         const { status, data } = err.response;
+         console.log(err.response);
+         if (status === 400) {
+            dispatch({
+               type: productConstants.GET_PRODUCTS_BY_SLUG_FAILURE,
+               payload: { error: data },
+            });
+         }
       }
    };
 };
@@ -21,10 +29,10 @@ export const getProductsBySlug = (slug) => {
 export const getProductPage = (payload) => {
    return async (dispatch) => {
       try {
-         console.log("paylaod", payload);
+         //console.log("paylaod", payload);
          const { cid, type } = payload;
          const res = await axios.get(`/page/${cid}/${type}`);
-         console.log(res);
+         //console.log(res);
          dispatch({ type: productConstants.GET_PRODUCTS_PAGE_REQUEST });
          if (res.status === 200) {
             const { page } = res.data;

@@ -1,0 +1,35 @@
+.premium-products {
+  margin: 1.5rem auto;
+  min-height: 350px;
+}
+
+.premium-products .card-header {
+  border-bottom: none;
+  background-color: transparent;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.premium-products .premium-products-card {
+  display: block;
+  width: 200px;
+  min-height: 250px;
+  margin: 0.6rem;
+  text-decoration: none;
+  color: var(--text-dark-color);
+  text-align: center;
+  border: 1px solid var(--gray-color);
+  border-radius: 5px;
+  padding: 0.3rem;
+}
+
+.premium-products .premium-products-card img {
+  max-width: 180px;
+  height: auto;
+  min-height: 200px;
+  margin-bottom: 1rem;
+}
+
+.premium-products .premium-products-card p {
+  margin: 0 auto;
+}

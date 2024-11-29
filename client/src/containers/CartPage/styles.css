@@ -5,6 +5,10 @@
    justify-content: space-between;
 }
 
+.cart-container .header-left {
+   font-weight: bolder;
+}
+
 .cart-container .card {
    box-shadow: none;
 }

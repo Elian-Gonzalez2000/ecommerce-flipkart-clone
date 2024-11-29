@@ -10,88 +10,65 @@ import CartPage from "./containers/CartPage";
 import CheckoutPage from "./containers/CheckoutPage";
 import OrderPage from "./containers/OrderPage";
 import OrderDetailsPage from "./containers/OrderDetailsPage";
+import SuccessCheckout from "./containers/CheckoutPage/CheckoutResults/Success";
+import CancelCheckout from "./containers/CheckoutPage/CheckoutResults/Cancel";
+import Error from "./containers/Signup/Error";
+import Confirm from "./containers/Signup/Confirm";
 
 function App() {
-   const url = "http://localhost:3002/api/admin/signin";
-   // const data = {
-   //    /*       firstName: "Edwiin",
-   //    lastName: "Gonzalez", */
-   //    /* email: "eliancarlogm@gmail.com",
-   //    password: "123456789", */
-   //    //name: "Electronics",
-   //    //parentId: "627b1a44874b7eba250c33d8",
-   // };
-   // fetch(url, {
-   //    method: "POST",
-   //    body: JSON.stringify({
-   //       email: "eswin@gmail.com",
-   //       password: "123456789",
-   //    }),
-   //    headers: {
-   //       "Content-Type": "application/json",
-   //    },
-   // })
-   //    .then((res) => res.json())
-   //    .then((data) => {
-   //       console.log(data);
-   //       if (data?.token) {
-   //          console.log(data.token);
-   //          fetch("http://localhost:3002/api/category/create", {
-   //             method: "POST",
-   //             body: JSON.stringify({ name: "Sports" }),
-   //             headers: {
-   //                "Content-Type": "application/json",
-   //                authorization:
-   //                   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjdiMWE0NDg3NGI3ZWJhMjUwYzMzZDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTIyMzUxNzQsImV4cCI6MTY1MjI0MjM3NH0.EfNoWqYCmu210ryhnQcXSAau3e3lUwLMDBqiq9ZUp9o",
-   //             },
-   //          })
-   //             .then((res) => res.json())
-   //             .then((data) => console.log(data))
-   //             .catch((err) => console.log(err));
-   //       }
-   //    })
-   //    .catch((error) => console.log(error));
+  const url = "http://localhost:3002/api/admin/signin";
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
-   const dispatch = useDispatch();
-   const auth = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (!auth.authenticate) {
+      dispatch(isUserLoggedIn());
+    }
+  }, []);
+  useEffect(() => {
+    if (!auth.authenticate) {
+      dispatch(isUserLoggedIn());
+    }
+  }, [auth.authenticate]);
 
-   useEffect(() => {
-      if (!auth.authenticate) {
-         dispatch(isUserLoggedIn());
-      }
-   }, []);
-   useEffect(() => {
-      if (!auth.authenticate) {
-         dispatch(isUserLoggedIn());
-      }
-   }, [auth.authenticate]);
+  useEffect(() => {
+    dispatch(updateToCart());
+  }, []);
 
-   useEffect(() => {
-      dispatch(updateToCart());
-   }, []);
-
-   return (
-      <div className="App">
-         <Router>
-            <Routes>
-               <Route path="/" exact element={<HomePage />} />
-               <Route path="/cart" element={<CartPage />} />
-               <Route path="/checkout" element={<CheckoutPage />} />
-               <Route path="/account/orders" element={<OrderPage />} />
-               <Route
-                  path="/order-details/:orderId"
-                  element={<OrderDetailsPage />}
-               />
-               <Route
-                  path="/:productSlug/:productId/p"
-                  exact
-                  element={<ProductsDetailsPage />}
-               />
-               <Route path="/:slug" exact element={<ProductListPage />} />
-            </Routes>
-         </Router>
-      </div>
-   );
+  return (
+    <main className="App">
+      <Router>
+        <Routes>
+          <Route path="/" exact element={<HomePage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/account/orders" element={<OrderPage />} />
+          <Route
+            path="/order-details/:orderId"
+            element={<OrderDetailsPage />}
+          />
+          <Route
+            path="/:productSlug/:productId/p"
+            exact
+            element={<ProductsDetailsPage />}
+          />
+          <Route path="/:slug" exact element={<ProductListPage />} />
+          <Route
+            path="/checkout/success/:orderId"
+            exact
+            element={<SuccessCheckout />}
+          />
+          <Route
+            path="/checkout/cancel/:orderId"
+            exact
+            element={<CancelCheckout />}
+          />
+          <Route path="/signup/user/error/:error" exact element={<Error />} />
+          <Route path="/signup/user/success" exact element={<Confirm />} />
+        </Routes>
+      </Router>
+    </main>
+  );
 }
 
 export default App;

@@ -1,0 +1,84 @@
+.footer {
+  background-color: var(--background-footer);
+  color: var(--white-color);
+  font-size: 0.75rem;
+}
+
+.footer h4 {
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+  color: var(--gray-dark-color);
+}
+
+.footer a {
+  color: var(--text-light-color);
+}
+
+.footer-information span {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.footer a:hover {
+  border-bottom: 1px solid var(--white-color);
+}
+
+.footer-information {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  gap: 2rem;
+  padding: 2rem;
+  margin: 1rem auto;
+  width: 95%;
+}
+
+.footer-information .footer-mail-socials {
+  border-left: 1px solid var(--gray-dark-color);
+  padding-left: 1rem;
+}
+
+.footer-information .footer-mail-us {
+  margin-bottom: 1rem;
+}
+
+.footer-information .footer-mail-us p {
+  margin-bottom: 0;
+}
+
+.footer-information .footer-social span {
+  display: inline-block;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin: 0 0.5rem;
+}
+
+.footer-information .footer-social span svg {
+  width: 100%;
+  height: 100%;
+}
+
+.footer-information .footer-office-address p {
+  margin-bottom: 0;
+}
+
+.footer-copyright {
+  display: flex;
+  justify-content: space-evenly;
+  border-top: 1px solid var(--gray-dark-color);
+  font-size: 1rem;
+  padding: 1.5rem 0;
+}
+
+.footer-copyright div {
+  display: flex;
+  align-items: center;
+}
+
+.footer-copyright div svg {
+  color: #fbca1b;
+}
+
+.footer-copyright a {
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}

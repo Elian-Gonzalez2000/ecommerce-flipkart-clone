@@ -1,0 +1,42 @@
+.carousel-control-prev,
+.carousel-control-next {
+  color: var(--gray-dark-color);
+  background-color: white;
+  height: 45%;
+  top: 25%;
+  width: 50px;
+  opacity: 1;
+  justify-content: center;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  color: var(--gray-dark-color);
+  opacity: 0.9;
+}
+
+.carousel-control-prev a,
+.carousel-control-next a {
+  color: var(--gray-dark-color);
+  opacity: 1;
+}
+
+.carousel-control-prev svg,
+.carousel-control-next svg {
+  color: var(--gray-dark-color);
+}
+
+.carousel-indicators {
+  width: fit-content;
+  background-color: var(--black-alpha-color);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+}
+
+.carousel-indicators [data-bs-target] {
+  width: 15px;
+}

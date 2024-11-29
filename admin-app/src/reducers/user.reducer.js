@@ -1,36 +1,37 @@
 import { userConstants } from "../actions/constants";
 
 const initialState = {
-   message: "",
-   error: null,
-   loading: false,
+  message: "",
+  error: null,
+  loading: false,
 };
 
 export default (state = initialState, action) => {
-   //console.log(action);
-   switch (action.type) {
-      case userConstants.USER_REGISTER_REQUEST:
-         state = {
-            ...state,
-            loading: true,
-         };
-         break;
+  //console.log(action);
+  switch (action.type) {
+    case userConstants.USER_REGISTER_REQUEST:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
 
-      case userConstants.USER_REGISTER_SUCCESS:
-         state = {
-            ...state,
-            loading: false,
-            message: action.payload.message,
-         };
-         break;
+    case userConstants.USER_REGISTER_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
+      break;
 
-      case userConstants.USER_REGISTER_FAILURE:
-         state = {
-            ...state,
-            loading: false,
-            error: action.payload.error,
-         };
-         break;
-   }
-   return state;
+    case userConstants.USER_REGISTER_FAILURE:
+      state = {
+        ...state,
+        loading: false,
+        message: "",
+        error: action.payload.error,
+      };
+      break;
+  }
+  return state;
 };

@@ -11,18 +11,20 @@ import Products from "./containers/Products";
 import Orders from "./containers/Orders";
 import Category from "./containers/Category";
 import NewPage from "./containers/NewPage";
+import SignupConfirm from "./containers/Signup/confirm";
+import SignupError from "./containers/Signup/error";
 
 function App() {
-   const url = "http://localhost:3002/api/admin/signin";
-   const data = {
-      /*       firstName: "Edwiin",
+  const url = "http://localhost:3002/api/admin/signin";
+  const data = {
+    /*       firstName: "Edwiin",
       lastName: "Gonzalez", */
-      /* email: "eliancarlogm@gmail.com",
+    /* email: "eliancarlogm@gmail.com",
       password: "123456789", */
-      //name: "Electronics",
-      //parentId: "627b1a44874b7eba250c33d8",
-   };
-   /*  fetch(url, {
+    //name: "Electronics",
+    //parentId: "627b1a44874b7eba250c33d8",
+  };
+  /*  fetch(url, {
       method: "POST",
       body: JSON.stringify({
          email: "eswin@gmail.com",
@@ -53,47 +55,43 @@ function App() {
       })
       .catch((error) => console.log(error));
  */
-   const dispatch = useDispatch();
-   const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
-   useEffect(() => {
-      if (!auth.authenticate) {
-         dispatch(isUserLoggedIn());
-      }
-   }, []);
-   useEffect(() => {
-      if (!auth.authenticate) {
-         dispatch(isUserLoggedIn());
-      }
-      if (auth.authenticate) {
-         dispatch(getInitialData());
-      }
-   }, [auth.authenticate]);
-   return (
-      <div className="App">
-         <Routes>
-            <Route path="/" exact element={<PrivateRoute component={Home} />} />
-            <Route
-               path="/page"
-               element={<PrivateRoute component={NewPage} />}
-            />
-            <Route
-               path="/products"
-               element={<PrivateRoute component={Products} />}
-            />
-            <Route
-               path="/orders"
-               element={<PrivateRoute component={Orders} />}
-            />
-            <Route
-               path="/categories"
-               element={<PrivateRoute component={Category} />}
-            />
-            <Route path="/signin" element={<Signin />} />
-            <Route path="/signup" element={<Signup />} />
-         </Routes>
-      </div>
-   );
+  useEffect(() => {
+    if (!auth.authenticate) {
+      dispatch(isUserLoggedIn());
+    }
+  }, []);
+  useEffect(() => {
+    if (!auth.authenticate) {
+      dispatch(isUserLoggedIn());
+    }
+    if (auth.authenticate) {
+      dispatch(getInitialData());
+    }
+  }, [auth.authenticate]);
+  return (
+    <div className="App">
+      <Routes>
+        <Route path="/" exact element={<PrivateRoute component={Home} />} />
+        <Route path="/page" element={<PrivateRoute component={NewPage} />} />
+        <Route
+          path="/products"
+          element={<PrivateRoute component={Products} />}
+        />
+        <Route path="/orders" element={<PrivateRoute component={Orders} />} />
+        <Route
+          path="/categories"
+          element={<PrivateRoute component={Category} />}
+        />
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup/admin/confirm" element={<SignupConfirm />} />
+        <Route path="/signup/admin/error/:error" element={<SignupError />} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App;

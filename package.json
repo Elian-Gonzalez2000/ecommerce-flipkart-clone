@@ -9,9 +9,10 @@
     "start": "npm run start --workspace=backend",
     "dev:b": "npm run dev --workspace=backend",
     "dev:a": "npm run dev --workspace=admin-app",
-    "dev:c": "npm run dev --workspace=client"
+    "dev:c": "npm run dev --workspace=client",
+    "stripe:listen": "stripe listen --events payment_intent.succeeded,checkout.session.completed --forward-to http://localhost:3002/api/stripe/webhook-stripe/checkout-session"
   },
   "devDependencies": {
-    "@s-ui/mono": "2.45.0"
+    "@s-ui/mono": "^2.45.0"
   }
 }
