@@ -31,8 +31,8 @@ exports.addStripeOrder = async (req, res) => {
         quantity: item.purchasedQty,
       })),
       mode: "payment",
-      success_url: `http://localhost:2000/checkout/success/${order.data.order._id}`,
-      cancel_url: `http://localhost:2000/checkout/cancel/${order.data.order._id}`,
+      success_url: `https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/checkout/success/${order.data.order._id}`,
+      cancel_url: `https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/checkout/cancel/${order.data.order._id}`,
     });
 
     if (session && order.status == 201) {
