@@ -6,6 +6,7 @@
     "build": "vite build",
     "preview": "vite preview"
   },
+  "homepage": "./",
   "dependencies": {
     "@redux-devtools/extension": "^3.2.5",
     "@stripe/react-stripe-js": "^2.8.0",
