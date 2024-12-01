@@ -311,12 +311,16 @@ const Header = (props) => {
       <div className="subHeader">
         <div className="logo">
           <Link to="/">
-            <img src={flipkartLogo} className="logoimage" alt="" />
+            <img src={"./" + flipkartLogo} className="logoimage" alt="Logo" />
           </Link>
-          <Link style={{ marginTop: "-10px" }}>
+          <Link to="/" style={{ marginTop: "-10px" }}>
             <span className="exploreText">Explore</span>
             <span className="plusText">Plus</span>
-            <img src={goldenStar} className="goldenStar" alt="" />
+            <img
+              src={"./" + goldenStar}
+              className="goldenStar"
+              alt="Golden Star"
+            />
           </Link>
         </div>
         {/* End logo Component */}
