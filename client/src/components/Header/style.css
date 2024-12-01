@@ -1,144 +1,145 @@
 .header {
-   width: 100%;
-   height: 56px;
-   background: var(--first-color);
+  width: 100%;
+  height: 56px;
+  background: var(--first-color);
 }
 .subHeader {
-   max-width: 1100px;
-   width: 100%;
-   height: 100%;
-   display: flex;
-   margin: 0 auto;
-   align-items: center;
+  max-width: 1100px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
 }
 
 .logo {
-   width: 137px;
-   height: 100%;
-   overflow: hidden;
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: flex-end;
+  width: 137px;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
 }
 .logo .logoimage {
-   width: 75px;
+  width: 75px;
 }
 .exploreText {
-   font-size: 10px;
-   font-style: italic;
+  font-size: 10px;
+  font-style: italic;
+  color: var(--gray-color);
 }
 .plusText {
-   font-size: 10px;
-   margin: 0 2px;
-   text-transform: capitalize;
-   font-style: italic;
-   color: yellow;
+  font-size: 10px;
+  margin: 0 2px;
+  text-transform: capitalize;
+  font-style: italic;
+  color: yellow;
 }
 .logo .goldenStar {
-   width: 10px;
-   height: 10px;
+  width: 10px;
+  height: 10px;
 }
 
 .searchInputContainer {
-   width: 560px;
-   position: relative;
-   background: var(--white-color);
-   height: 36px;
-   border-radius: 1px;
-   overflow: hidden;
-   display: flex;
+  width: 560px;
+  position: relative;
+  background: var(--white-color);
+  height: 36px;
+  border-radius: 1px;
+  overflow: hidden;
+  display: flex;
 }
 .searchInput {
-   width: 518px;
-   border: 0;
-   height: 36px;
-   outline: none;
-   box-sizing: border-box;
-   padding: 0 10px;
+  width: 518px;
+  border: 0;
+  height: 36px;
+  outline: none;
+  box-sizing: border-box;
+  padding: 0 10px;
 }
 .searchIconContainer {
-   display: flex;
-   flex: 1;
-   justify-content: center;
-   align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 }
 .rightMenu {
-   display: flex;
-   flex: 1;
-   justify-content: flex-end;
-   align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
 }
 .loginButton {
-   display: block;
-   width: 100px;
-   height: 30px;
-   background: var(--white-color);
-   border: 0;
-   text-align: center;
-   line-height: 30px;
-   color: var(--first-color);
-   font-weight: 500;
-   font-size: 16px;
-   cursor: pointer;
+  display: block;
+  width: 100px;
+  height: 30px;
+  background: var(--white-color);
+  border: 0;
+  text-align: center;
+  line-height: 30px;
+  color: var(--first-color);
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
 }
 .more,
 .fullName {
-   font-weight: bold;
-   color: var(--white-color);
-   display: flex;
-   align-items: center;
-   margin: 0 20px;
-   cursor: pointer;
+  font-weight: bold;
+  color: var(--white-color);
+  display: flex;
+  align-items: center;
+  margin: 0 20px;
+  cursor: pointer;
 }
 .cart {
-   font-weight: bold;
-   color: var(--white-color);
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   margin: 0 20px;
+  font-weight: bold;
+  color: var(--white-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20px;
 }
 
 .auth-container {
-   color: var(--text-dark-color);
-   margin: 0 auto;
-   border-radius: 2px;
-   height: 528px;
-   max-width: 750px;
-   min-width: 650px;
+  color: var(--text-dark-color);
+  margin: 0 auto;
+  border-radius: 2px;
+  height: 528px;
+  max-width: 750px;
+  min-width: 650px;
 }
 .row {
-   width: 100%;
-   display: flex;
-   flex-flow: row wrap;
-   height: 528px;
-   max-width: 750px;
-   min-width: 650px;
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  height: 528px;
+  max-width: 750px;
+  min-width: 650px;
 }
 
 .leftspace {
-   width: 40%;
-   height: 100%;
-   color: var(--white-color);
-   letter-spacing: 1px;
-   background-image: url("../../images/login-image.png");
-   background-color: var(--first-color);
-   background-repeat: no-repeat;
-   background-position: center 85%;
-   padding: 40px 33px;
-   box-sizing: border-box;
+  width: 40%;
+  height: 100%;
+  color: var(--white-color);
+  letter-spacing: 1px;
+  background-image: url("../../images/login-image.png");
+  background-color: var(--first-color);
+  background-repeat: no-repeat;
+  background-position: center 85%;
+  padding: 40px 33px;
+  box-sizing: border-box;
 }
 
 .rightspace {
-   display: flex;
-   flex: 1;
-   flex-direction: column;
-   align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
 }
 
 .login-input-container {
-   width: 100%;
-   margin: 40px 0;
-   padding: 0 30px;
+  width: 100%;
+  margin: 40px 0;
+  padding: 0 30px;
 }
