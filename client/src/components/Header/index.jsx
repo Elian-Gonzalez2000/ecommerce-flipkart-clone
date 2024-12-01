@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 import flipkartLogo from "../../images/logo/flipkart.png";
-import goldenStar from "../../images/logo/golden-star.png";
+// import goldenStar from "../../images/logo/golden-star.png";
 import { IoIosArrowDown, IoIosCart, IoIosSearch } from "react-icons/io";
 import {
   Modal,
@@ -317,7 +317,9 @@ const Header = (props) => {
             <span className="exploreText">Explore</span>
             <span className="plusText">Plus</span>
             <img
-              src={"./" + goldenStar}
+              src={
+                "https://firebasestorage.googleapis.com/v0/b/ecommerce-flipkart-clone.appspot.com/o/general%2Fgolden-star.png?alt=media&token=486ced0b-f09e-4f38-9401-f6a919ba677d"
+              }
               className="goldenStar"
               alt="Golden Star"
             />
