@@ -1,4 +1,4 @@
-const ENVIRONMENT = "developer";
+const ENVIRONMENT = "develop";
 export const api =
   ENVIRONMENT === "developer"
     ? "http://localhost:3002/api"
