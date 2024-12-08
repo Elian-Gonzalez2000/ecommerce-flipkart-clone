@@ -1,3 +1,5 @@
-# Subiendo al repo
+# Flipkart Clone Admin App
 
-Añadiendo a monorepositorio
+#### Link Admin App
+
+(https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/admin-app/dist/#/signin)[https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/admin-app/dist/#/signin]
