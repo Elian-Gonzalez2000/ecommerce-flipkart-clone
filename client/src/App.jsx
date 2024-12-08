@@ -14,6 +14,7 @@ import SuccessCheckout from "./containers/CheckoutPage/CheckoutResults/Success";
 import CancelCheckout from "./containers/CheckoutPage/CheckoutResults/Cancel";
 import Error from "./containers/Signup/Error";
 import Confirm from "./containers/Signup/Confirm";
+import { Helmet } from "react-helmet";
 
 function App() {
   const url = "http://localhost:3002/api/admin/signin";
@@ -37,6 +38,31 @@ function App() {
 
   return (
     <main className="App">
+      <Helmet>
+        <meta property="og:type" content="website" />
+
+        <meta
+          property="og:image"
+          content="https://firebasestorage.googleapis.com/v0/b/ecommerce-flipkart-clone.appspot.com/o/general%2Fflipkart-metatags.png?alt=media&token=ae918f5a-699d-4b31-8963-ba9b6e2a4167"
+        />
+        <meta
+          property="og:description"
+          content="Online Shopping India Mobile, Cameras, Lifestyle &amp; more Online @ Flipkart.com"
+        />
+
+        <meta
+          name="twitter:description"
+          content="Online Shopping India Mobile, Cameras, Lifestyle &amp; more Online @ Flipkart.com"
+        />
+        <meta
+          name="twitter:image"
+          content="https://firebasestorage.googleapis.com/v0/b/ecommerce-flipkart-clone.appspot.com/o/general%2Fflipkart-metatags.png?alt=media&token=ae918f5a-699d-4b31-8963-ba9b6e2a4167"
+        />
+        <link
+          rel="canonical"
+          href="https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/"
+        />
+      </Helmet>
       <Router>
         <Routes>
           <Route path="/" exact element={<HomePage />} />

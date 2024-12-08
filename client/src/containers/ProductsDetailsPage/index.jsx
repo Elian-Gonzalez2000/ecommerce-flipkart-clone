@@ -10,6 +10,7 @@ import "./style.css";
 import { addToCart } from "../../actions/cart.action";
 import Loader from "../../components/UI/Loader";
 import Price from "../../components/UI/Price";
+import { Helmet } from "react-helmet";
 
 function ProductsDetailsPage(props) {
   const dispatch = useDispatch();
@@ -45,6 +46,25 @@ function ProductsDetailsPage(props) {
 
   return (
     <Layout>
+      <Helmet>
+        <title>{"Products Online at Best Prices and Offers in India"}</title>
+        <meta
+          property="og:title"
+          content="Shopping Cart | Flipkart.com Clone"
+        />
+        <meta
+          property="og:url"
+          content={`https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/${params.productSlug}/${params.productId}/p`}
+        />
+        <meta
+          name="twitter:url"
+          content={`https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/${params.productSlug}/${params.productId}/p`}
+        />
+        <meta
+          name="twitter:title"
+          content={`${params.productSlug} | Flipkart.com Clone`}
+        />
+      </Helmet>
       {isLoading && <Loader />}
       {/* {product.name} */}
       <div className="product-descripton-container">
