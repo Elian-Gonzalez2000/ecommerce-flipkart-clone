@@ -2,13 +2,13 @@
 
 - Link del cliente: [https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/](https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/)
 
-- Link de la Admin App: (https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/admin-app/dist/#/signin)[https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/admin-app/dist/#/signin]
+- Link de la Admin App: [https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/admin-app/dist/#/signin](https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/admin-app/dist/#/signin)
 
 # Flipkart Clone
 
 Este es un clon funcional del e-commerce Flipkart, desarrollado con tecnologías modernas para brindar una experiencia de compra en línea fluida e interactiva.
 
-![Vista de la aplicación](https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/banner-app.png)
+![Vista de la aplicación](https://raw.githubusercontent.com/Elian-Gonzalez2000/ecommerce-flipkart-clone/refs/heads/main/banner-app.png)
 
 **Aun no se ha completado la aplicacion, pero las funcionalidades basicas están listas. Pero aun sigue en desarrollo.**
 
