@@ -49,7 +49,12 @@ mongoose
 app.options("*", cors());
 app.use(
   cors({
-    origin: ["http://localhost:2000", "http://localhost:3000"],
+    origin: [
+      "http://localhost:2000",
+      "http://localhost:3000",
+      "https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/",
+      "https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/admin-app/dist/",
+    ],
     credentials: true,
     methods: ["GET", "POST", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -63,7 +68,11 @@ app.post(
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:2000", "http://localhost:3000"],
+    origin: [
+      "http://localhost:2000",
+      "http://localhost:3000",
+      "https://elian-gonzalez2000.github.io",
+    ],
     credentials: true,
     methods: ["GET", "POST", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],

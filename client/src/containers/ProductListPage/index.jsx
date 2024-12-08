@@ -6,12 +6,13 @@ import ProductPage from "./ProductPage/index.jsx";
 import "./styles.css";
 import getParams from "../../utilities/getParams";
 import ClothingAndAccessories from "./ClothingAndAccessories";
+import { Helmet } from "react-helmet";
 
 const ProductListPage = (props) => {
   const location = useLocation();
   const renderProduct = () => {
     const params = getParams(location.search);
-    // console.log(location, params);
+    console.log(location, params);
     let content = null;
     switch (params.type) {
       case "store":

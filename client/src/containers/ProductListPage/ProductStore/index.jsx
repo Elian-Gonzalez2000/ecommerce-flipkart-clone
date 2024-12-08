@@ -9,6 +9,7 @@ import Rating from "../../../components/UI/Rating";
 import Price from "../../../components/UI/Price";
 import "./style.css";
 import Loader from "../../../components/UI/Loader";
+import { Helmet } from "react-helmet";
 
 function ProductStore(props) {
   const product = useSelector((state) => state.product);
@@ -29,6 +30,27 @@ function ProductStore(props) {
   //console.log(useLocation(), product, params);
   return (
     <>
+      <Helmet>
+        <title>
+          {`${params.slug} Online at Best Prices and Offers in India | 01-Dec-24`}
+        </title>
+        <meta
+          property="og:title"
+          content="Shopping Cart | Flipkart.com Clone"
+        />
+        <meta
+          property="og:url"
+          content={`https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/${params.slug}`}
+        />
+        <meta
+          name="twitter:url"
+          content={`https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/${params.slug}`}
+        />
+        <meta
+          name="twitter:title"
+          content={`${params.slug} | Flipkart.com Clone`}
+        />
+      </Helmet>
       {product.loading && <Loader />}
       {product.productsByPrice &&
         Object.keys(product.productsByPrice).map((key) => {

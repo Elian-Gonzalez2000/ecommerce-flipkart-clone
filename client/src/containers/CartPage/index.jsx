@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import PriceDetails from "../../components/PriceDetails";
 import "./styles.css";
 import Loader from "../../components/UI/Loader";
+import { Helmet } from "react-helmet";
 
 function CartPage(props) {
   const cart = useSelector((state) => state.cart);
@@ -63,6 +64,31 @@ function CartPage(props) {
 
   return (
     <Layout>
+      <Helmet>
+        <title>{"Shopping Cart | Flipkart.com Clone"}</title>
+        <meta
+          property="og:title"
+          content="Shopping Cart | Flipkart.com Clone"
+        />
+        <meta
+          property="og:url"
+          content="https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/cart"
+        />
+
+        <meta
+          property="og:description"
+          content="Online Shopping India Mobile, Cameras, Lifestyle &amp; more Online @ Flipkart.com"
+        />
+
+        <meta
+          name="twitter:url"
+          content="https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/cart"
+        />
+        <meta
+          name="twitter:title"
+          content="Shopping Cart | Flipkart.com Clone"
+        />
+      </Helmet>
       <div className="cart-container">
         {cart.updatingCart && <Loader />}
         <Card
