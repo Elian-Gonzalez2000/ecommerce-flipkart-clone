@@ -26,10 +26,7 @@ const OrderPage = (props) => {
     <Layout>
       <Helmet>
         <title>{"Flipkart.com Clone: Payment Orders"}</title>
-        <meta
-          property="og:title"
-          content="Shopping Cart | Flipkart.com Clone"
-        />
+        <meta property="og:title" content="Payment Page | Flipkart.com Clone" />
         <meta
           property="og:url"
           content={`https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/${params.productSlug}/${params.productId}/p`}
