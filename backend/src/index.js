@@ -17,6 +17,7 @@ const orderRoutes = require("./router/order.js");
 const adminOrderRoute = require("./router/admin/order.routes.js");
 const fs = require("fs");
 const https = require("https");
+const { scraper } = require("./config/seed.js");
 const { getStripeCheckoutSessionWebhook } = require("./controller/stripe.js");
 
 env.config();
@@ -46,6 +47,7 @@ mongoose
   console.log("Request Headers:", req.headers);
   next();
 }); */
+scraper();
 app.options("*", cors());
 app.use(
   cors({
