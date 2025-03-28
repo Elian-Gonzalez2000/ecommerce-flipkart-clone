@@ -47,7 +47,7 @@ mongoose
   console.log("Request Headers:", req.headers);
   next();
 }); */
-scraper();
+scraper("TVs & Appliances");
 app.options("*", cors());
 app.use(
   cors({

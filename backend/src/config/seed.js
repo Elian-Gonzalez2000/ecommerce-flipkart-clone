@@ -4,17 +4,68 @@ const slugify = require("slugify");
 const shortid = require("shortid");
 const { get } = require("mongoose");
 
+const addSubCategories = async (
+  subCategories,
+  fatherCategorie,
+  options = { test: false }
+) => {
+  if (!subCategories) return "Need subCategories Array";
+  if (!fatherCategorie) return console.log("Need a expecific fatherCategorie");
+  const fatherCategorieFound = await Category.findOne({
+    name: fatherCategorie,
+  });
+  if (!fatherCategorieFound) return console.log("Father Categorie not found");
+  console.log("Father Categorie Found: ", fatherCategorieFound);
+  const fatherCategorieId = fatherCategorieFound._id;
+  const getSubCategories = await Category.find({ parentId: fatherCategorieId });
+  console.log("Get Sub Categories: ", getSubCategories);
+
+  subCategories.forEach((categorie) => {
+    const subCategorieRepeated =
+      getSubCategories &&
+      getSubCategories.find((subCategorie) => subCategorie.name === categorie);
+    const categoryObj = {
+      name: categorie,
+      slug: `${slugify(categorie)}-${shortid.generate()}`,
+      parentId: fatherCategorieId,
+    };
+
+    /* if (req.file) {
+      categoryObj.categoryImage =
+        process.env.API + "/public/" + req.file.filename;
+    } */
+    if (options.test) {
+      console.log("Repeated Categorie? ", subCategorieRepeated && "Yes");
+
+      console.log("Category: ", categoryObj);
+      console.log("Testing data...");
+      return;
+    }
+    if (!subCategorieRepeated) {
+      const cat = new Category(categoryObj);
+      cat.save((error, category) => {
+        if (error) console.log(error);
+
+        if (category) {
+          console.log(category);
+        }
+      });
+    }
+    // console.log("Categories", categorie);
+  });
+};
+
 const addChildrenSubCategories = async (
   childrenSubCategories,
   options = { test: false }
 ) => {
-  console.log("Elemento: ", childrenSubCategories);
   let subCategorieId = "";
   for (let i = 0; i < childrenSubCategories.length; i++) {
-    if (childrenSubCategories[i].subCategorieClass) {
+    if (childrenSubCategories[i]?.subCategorieClass) {
       const getSubCategorie = await Category.findOne({
         name: childrenSubCategories[i].innerText.trim(),
       });
+      if (!getSubCategorie) return console.log("Sub Categorie not found");
       if (getSubCategorie) {
         subCategorieId = getSubCategorie._id;
       }
@@ -32,19 +83,22 @@ const addChildrenSubCategories = async (
       if (options.test) {
         console.log("Category: ", categoryObj);
         console.log("GetChildrenCategorie: ", getChildrenSubCategorie);
+        return;
       }
-      const cat = new Category(categoryObj);
-      cat.save((error, category) => {
-        if (error) return console.log(error);
-        if (category) {
-          return console.log(category);
-        }
-      });
+      if (getChildrenSubCategorie?.name != categoryObj.name) {
+        const cat = new Category(categoryObj);
+        cat.save((error, category) => {
+          if (error) return console.log(error);
+          if (category) {
+            return console.log(category);
+          }
+        });
+      }
     }
   }
 };
 
-exports.scraper = async () => {
+exports.scraper = async (targetedCategorie) => {
   console.log("Scraping Flipkart...");
 
   const browser = await chromium.launch({ headless: false }); // Cambia a false para ver qué está pasando
@@ -62,7 +116,7 @@ exports.scraper = async () => {
 
   // Simulamos el hover para desplegar el menú
   // await menuTrigger.hover();
-  await page.getByText("Electronics", { exact: true }).hover();
+  await page.getByText(`${targetedCategorie}`, { exact: true }).hover();
 
   // Esperamos a que el menú cargue y se haga visible
   await page.waitForSelector(".jBYtJt.cNDIdi", {
@@ -77,7 +131,6 @@ exports.scraper = async () => {
       const $categories = el.querySelectorAll(".TSD49J");
       const $subCategories = el.querySelectorAll(".jBYtJt.cNDIdi");
       const $childrenSubCategories = el.querySelectorAll(".jBYtJt");
-      const selector = el.innerText;
       const categories = Array.from($categories).map((child) =>
         child.innerText.trim()
       );
@@ -108,12 +161,17 @@ exports.scraper = async () => {
   });
 
   await browser.close();
-
+  const fathersCategories = categories[0].categories;
+  const subCategories = categories[0].subCategories;
   const childrenSubCategories = categories[0].childrenSubCategories;
-
+  const fatherCategorieFound = fathersCategories.find(
+    (categorie) => categorie === targetedCategorie
+  );
+  console.log("Father Categorie Found: ", fatherCategorieFound);
   // console.log("Elemento: ", childrenSubCategories);
 
-  // addChildrenSubCategories(childrenSubCategories, { test: true });
+  addChildrenSubCategories(childrenSubCategories, { test: false });
+  addSubCategories(subCategories, targetedCategorie, { test: false });
 
   /*   categories[0].subCategories.forEach((categorie) => {
     const categoryObj = {
