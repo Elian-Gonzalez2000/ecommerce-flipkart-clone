@@ -4,6 +4,10 @@ const slugify = require("slugify");
 const shortid = require("shortid");
 const { get } = require("mongoose");
 const Product = require("../models/product.js");
+const fetch = require("node-fetch");
+const { uploadFile } = require("../config/firebase.config");
+const fs = require("fs");
+const path = require("path");
 
 /**
  * Añade subcategorías a una categoría padre específica
@@ -14,6 +18,48 @@ const Product = require("../models/product.js");
  * @param {boolean} options.skipDuplicates - Omite categorías duplicadas sin error
  * @returns {Promise<{success: boolean, message: string, data?: any, error?: Error}>}
  */
+
+const bytesToMB = (bytes) => {
+  return (bytes / (1024 * 1024)).toFixed(2);
+};
+
+const downloadImage = async (url) => {
+  try {
+    const response = await fetch(url);
+    const buffer = await response.buffer();
+
+    // Limpiar el nombre del archivo para eliminar caracteres no válidos
+    const originalName = url.split("/").pop().split("?")[0]; // Eliminar parámetros de URL
+    const cleanFileName = originalName.replace(/[^a-zA-Z0-9.-]/g, "_"); // Reemplazar caracteres no válidos
+    const fileName = `${Date.now()}-${cleanFileName}`;
+
+    // Crear ruta absoluta para el directorio temp
+    const tempDir = path.join(__dirname, "../../public/temp");
+
+    // Asegurarse de que el directorio existe
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+      console.log("Directorio creado:", tempDir);
+    }
+
+    const filePath = path.join(tempDir, fileName);
+
+    // Guardar el archivo localmente
+    fs.writeFileSync(filePath, buffer);
+    console.log("Imagen descargada:", fileName);
+
+    return {
+      filePath,
+      size: buffer.length,
+      mimetype: response.headers.get("content-type"),
+      originalname: fileName,
+    };
+  } catch (error) {
+    console.error("Error descargando imagen:", error);
+    return null;
+  }
+};
+
 const addSubCategories = async (
   subCategories,
   fatherCategorie,
@@ -439,7 +485,7 @@ exports.scraperFlipkartProducts = async (
       // Extraer imágenes del producto
       const getProductImages = () => {
         const images = [];
-        document.querySelectorAll("img[class*='_396cs4']").forEach((img) => {
+        document.querySelectorAll("img[class*='_0DkuPH']").forEach((img) => {
           if (img.src && !images.includes(img.src)) {
             images.push(img.src);
           }
@@ -466,6 +512,7 @@ exports.scraperFlipkartProducts = async (
         name,
         price: parseInt(priceText.replace(/[^0-9]/g, "")),
         description,
+        images: getProductImages(),
         /*  rating: getTextContent("div[class*='_3LWZlK']"),
         specifications: getSpecifications(),
         offers: getOffers(),
@@ -473,7 +520,55 @@ exports.scraperFlipkartProducts = async (
       };
     });
 
-    console.log("Información extraída:", productData);
+    const uploadImagesToFirebase = async (images) => {
+      console.log("Uploading images to Firebase...");
+      const uploadedImages = [];
+
+      for (const imageUrl of images) {
+        try {
+          // Descargar la imagen localmente
+          const imageData = await downloadImage(imageUrl);
+          console.log("imageData:", imageData);
+
+          if (!imageData) continue;
+
+          // Leer el archivo local
+          const fileBuffer = fs.readFileSync(imageData.filePath);
+          const fileData = {
+            buffer: fileBuffer,
+            mimetype: imageData.mimetype,
+            originalname: imageData.originalname,
+            size: imageData.size,
+          };
+
+          // Subir a Firebase usando la función que ya tienes
+          const uploadResult = await uploadFile(fileData, {
+            folder: "products",
+            maxSize: 5, // 5MB máximo
+          });
+
+          if (uploadResult.success) {
+            uploadedImages.push({
+              url: uploadResult.url,
+              fileName: uploadResult.fileName,
+            });
+
+            // Eliminar el archivo temporal después de subirlo
+            fs.unlinkSync(imageData.filePath);
+          }
+        } catch (error) {
+          console.error("Error procesando imagen:", error);
+        }
+      }
+
+      console.log("Uploaded images:", uploadedImages);
+      return uploadedImages;
+    };
+
+    // Modificar el processedProduct para incluir las imágenes
+    const imageUrls = await uploadImagesToFirebase(productData.images);
+
+    // console.log("Información extraída:", productData);
     console.log("Cerrando navegador...");
     await browser.close();
     console.log("Navegador cerrado correctamente");
@@ -486,14 +581,14 @@ exports.scraperFlipkartProducts = async (
       quantity: 100, // Cantidad por defecto
       description: productData.description,
       /* offer: productData.offers.length > 0 ? productData.offers[0] : null, */
-      /* productPictures: productData.images.map((imgUrl) => ({
-        name: `${slugify(productData.name)}-${shortid.generate()}`,
-        imgUrl,
-      })), */
+      productPictures: imageUrls.map((img) => ({
+        name: img.fileName,
+        imgUrl: img.url,
+      })),
       category: options.categoryId,
       /* specifications: productData.specifications,
-      rating: parseFloat(productData.rating) || 0,
-      createdBy: "SYSTEM_SEED", */
+      rating: parseFloat(productData.rating) || 0, */
+      createdBy: "66d5dfd16837ab006fa71f96",
     };
 
     console.log("Verificando si el producto ya existe...");
@@ -551,6 +646,7 @@ exports.scraperFlipkartProducts = async (
       message: "Datos del producto extraídos exitosamente (modo prueba)",
       data: {
         productData: processedProduct,
+        productPictures: processedProduct.productPictures,
       },
     };
   } catch (error) {
