@@ -57,7 +57,7 @@ scraperFlipkartProducts({
     "https://www.flipkart.com/samsung-galaxy-m35-5g-thunder-grey-128-gb/p/itm94360d23ec184?pid=MOBH2Z9HJYYQBFGD&lid=LSTMOBH2Z9HJYYQBFGDSUJ7R0&marketplace=FLIPKART&fm=neo%2Fmerchandising&iid=M_85d1bc84-69ce-45e2-93a4-653ffdd79350_5_AYSX42C7U6_MC.MOBH2Z9HJYYQBFGD&ppt=browse&ppn=browse&ssid=30kkhk99gg0000001743530588523&otracker=clp_pmu_v2_Samsung%2BMobile%2Bunder%2B%25E2%2582%25B920K_1_5.productCard.PMU_V2_SAMSUNG%2BGalaxy%2BM35%2B5G%2B%2528Thunder%2BGrey%252C%2B128%2BGB%2529_samsung-mobile-store_MOBH2Z9HJYYQBFGD_neo%2Fmerchandising_0&otracker1=clp_pmu_v2_PINNED_neo%2Fmerchandising_Samsung%2BMobile%2Bunder%2B%25E2%2582%25B920K_LIST_productCard_cc_1_NA_view-all&cid=MOBH2Z9HJYYQBFGD",
   categoryId: "67e33854bc617542d9dd15b4",
   save: { product: true },
-  test: true,
+  test: false,
 });
 app.options("*", cors());
 app.use(
