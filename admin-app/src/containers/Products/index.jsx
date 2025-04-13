@@ -164,7 +164,7 @@ const Products = () => {
                     <td>{prod.name}</td>
                     <td>{prod.price}</td>
                     <td>{prod.quantity}</td>
-                    <td>{prod.category.name}</td>
+                    <td>{prod?.category?.name}</td>
                     <td>
                       <button
                         onClick={(e) => {
@@ -424,7 +424,7 @@ const Products = () => {
           </Col>
           <Col md="6">
             <strong>Category</strong>
-            <p>{productDetail.category.name}</p>
+            <p>{productDetail?.category?.name}</p>
           </Col>
         </Row>
         <Row>
