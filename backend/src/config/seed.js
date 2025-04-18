@@ -520,6 +520,30 @@ exports.scraperFlipkartProducts = async (
       };
     });
 
+    console.log("Verificando si el producto ya existe...");
+    // Verificar si el producto ya existe
+    const existingProduct = await Product.findOne({
+      name: productData.name,
+      category: options.categoryId,
+    }).exec();
+
+    if (existingProduct) {
+      console.log("Producto ya existente:", existingProduct.name);
+      console.log("Cerrando navegador...");
+      await browser.close();
+      console.log("Navegador cerrado correctamente");
+      return {
+        success: false,
+        message: "El producto ya existe en la base de datos",
+        data: {
+          existingProduct: {
+            id: existingProduct._id,
+            name: existingProduct.name,
+          },
+        },
+      };
+    }
+
     const uploadImagesToFirebase = async (images) => {
       console.log("Uploading images to Firebase...");
       const uploadedImages = [];
@@ -528,7 +552,7 @@ exports.scraperFlipkartProducts = async (
         try {
           // Descargar la imagen localmente
           const imageData = await downloadImage(imageUrl);
-          console.log("imageData:", imageData);
+          //console.log("imageData:", imageData);
 
           if (!imageData) continue;
 
@@ -572,13 +596,14 @@ exports.scraperFlipkartProducts = async (
     console.log("Cerrando navegador...");
     await browser.close();
     console.log("Navegador cerrado correctamente");
+    const quantityRandomNumber = Math.floor(Math.random() * 100);
 
     // Procesar y limpiar los datos extraídos
     const processedProduct = {
       name: productData.name,
       slug: `${slugify(productData.name)}-${shortid.generate()}`,
       price: productData.price,
-      quantity: 100, // Cantidad por defecto
+      quantity: quantityRandomNumber, // Cantidad por defecto
       description: productData.description,
       /* offer: productData.offers.length > 0 ? productData.offers[0] : null, */
       productPictures: imageUrls.map((img) => ({
@@ -590,27 +615,6 @@ exports.scraperFlipkartProducts = async (
       rating: parseFloat(productData.rating) || 0, */
       createdBy: "66d5dfd16837ab006fa71f96",
     };
-
-    console.log("Verificando si el producto ya existe...");
-    // Verificar si el producto ya existe
-    const existingProduct = await Product.findOne({
-      name: processedProduct.name,
-      category: options.categoryId,
-    }).exec();
-
-    if (existingProduct) {
-      console.log("Producto ya existente:", existingProduct.name);
-      return {
-        success: false,
-        message: "El producto ya existe en la base de datos",
-        data: {
-          existingProduct: {
-            id: existingProduct._id,
-            name: existingProduct.name,
-          },
-        },
-      };
-    }
 
     // Guardar el producto si no estamos en modo prueba
     if (!options.test && options.save.product) {
