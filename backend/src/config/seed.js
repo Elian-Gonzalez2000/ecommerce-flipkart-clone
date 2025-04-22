@@ -375,7 +375,7 @@ exports.scraperFlipkartProducts = async (
   options = {
     productUrl: "",
     categoryId: "",
-    save: { product: false },
+    save: { product: false, images: true },
     test: false,
   }
 ) => {
@@ -461,7 +461,7 @@ exports.scraperFlipkartProducts = async (
     }
 
     // Extraer información del producto
-    console.log("Extrayendo información del producto...");
+    console.log("Extrayendo información del producto... ");
     const productData = await page.evaluate(() => {
       const getTextContent = (selector) => {
         const element = document.querySelector(selector);
@@ -545,48 +545,57 @@ exports.scraperFlipkartProducts = async (
     }
 
     const uploadImagesToFirebase = async (images) => {
-      console.log("Uploading images to Firebase...");
-      const uploadedImages = [];
+      if (!options.test && options.save.images) {
+        console.log("Uploading images to Firebase...");
+        const uploadedImages = [];
 
-      for (const imageUrl of images) {
-        try {
-          // Descargar la imagen localmente
-          const imageData = await downloadImage(imageUrl);
-          //console.log("imageData:", imageData);
+        for (const imageUrl of images) {
+          try {
+            // Descargar la imagen localmente
+            const imageData = await downloadImage(imageUrl);
+            //console.log("imageData:", imageData);
 
-          if (!imageData) continue;
+            if (!imageData) continue;
 
-          // Leer el archivo local
-          const fileBuffer = fs.readFileSync(imageData.filePath);
-          const fileData = {
-            buffer: fileBuffer,
-            mimetype: imageData.mimetype,
-            originalname: imageData.originalname,
-            size: imageData.size,
-          };
+            // Leer el archivo local
+            const fileBuffer = fs.readFileSync(imageData.filePath);
+            const fileData = {
+              buffer: fileBuffer,
+              mimetype: imageData.mimetype,
+              originalname: imageData.originalname,
+              size: imageData.size,
+            };
 
-          // Subir a Firebase usando la función que ya tienes
-          const uploadResult = await uploadFile(fileData, {
-            folder: "products",
-            maxSize: 5, // 5MB máximo
-          });
-
-          if (uploadResult.success) {
-            uploadedImages.push({
-              url: uploadResult.url,
-              fileName: uploadResult.fileName,
+            // Subir a Firebase usando la función que ya tienes
+            const uploadResult = await uploadFile(fileData, {
+              folder: "products",
+              maxSize: 5, // 5MB máximo
             });
 
-            // Eliminar el archivo temporal después de subirlo
-            fs.unlinkSync(imageData.filePath);
-          }
-        } catch (error) {
-          console.error("Error procesando imagen:", error);
-        }
-      }
+            if (uploadResult.success) {
+              uploadedImages.push({
+                url: uploadResult.url,
+                fileName: uploadResult.fileName,
+              });
 
-      console.log("Uploaded images:", uploadedImages);
-      return uploadedImages;
+              // Eliminar el archivo temporal después de subirlo
+              fs.unlinkSync(imageData.filePath);
+            }
+          } catch (error) {
+            console.error("Error procesando imagen:", error);
+          }
+        }
+
+        console.log("Uploaded images:", uploadedImages);
+        return uploadedImages;
+      } else {
+        console.log("Test Mode for upload images");
+        const ArrayTest = [
+          { fileName: "Image", url: "ImageUrl" },
+          { fileName: "Image", url: "ImageUrl" },
+        ];
+        return ArrayTest;
+      }
     };
 
     // Modificar el processedProduct para incluir las imágenes
@@ -660,5 +669,109 @@ exports.scraperFlipkartProducts = async (
       message: "Error al procesar el producto",
       error: error.message,
     };
+  }
+};
+
+exports.scraperFlipkartListProducts = async (
+  url,
+  categoryId,
+  options = {
+    test: "true",
+  }
+) => {
+  if (!url) throw new Error("Necesita Url de la busqueda del producto");
+  if (!categoryId)
+    throw new Error(
+      "Necesita ID de la categoria a la que perteneceran los productos"
+    );
+
+  // Verificar si la categoría existe
+  const category = await Category.findById(categoryId).exec();
+  if (!category) {
+    throw new Error("La categoría especificada no existe");
+  }
+
+  const browser = await chromium.launch({
+    headless: options.test,
+    timeout: 60000, // Aumentar timeout para lanzamiento del navegador
+  });
+
+  const page = await browser.newPage();
+
+  await page.setDefaultTimeout(60000);
+  await page.setDefaultNavigationTimeout(60000);
+
+  console.log("Accediendo a la URL del producto...");
+  try {
+    await page.goto(url, {
+      waitUntil: "networkidle",
+      timeout: 60000,
+    });
+    console.log("Página cargada correctamente");
+  } catch (error) {
+    console.error("Error al cargar la página:", error.message);
+    await browser.close();
+    throw new Error(`Error al acceder a la URL: ${error.message}`);
+  }
+
+  try {
+    console.log("Esperando por el título del producto...");
+    await page.waitForSelector("a[class*='CGtC98']", { timeout: 10000 });
+    console.log("Todos los elementos principales encontrados");
+  } catch (error) {
+    console.error("Error al esperar por elementos:", error.message);
+
+    // Tomar captura de pantalla para diagnóstico si estamos en modo prueba
+    if (options.test) {
+      await page.screenshot({ path: "error-screenshot.png" });
+      console.log("Se ha guardado una captura de pantalla para diagnóstico");
+    }
+
+    await browser.close();
+    throw new Error(
+      `No se pudieron encontrar los elementos principales: ${error.message}`
+    );
+  }
+
+  console.log("Extrayendo información del producto...");
+  const productData = await page.evaluate(() => {
+    const productsData = [];
+    const products = document.querySelectorAll("a[class*='CGtC98']");
+    products.forEach((el, index) => {
+      if (index < 10) {
+        const productUrl = el.href;
+        productsData.push({ productUrl });
+      }
+    });
+    return productsData;
+  });
+
+  await browser.close();
+
+  if (options.test) {
+    console.log("Testeando la data");
+    console.log(productData);
+  } else {
+    const processedProducts = { successProducts: [], errorsProducts: [] };
+    function delay(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    for (const product of productData) {
+      console.log("Scrapeando la pagina de un producto");
+      const processedProduct = await this.scraperFlipkartProducts({
+        productUrl: product.productUrl,
+        categoryId,
+        save: { product: true, images: true },
+        test: false,
+      });
+      await delay(1000); // Esperar 1 segundo entre peticiones
+      if (processedProduct.success) {
+        processedProducts.successProducts.push(processedProduct);
+      } else {
+        processedProducts.errorsProducts.push(processedProduct);
+      }
+      console.log("Finalizando el scraper de la pagina de un producto");
+    }
   }
 };

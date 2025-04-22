@@ -20,6 +20,7 @@ const https = require("https");
 const {
   scraperFlipkartProducts,
   scraperFlipkartCategories,
+  scraperFlipkartListProducts,
 } = require("./config/seed.js");
 const { getStripeCheckoutSessionWebhook } = require("./controller/stripe.js");
 
@@ -52,13 +53,18 @@ mongoose
 }); */
 const saveOptions = { subCategories: false, childrenCategories: true };
 // scraperFlipkartCategories("Sports, Books & More", saveOptions);
-scraperFlipkartProducts({
+/* scraperFlipkartProducts({
   productUrl:
     "https://www.flipkart.com/samsung-galaxy-s24-fe-5g-graphite-128-gb/p/itme960199e26f23?pid=MOBH4ZG33EBNZKS7&lid=LSTMOBH4ZG33EBNZKS751CITE&marketplace=FLIPKART&fm=neo%2Fmerchandising&iid=M_ba1aaf5c-1d48-4f61-a546-65f4787cc53f_1_1BUWY8OBA8L9_MC.MOBH4ZG33EBNZKS7&ppt=sp&ppn=sp&otracker=clp_pmu_v2_Latest%2BSamsung%2Bmobiles%2B_5_1.productCard.PMU_V2_SAMSUNG%2BGalaxy%2BS24%2BFE%2B5G%2B%2528Graphite%252C%2B128%2BGB%2529_samsung-mobile-store_MOBH4ZG33EBNZKS7_neo%2Fmerchandising_4&otracker1=clp_pmu_v2_PINNED_neo%2Fmerchandising_Latest%2BSamsung%2Bmobiles%2B_LIST_productCard_cc_5_NA_view-all&cid=MOBH4ZG33EBNZKS7",
   categoryId: "67e33854bc617542d9dd15b4",
   save: { product: true },
-  test: false,
-});
+  test: true,
+}); */
+scraperFlipkartListProducts(
+  "https://www.flipkart.com/mobiles/pr?sid=tyy%2C4io&otracker=categorytree&p%5B%5D=facets.brand%255B%255D%3DInfinix&otracker=nmenu_sub_Electronics_0_Infinix",
+  "67e33854bc617542d9dd15b7",
+  { test: false }
+);
 app.options("*", cors());
 app.use(
   cors({
