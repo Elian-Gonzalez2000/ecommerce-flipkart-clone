@@ -60,11 +60,11 @@ const saveOptions = { subCategories: false, childrenCategories: true };
   save: { product: true },
   test: true,
 }); */
-scraperFlipkartListProducts(
+/* scraperFlipkartListProducts(
   "https://www.flipkart.com/mobiles/pr?sid=tyy%2C4io&otracker=categorytree&p%5B%5D=facets.brand%255B%255D%3DInfinix&otracker=nmenu_sub_Electronics_0_Infinix",
   "67e33854bc617542d9dd15b7",
   { test: false }
-);
+); */
 app.options("*", cors());
 app.use(
   cors({
