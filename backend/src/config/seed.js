@@ -39,14 +39,14 @@ const downloadImage = async (url) => {
     // Asegurarse de que el directorio existe
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir, { recursive: true });
-      console.log("Directorio creado:", tempDir);
+      // console.log("Directorio creado:", tempDir);
     }
 
     const filePath = path.join(tempDir, fileName);
 
     // Guardar el archivo localmente
     fs.writeFileSync(filePath, buffer);
-    console.log("Imagen descargada:", fileName);
+    // console.log("Imagen descargada:", fileName);
 
     return {
       filePath,
@@ -582,6 +582,7 @@ exports.scraperFlipkartProducts = async (
               fs.unlinkSync(imageData.filePath);
             }
           } catch (error) {
+            fs.unlinkSync(imageData.filePath);
             console.error("Error procesando imagen:", error);
           }
         }
