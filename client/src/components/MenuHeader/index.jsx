@@ -20,11 +20,13 @@ const MenuHeader = () => {
         <>
           <div
             className="mega-menu-item mega-menu-subcategory"
-            key={subcat._id}
+            key={self.crypto.randomUUID()}
           >
             <Link
               className="mega-menu-title"
-              to={`/${subcat.slug}?cid=${subcat._id}&type=${subcat.type}`}
+              to={`/${subcat.slug}?cid=${subcat._id}&type=${
+                subcat.type || "store"
+              }`}
             >
               {subcat.name}
             </Link>
@@ -32,9 +34,11 @@ const MenuHeader = () => {
           {subcat.children && subcat.children.length > 0 && (
             <>
               {subcat.children.map((child) => (
-                <div className="mega-menu-item" key={child._id}>
+                <div className="mega-menu-item" key={self.crypto.randomUUID()}>
                   <Link
-                    to={`/${child.slug}?cid=${child._id}&type=${child.type}`}
+                    to={`/${child.slug}?cid=${child._id}&type=${
+                      child.type || "store"
+                    }`}
                   >
                     {child.name}
                   </Link>
@@ -50,10 +54,10 @@ const MenuHeader = () => {
   // Renderiza las categorías principales
   const renderCategories = (categoryList) =>
     categoryList.map((cat) => (
-      <li key={cat._id} className="menu-item">
+      <li key={self.crypto.randomUUID()} className="menu-item">
         <span className="menu-link">
           <Link
-            to={`/${cat.slug}?cid=${cat._id}&type=${cat.type}`}
+            to={`/${cat.slug}?cid=${cat._id}&type=${cat.type || "store"}`}
             className="main-category-link"
           >
             {cat.name}
