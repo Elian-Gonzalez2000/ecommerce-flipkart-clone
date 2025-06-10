@@ -6,6 +6,7 @@ const shortid = require("shortid");
 const slugify = require("slugify");
 const axios = require("axios");
 var fs = require("fs");
+const { log } = require("console");
 
 const { API_KEY_IMGBB } = process.env;
 
@@ -67,7 +68,7 @@ exports.getProductsBySlug = (req, res) => {
     .select("_id")
     .exec((error, category) => {
       if (error) {
-        res.status(400).json({ error });
+        return res.status(400).json({ error });
       }
 
       if (category) {
@@ -75,6 +76,11 @@ exports.getProductsBySlug = (req, res) => {
           if (error) {
             res.status(400).json({ error });
           }
+
+          if (products == false)
+            return res
+              .status(400)
+              .json({ message: "The category doesn't have products" });
           if (!category.type) {
             if (products.length > 0) {
               res.status(200).json({
