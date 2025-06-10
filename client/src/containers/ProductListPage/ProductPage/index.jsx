@@ -9,56 +9,50 @@ import Card from "../../../components/UI/Card";
 import { Link } from "react-router-dom";
 
 function ProductPage(props) {
-   const dispatch = useDispatch();
-   const product = useSelector((state) => state.product);
-   const { page } = product;
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.product);
+  const { page } = product;
 
-   useEffect(() => {
-      const params = getParams(props.location.search);
-      const paylaod = {
-         params,
-      };
-      dispatch(getProductPage(params));
-   }, []);
+  useEffect(() => {
+    const params = getParams(props.location.search);
+    const paylaod = {
+      params,
+    };
+    dispatch(getProductPage(params));
+  }, []);
 
-   return (
-      <div>
-         <h1>{page.title}</h1>
-         <Carousel renderThumbs={() => {}}>
-            {page.banners &&
-               page.banners.map((banner, index) => (
-                  <Link
-                     key={`${index}-${banner.img}`}
-                     style={{ display: "block" }}
-                     to={banner.navigateTo}
-                  >
-                     <img
-                        src={genericPublicUrl(banner.img.split("/")[4])}
-                        alt=""
-                     />
-                  </Link>
-               ))}
-         </Carousel>
-         <div
-            style={{
-               display: "flex",
-               justifyContent: "center",
-               flexWrap: "wrap",
-               margin: "1rem 0",
-            }}
-         >
-            {page.products &&
-               page.products.map((product, index) => (
-                  <Card key={`${index}-${product.img}`}>
-                     <img
-                        src={genericPublicUrl(product.img.split("/")[4])}
-                        alt=""
-                     />
-                  </Card>
-               ))}
-         </div>
+  return (
+    <div>
+      <h1>{page.title}</h1>
+      <Carousel renderThumbs={() => {}}>
+        {page.banners &&
+          page.banners.map((banner, index) => (
+            <Link
+              key={`${index}-${banner.img}`}
+              style={{ display: "block" }}
+              to={banner.navigateTo}
+            >
+              <img src={genericPublicUrl(banner.img.split("/")[4])} alt="" />
+            </Link>
+          ))}
+      </Carousel>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          margin: "1rem 0",
+        }}
+      >
+        {page.products &&
+          page.products.map((product, index) => (
+            <Card key={self.crypto.randomUUID()}>
+              <img src={product.productPictures[0].imgUrl} alt={product.name} />
+            </Card>
+          ))}
       </div>
-   );
+    </div>
+  );
 }
 
 export default ProductPage;
