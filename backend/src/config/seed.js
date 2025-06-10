@@ -129,9 +129,7 @@ const addSubCategories = async (
           // Crear objeto de categoría
           const categoryObj = {
             name: categorieName,
-            slug: `${slugify(categorieName, {
-              lower: true,
-            })}-${shortid.generate()}`,
+            slug: `${slugify(categorieName)}`,
             parentId: fatherCategorieFound._id,
           };
 
@@ -239,7 +237,7 @@ const addChildrenSubCategories = async (
 
         const categoryObj = {
           name: itemName,
-          slug: `${slugify(itemName)}-${shortid.generate()}`,
+          slug: `${slugify(itemName)}`,
           parentId: subCategorieId,
         };
 
@@ -611,7 +609,7 @@ exports.scraperFlipkartProducts = async (
     // Procesar y limpiar los datos extraídos
     const processedProduct = {
       name: productData.name,
-      slug: `${slugify(productData.name)}-${shortid.generate()}`,
+      slug: `${slugify(productData.name)}`,
       price: productData.price,
       quantity: quantityRandomNumber, // Cantidad por defecto
       description: productData.description,
