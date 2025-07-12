@@ -81,6 +81,8 @@ exports.getProductsBySlug = (req, res) => {
             return res
               .status(400)
               .json({ message: "The category doesn't have products" });
+
+          // Fix the empty caategory in scraper and chage the next line to "store"
           if (!category.type) {
             if (products.length > 0) {
               res.status(200).json({
