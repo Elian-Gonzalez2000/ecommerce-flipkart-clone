@@ -145,7 +145,7 @@ const addSubCategories = async (
           // Guardar categoría
           const newCategory = new Category(categoryObj);
           const savedCategory = await newCategory.save();
-
+          // Add The category.type property when a new category is created
           results.added.push({
             id: savedCategory._id,
             name: savedCategory.name,
@@ -234,7 +234,7 @@ const addChildrenSubCategories = async (
         const getChildrenSubCategorie = await Category.findOne({
           name: itemName,
         });
-
+        // Add The category.type property when a new category is created
         const categoryObj = {
           name: itemName,
           slug: `${slugify(itemName)}`,
