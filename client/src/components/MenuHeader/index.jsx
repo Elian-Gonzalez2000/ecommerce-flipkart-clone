@@ -17,11 +17,8 @@ const MenuHeader = () => {
   const renderMegaMenu = (children) => (
     <div className="mega-menu">
       {children.map((subcat) => (
-        <>
-          <div
-            className="mega-menu-item mega-menu-subcategory"
-            key={self.crypto.randomUUID()}
-          >
+        <React.Fragment key={subcat._id}>
+          <div className="mega-menu-item mega-menu-subcategory">
             <Link
               className="mega-menu-title"
               to={`/${subcat.slug}?cid=${subcat._id}&type=${
@@ -32,7 +29,7 @@ const MenuHeader = () => {
             </Link>
           </div>
           {subcat.children && subcat.children.length > 0 && (
-            <>
+            <React.Fragment key={subcat._id}>
               {subcat.children.map((child) => (
                 <div className="mega-menu-item" key={self.crypto.randomUUID()}>
                   <Link
@@ -44,9 +41,9 @@ const MenuHeader = () => {
                   </Link>
                 </div>
               ))}
-            </>
+            </React.Fragment>
           )}
-        </>
+        </React.Fragment>
       ))}
     </div>
   );
