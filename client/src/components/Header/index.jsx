@@ -15,6 +15,7 @@ import Cart from "../UI/Cart";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import SearchBar from "../UI/SearchBar";
 
 /**
  * @author
@@ -311,7 +312,7 @@ const Header = (props) => {
       <div className="subHeader">
         <div className="logo">
           <Link to="/">
-            <img src={flipkartLogo} className="logoimage" alt="" />
+            <img src={flipkartLogo} className="logoimage" alt="Flipkart-logo" />
           </Link>
           <Link style={{ marginTop: "-10px" }}>
             <span className="exploreText">Explore</span>
@@ -327,19 +328,7 @@ const Header = (props) => {
             padding: "0 10px",
           }}
         >
-          <div className="searchInputContainer">
-            <input
-              className="searchInput"
-              placeholder={"search for products, brands and more"}
-            />
-            <div className="searchIconContainer">
-              <IoIosSearch
-                style={{
-                  color: "#2874f0",
-                }}
-              />
-            </div>
-          </div>
+          <SearchBar />
         </div>
         {/* End search Component */}
 
