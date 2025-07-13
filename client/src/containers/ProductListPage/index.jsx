@@ -7,6 +7,8 @@ import "./styles.css";
 import getParams from "../../utilities/getParams";
 import ClothingAndAccessories from "./ClothingAndAccessories";
 import { Helmet } from "react-helmet";
+import ProductsListDetails from "./ProductsListDetails/index.jsx";
+import ProductsShow from "./ProductsShow/index.jsx";
 
 const ProductListPage = (props) => {
   const location = useLocation();
@@ -20,6 +22,12 @@ const ProductListPage = (props) => {
         break;
       case "page":
         content = <ProductPage {...props} location={location} />;
+        break;
+      case "details":
+        content = <ProductsListDetails {...props} location={location} />;
+        break;
+      case "show":
+        content = <ProductsShow {...props} location={location} />;
         break;
       default:
         content = <ClothingAndAccessories {...props} location={location} />;
