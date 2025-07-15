@@ -1,0 +1,23 @@
+.search-input-container {
+  width: 560px;
+  position: relative;
+  background: var(--white-color);
+  height: 36px;
+  border-radius: 1px;
+  overflow: hidden;
+  display: flex;
+}
+.search-input {
+  width: 518px;
+  border: 0;
+  height: 36px;
+  outline: none;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+.search-icon-container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}

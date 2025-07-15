@@ -123,7 +123,7 @@ function ProductsDetailsPage(props) {
                 <IoIosArrowForward />
               </li>
               <li>
-                <Link to="#">{product && product.name}</Link>
+                <span>{product && product.name}</span>
               </li>
             </ul>
             <div className="product-details">
