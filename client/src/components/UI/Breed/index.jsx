@@ -1,22 +1,30 @@
-const Breed = (categories) => {
+import { Link } from "react-router-dom";
+import { IoIosArrowForward } from "react-icons/io";
+import "./styles.css";
+
+const Breed = ({ categories, lastCategory = false }) => {
+  const { category, parentCategory } = categories;
+
   return (
-    <div>
+    <div className="breed">
       <ul>
         <li>
-          <Link to="#">Home</Link>
-          <IoIosArrowForward />
+          <Link to="/" style={{ marginLeft: "0" }}>
+            Home
+          </Link>
+          {parentCategory && <IoIosArrowForward />}
         </li>
-        <li>
-          <Link to="#">Mobiles</Link>
-          <IoIosArrowForward />
-        </li>
-        <li>
-          <Link to="#">Samsung</Link>
-          <IoIosArrowForward />
-        </li>
-        <li>
-          <span>{product && product.name}</span>
-        </li>
+        {parentCategory && (
+          <li>
+            <Link to="#">{parentCategory.name}</Link>
+            {lastCategory && category && <IoIosArrowForward />}
+          </li>
+        )}
+        {lastCategory && category && (
+          <li>
+            <Link to="#">{category.name}</Link>
+          </li>
+        )}
       </ul>
     </div>
   );

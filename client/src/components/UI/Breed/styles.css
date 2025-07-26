@@ -1,0 +1,34 @@
+.breed ul {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.breed ul li {
+  list-style: none;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--gray-dark-color);
+}
+
+.breed ul li a,
+.breed ul li span {
+  color: var(--gray-dark-color);
+  display: inline-block;
+  margin: 0 5px;
+  max-width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.breed ul li a:hover {
+  color: var(--first-color);
+  max-width: unset;
+  white-space: nowrap;
+  text-overflow: unset;
+}
