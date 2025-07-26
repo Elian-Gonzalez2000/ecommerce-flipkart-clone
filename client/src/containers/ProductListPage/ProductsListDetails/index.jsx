@@ -11,20 +11,31 @@ import Skeleton from "../../../components/UI/Skeleton/index.jsx";
 import Pagination from "../../../components/Pagination/index.jsx";
 import getParams from "../../../utilities/getParams.js";
 import Breed from "../../../components/UI/Breed/index.jsx";
+import {
+  sortPriceLowToHigh,
+  sortPriceHighToLow,
+  sortNewestFirst,
+} from "../../../helpers/sort.js";
 
 function ProductsListDetails() {
   const productData = useSelector((state) => state.product);
   const categoryData = useSelector((state) => state.category.categories);
+  const pathname = useLocation().pathname;
   const slug = useLocation().pathname.substring(1);
   const params = getParams(useLocation().search);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [category, setCategory] = useState(null);
+  const [products, setProducts] = useState([]);
   const itemsPerPage = 5;
   const start = (currentPage - 1) * itemsPerPage;
   const end = start + itemsPerPage;
-  const currentProducts =
-    productData.products && productData?.products?.slice(start, end);
+  const currentProducts = products && products.slice(start, end);
+
+  const getActiveSortClass = (sortType) => {
+    const currentSort = params.sort || "popularity";
+    return currentSort === sortType ? "active-filter" : "";
+  };
 
   const findCategory = (data, key, value, needParent = false) => {
     function search(categories, parentCategory = null) {
@@ -55,6 +66,21 @@ function ProductsListDetails() {
       category && console.log(category);
     }
   }, [categoryData]);
+
+  useEffect(() => {
+    if (productData.products.length > 0) {
+      if (params.sort === "price_asc") {
+        setProducts(sortPriceLowToHigh(productData.products));
+      } else if (params.sort === "price_desc") {
+        setProducts(sortPriceHighToLow(productData.products));
+      } else if (params.sort === "recency_desc") {
+        setProducts(sortNewestFirst(productData.products));
+      } else {
+        setProducts(productData.products);
+      }
+      console.log(products);
+    }
+  }, [productData, params.sort]);
 
   useEffect(() => {
     // Scroll al top cada vez que cambia la página
@@ -100,12 +126,30 @@ function ProductsListDetails() {
           {productData.products.length > 0 ? (
             <>
               <b style={{ fontWeight: "500", marginLeft: "0" }}>Sort by</b>{" "}
-              <Link to="#" className="active-filter">
+              <Link
+                to={`${pathname}?cid=${params.cid}&type=${params.type}&sort=popularity`}
+                className={getActiveSortClass("popularity")}
+              >
                 Popularity
               </Link>{" "}
-              <Link to="#">Price -- Low to High</Link>{" "}
-              <Link to="#">Price -- High to Low</Link>{" "}
-              <Link to="#">Newest First</Link>
+              <Link
+                to={`${pathname}?cid=${params.cid}&type=${params.type}&sort=price_asc`}
+                className={getActiveSortClass("price_asc")}
+              >
+                Price -- Low to High
+              </Link>{" "}
+              <Link
+                to={`${pathname}?cid=${params.cid}&type=${params.type}&sort=price_desc`}
+                className={getActiveSortClass("price_desc")}
+              >
+                Price -- High to Low
+              </Link>{" "}
+              <Link
+                to={`${pathname}?cid=${params.cid}&type=${params.type}&sort=recency_desc`}
+                className={getActiveSortClass("recency_desc")}
+              >
+                Newest First
+              </Link>
             </>
           ) : (
             <Skeleton
@@ -115,7 +159,7 @@ function ProductsListDetails() {
             />
           )}
         </div>
-        {productData.products.length ? (
+        {productData.products.length > 0 && products ? (
           currentProducts.map((prod) => {
             return (
               <Card header={false} key={randomUI()}>
