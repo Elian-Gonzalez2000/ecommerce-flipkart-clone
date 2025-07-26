@@ -28,7 +28,7 @@
 }
 
 .products-list-details .sort-by {
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 2px solid #f0f0f0;
   padding-bottom: 0.4rem;
   margin-bottom: 0.5rem;
 }
@@ -40,6 +40,7 @@
   margin-left: 0.5rem;
   padding: 0.4rem 0;
   font-size: 0.9rem;
+  transition: none;
 }
 
 .products-list-details .sort-by .active-filter {
