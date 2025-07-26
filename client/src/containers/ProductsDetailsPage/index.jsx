@@ -108,7 +108,7 @@ function ProductsDetailsPage(props) {
               />
             </div>
           </div>
-          <div className="breed">
+          <div className="breedd">
             <ul>
               <li>
                 <Link to="#">Home</Link>

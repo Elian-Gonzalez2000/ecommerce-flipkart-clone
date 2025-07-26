@@ -62,7 +62,8 @@
   object-fit: contain;
 }
 
-.breed ul {
+/* Delete later upload component breed in this component */
+.breedd ul {
   padding: 0;
   margin: 0;
   margin-bottom: 0.5rem;
@@ -70,7 +71,7 @@
   align-items: center;
 }
 
-.breed ul li {
+.breedd ul li {
   list-style: none;
   margin-right: 5px;
   display: flex;
@@ -79,8 +80,8 @@
   color: var(--gray-dark-color);
 }
 
-.breed ul li a,
-.breed ul li span {
+.breedd ul li a,
+.breedd ul li span {
   color: var(--gray-dark-color);
   display: inline-block;
   margin: 0 10px;
@@ -90,7 +91,7 @@
   text-overflow: ellipsis;
 }
 
-.breed ul li a:hover {
+.breedd ul li a:hover {
   color: var(--first-color);
   max-width: unset;
   white-space: nowrap;
