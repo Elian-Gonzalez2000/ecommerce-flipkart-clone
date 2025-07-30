@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import "./styles.css";
 
-const Breed = ({ categories, lastCategory = false }) => {
+const Breed = ({ categories, lastCategory = false, showProductsName }) => {
   const { category, parentCategory } = categories;
 
   return (
@@ -16,13 +16,27 @@ const Breed = ({ categories, lastCategory = false }) => {
         </li>
         {parentCategory && (
           <li>
-            <Link to="#">{parentCategory.name}</Link>
+            <Link
+              to={`/${parentCategory.slug}?cid=${parentCategory._id}&type=details&sort=popularity`}
+            >
+              {parentCategory.name}
+            </Link>
             {lastCategory && category && <IoIosArrowForward />}
           </li>
         )}
         {lastCategory && category && (
           <li>
-            <Link to="#">{category.name}</Link>
+            <Link
+              to={`/${category.slug}?cid=${category._id}&type=details&sort=popularity`}
+            >
+              {category.name}
+            </Link>
+            {showProductsName && category && <IoIosArrowForward />}
+          </li>
+        )}
+        {showProductsName && category && (
+          <li>
+            <span>{showProductsName}</span>
           </li>
         )}
       </ul>
