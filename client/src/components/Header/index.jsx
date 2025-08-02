@@ -138,6 +138,165 @@ const Header = (props) => {
     );
   };
 
+  const ModalSignup = () => {
+    return (
+      <Formik
+        initialValues={{
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+        }}
+        validationSchema={signupSchema}
+        onSubmit={(values) => {
+          // same shape as initial values
+          userLogin(values);
+        }}
+      >
+        {({ errors, touched, values }) => (
+          <Form className="login-input-container">
+            <MaterialInput
+              label="Enter firstName"
+              className="materialInput"
+              name="firstName"
+              type="firstName"
+              touched={touched.firstName && touched.firstName}
+              values={values.firstName && values.firstName}
+            >
+              <Field name="firstName" />
+              {errors.firstName && touched.firstName ? (
+                <div className="input-error">{errors.firstName}</div>
+              ) : null}
+            </MaterialInput>
+            <MaterialInput
+              label="Enter lastName"
+              className="materialInput"
+              name="lastName"
+              type="lastName"
+              touched={touched.lastName && touched.lastName}
+              values={values.lastName && values.lastName}
+            >
+              <Field name="lastName" />
+              {errors.lastName && touched.lastName ? (
+                <div className="input-error">{errors.lastName}</div>
+              ) : null}
+            </MaterialInput>
+            <MaterialInput
+              label="Enter email"
+              className="materialInput"
+              name="email"
+              type="email"
+              touched={touched.email && touched.email}
+              values={values.email && values.email}
+            >
+              <Field type="email" name="email" />
+              {errors.email && touched.email ? (
+                <div className="input-error">{errors.email}</div>
+              ) : null}
+            </MaterialInput>
+
+            <MaterialInput
+              label="Enter Password"
+              className="materialInput"
+              name="password"
+              type="password"
+              touched={touched.password && touched.password}
+              values={values.password && values.password}
+            >
+              <Field type="password" name="password" />
+              {errors.password && touched.password ? (
+                <div className="input-error">{errors.password}</div>
+              ) : null}
+            </MaterialInput>
+
+            <br />
+            <br />
+            <MaterialButton
+              title={"Register"}
+              bgColor="#fb641b"
+              textColor="var(--white-color)"
+              fontWeight="600"
+              type="submit"
+            />
+            <br />
+            <MaterialButton
+              title={"Existing User? Log in"}
+              bgColor="var(--white-color)"
+              textColor="var(--first-color)"
+              fontWeight="600"
+              onClick={() => {
+                setSignup(false);
+                setLoginModal(true);
+              }}
+            />
+          </Form>
+        )}
+      </Formik>
+    );
+  };
+
+  const ModalSignin = () => {
+    return (
+      <Formik
+        initialValues={{
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+        }}
+        validationSchema={loginSchema}
+        onSubmit={(values) => {
+          // same shape as initial values
+          userLogin(values);
+        }}
+      >
+        {({ errors, touched, values }) => (
+          <Form className="login-input-container">
+            <MaterialInput
+              label="Enter email"
+              className="materialInput"
+              name="email"
+              type="email"
+              touched={touched.email && touched.email}
+              values={values.email && values.email}
+            >
+              <Field type="email" name="email" />
+              {errors.email && touched.email ? (
+                <div className="input-error">{errors.email}</div>
+              ) : null}
+            </MaterialInput>
+
+            <MaterialInput
+              label="Enter Password"
+              className="materialInput"
+              name="password"
+              type="password"
+              touched={touched.password && touched.password}
+              values={values.password && values.password}
+            >
+              <Field type="password" name="password" />
+              {errors.password && touched.password ? (
+                <div className="input-error">{errors.password}</div>
+              ) : null}
+            </MaterialInput>
+
+            <br />
+            <br />
+            <MaterialButton
+              title={"Login"}
+              bgColor="#fb641b"
+              textColor="#ffffff"
+              margin="40px 0 20px 0"
+              fontWeight="600"
+              type="submit"
+            />
+            <br />
+          </Form>
+        )}
+      </Formik>
+    );
+  };
+
   return (
     <div className="header">
       <Modal visible={loginModal} onClose={() => setLoginModal(false)}>
@@ -148,162 +307,17 @@ const Header = (props) => {
               <p>Get access to your Orders, Wishlist and Recommendations</p>
             </div>
             <div className="rightspace">
-              {signup ? (
-                <Formik
-                  initialValues={{
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    password: "",
-                  }}
-                  validationSchema={signupSchema}
-                  onSubmit={(values) => {
-                    // same shape as initial values
-                    userLogin(values);
+              {signup ? <ModalSignup /> : <ModalSignin />}
+
+              {!signup && (
+                <p
+                  onClick={() => {
+                    setSignup(true);
+                    setLoginModal(true);
                   }}
                 >
-                  {({ errors, touched, values }) => (
-                    <Form className="login-input-container">
-                      <MaterialInput
-                        label="Enter firstName"
-                        className="materialInput"
-                        name="firstName"
-                        type="firstName"
-                        touched={touched.firstName && touched.firstName}
-                        values={values.firstName && values.firstName}
-                      >
-                        <Field name="firstName" />
-                        {errors.firstName && touched.firstName ? (
-                          <div className="input-error">{errors.firstName}</div>
-                        ) : null}
-                      </MaterialInput>
-                      <MaterialInput
-                        label="Enter lastName"
-                        className="materialInput"
-                        name="lastName"
-                        type="lastName"
-                        touched={touched.lastName && touched.lastName}
-                        values={values.lastName && values.lastName}
-                      >
-                        <Field name="lastName" />
-                        {errors.lastName && touched.lastName ? (
-                          <div className="input-error">{errors.lastName}</div>
-                        ) : null}
-                      </MaterialInput>
-                      <MaterialInput
-                        label="Enter email"
-                        className="materialInput"
-                        name="email"
-                        type="email"
-                        touched={touched.email && touched.email}
-                        values={values.email && values.email}
-                      >
-                        <Field type="email" name="email" />
-                        {errors.email && touched.email ? (
-                          <div className="input-error">{errors.email}</div>
-                        ) : null}
-                      </MaterialInput>
-
-                      <MaterialInput
-                        label="Enter Password"
-                        className="materialInput"
-                        name="password"
-                        type="password"
-                        touched={touched.password && touched.password}
-                        values={values.password && values.password}
-                      >
-                        <Field type="password" name="password" />
-                        {errors.password && touched.password ? (
-                          <div className="input-error">{errors.password}</div>
-                        ) : null}
-                      </MaterialInput>
-
-                      <br />
-                      <br />
-                      <MaterialButton
-                        title={"Register"}
-                        bgColor="#fb641b"
-                        textColor="#ffffff"
-                        style={{
-                          margin: "40px 0 20px 0",
-                        }}
-                        type="submit"
-                      />
-                      <br />
-                      <p style={{ textAlign: "center" }}>OR</p>
-                      <MaterialButton
-                        title="Request OTP"
-                        bgColor="#ffffff"
-                        textColor="#2874f0"
-                      />
-                    </Form>
-                  )}
-                </Formik>
-              ) : (
-                <Formik
-                  initialValues={{
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    password: "",
-                  }}
-                  validationSchema={loginSchema}
-                  onSubmit={(values) => {
-                    // same shape as initial values
-                    userLogin(values);
-                  }}
-                >
-                  {({ errors, touched, values }) => (
-                    <Form className="login-input-container">
-                      <MaterialInput
-                        label="Enter email"
-                        className="materialInput"
-                        name="email"
-                        type="email"
-                        touched={touched.email && touched.email}
-                        values={values.email && values.email}
-                      >
-                        <Field type="email" name="email" />
-                        {errors.email && touched.email ? (
-                          <div className="input-error">{errors.email}</div>
-                        ) : null}
-                      </MaterialInput>
-
-                      <MaterialInput
-                        label="Enter Password"
-                        className="materialInput"
-                        name="password"
-                        type="password"
-                        touched={touched.password && touched.password}
-                        values={values.password && values.password}
-                      >
-                        <Field type="password" name="password" />
-                        {errors.password && touched.password ? (
-                          <div className="input-error">{errors.password}</div>
-                        ) : null}
-                      </MaterialInput>
-
-                      <br />
-                      <br />
-                      <MaterialButton
-                        title={"Login"}
-                        bgColor="#fb641b"
-                        textColor="#ffffff"
-                        style={{
-                          margin: "40px 0 20px 0",
-                        }}
-                        type="submit"
-                      />
-                      <br />
-                      <p style={{ textAlign: "center" }}>OR</p>
-                      <MaterialButton
-                        title="Request OTP"
-                        bgColor="#ffffff"
-                        textColor="#2874f0"
-                      />
-                    </Form>
-                  )}
-                </Formik>
+                  New to Flipkart? Create an account
+                </p>
               )}
             </div>
           </div>
