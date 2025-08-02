@@ -56,7 +56,6 @@ export const login = (user) => {
           type: authConstants.LOGIN_SUCCESS,
           payload: { token, user },
         });
-        // Necesito Actualizar el quantity del carrito del backend antes de añadir el carrito guardado en local storage
         dispatch(updateToCart());
       }
     } catch (error) {
