@@ -1,29 +1,75 @@
 .product-descripton-container {
-  display: flex;
-  box-sizing: border-box;
-  padding: 0 10px;
+  display: grid;
+  grid-template-columns: 67px minmax(356px, 485px) 1fr;
+  padding: 1rem;
+  background-color: var(--white-color);
+  margin-top: -1rem;
 }
 
 .vertical-image-stack {
+  position: relative;
   width: 67px;
+  height: 440px;
+  overflow-y: hidden;
+
+  margin-right: 0.5rem;
+}
+
+.vertical-image-stack .thumbnail-container {
+  width: 67px;
+  height: 440px;
+  scroll-behavior: smooth;
   display: flex;
   flex-direction: column;
-  margin-right: 0.5rem;
+  overflow-y: hidden;
+}
+
+.vertical-image-stack .arrow-slide {
+  position: absolute;
+  width: 100%;
+  max-width: 63px;
+  padding: 0.25rem 0;
+  background-color: var(--white-color);
+  text-align: center;
+  border: 1px solid var(--gray-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #2874f0;
+  cursor: pointer;
+}
+
+.vertical-image-stack .arrow-slide.disabled {
+  color: transparent;
+  background-color: transparent;
+  border-color: transparent;
+  cursor: auto;
+  z-index: -10;
+}
+
+.vertical-image-stack .arrow-slide svg {
+  width: 20px;
+  height: 20px;
 }
 
 .thumbnail {
   width: 63px;
+  min-height: 63px;
   height: 63px;
   border: 1px solid transparent;
-  margin-bottom: 0.5rem;
   overflow: hidden;
   text-align: center;
 }
 
 .thumbnail img {
-  max-width: 100%;
+  width: auto;
+  max-width: 63px;
+  height: 63px;
   max-height: 100%;
-  object-fit: contain;
 }
 
 .thumbnail.active {
@@ -31,24 +77,32 @@
   padding: 0.2rem;
 }
 
-.product-desc-container {
-  width: 485px;
+.product-details-info-container {
+  padding-left: 1.5rem;
+  width: 90%;
 }
 
-.product-desc-container .flex-row {
+.product-desc-container {
+  width: 485px;
+  min-width: 356px;
+}
+
+.product-desc-container .product-detail-buttons-container {
+  display: flex;
+
   justify-content: space-between;
 }
 
-.product-desc-container .flex-row div {
+.product-desc-container .product-detail-buttons-container div {
   width: 48%;
 }
 
-.product-desc-container .flex-row div {
+.product-desc-container .product-detail-buttons-container div {
   width: 48%;
 }
 
 .product-desc-img-container {
-  width: 485px;
+  width: 100%;
   height: 440px;
   overflow: hidden;
   text-align: center;
