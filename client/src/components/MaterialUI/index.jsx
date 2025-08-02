@@ -79,6 +79,7 @@ const MaterialButton = ({ classNames, ...props }) => {
           width: props?.width,
           padding: props?.padding,
           margin: props?.margin,
+          fontWeight: props?.fontWeight,
         }}
         onClick={onClick && onClick}
         type={props.type ? props.type : "button"}
@@ -128,7 +129,7 @@ const Anchor = (props) => {
   );
 };
 
-const Breed = (props) => {
+/* const Breed = (props) => {
   return (
     <div className="breed">
       <ul>
@@ -142,6 +143,6 @@ const Breed = (props) => {
       </ul>
     </div>
   );
-};
+}; */
 
-export { Modal, MaterialInput, MaterialButton, DropdownMenu, Anchor, Breed };
+export { Modal, MaterialInput, MaterialButton, DropdownMenu, Anchor };
