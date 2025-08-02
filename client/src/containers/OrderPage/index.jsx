@@ -6,7 +6,6 @@ import { randomUI } from "../../helpers/randomUI";
 import { getOrders } from "../../actions";
 import Layout from "../../components/Layout";
 import Card from "../../components/UI/Card";
-import { Breed } from "../../components/MaterialUI";
 import "./style.css";
 import Price from "../../components/UI/Price";
 import { IoIosArrowForward } from "react-icons/io";
@@ -44,14 +43,14 @@ const OrderPage = (props) => {
         />
       </Helmet>
       <div>
-        <Breed
+        {/* <Breed
           breed={[
             { name: "Home", href: "/" },
             { name: "My Account", href: "/account" },
             { name: "My Orders", href: "/account/orders" },
           ]}
           breedIcon={<IoIosArrowForward />}
-        />
+        /> */}
         <div style={{ marginTop: "1rem", minHeight: "100px" }}>
           {user.orders.length > 0 ? (
             user.orders.map((order) => {
