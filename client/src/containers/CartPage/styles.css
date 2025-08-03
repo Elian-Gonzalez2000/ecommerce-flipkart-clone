@@ -1,14 +1,32 @@
 .cart-container {
-   display: flex;
-   max-width: 1260px;
-   margin: 15px auto;
-   justify-content: space-between;
+  display: flex;
+  max-width: 1260px;
+  margin: 15px auto;
+  justify-content: space-between;
 }
 
 .cart-container .header-left {
-   font-weight: bolder;
+  font-weight: bolder;
 }
 
 .cart-container .card {
-   box-shadow: none;
+  box-shadow: none;
+}
+
+.cart-container .empty-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.cart-container .empty-cart h2 {
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.cart-container .empty-cart img {
+  width: 300px;
+  height: auto;
 }
