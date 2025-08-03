@@ -16,6 +16,7 @@ import {
   sortPriceHighToLow,
   sortNewestFirst,
 } from "../../../helpers/sort.js";
+import { findCategory } from "../../../helpers/findCategory.js";
 
 function ProductsListDetails() {
   const productData = useSelector((state) => state.product);
@@ -37,25 +38,6 @@ function ProductsListDetails() {
     return currentSort === sortType ? "active-filter" : "";
   };
 
-  const findCategory = (data, key, value, needParent = false) => {
-    function search(categories, parentCategory = null) {
-      for (const category of categories) {
-        if (category[key] === value) {
-          if (needParent) {
-            return { category, parentCategory };
-          }
-          return category;
-        }
-
-        if (category.children.length > 0) {
-          const result = search(category.children, category);
-          if (result) return result;
-        }
-      }
-      return null;
-    }
-    return search(data);
-  };
   useEffect(() => {
     dispatch(getProductsBySlug(slug));
   }, [slug]);
@@ -63,7 +45,6 @@ function ProductsListDetails() {
   useEffect(() => {
     if (categoryData.length > 0) {
       setCategory(findCategory(categoryData, "_id", params.cid, true));
-      category && console.log(category);
     }
   }, [categoryData]);
 
