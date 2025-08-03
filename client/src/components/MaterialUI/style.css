@@ -145,6 +145,7 @@
 }
 .headerDropdownMenu li a:hover {
   background-color: #f0f0f0;
+  color: var(--first-color);
   cursor: pointer;
 }
 
