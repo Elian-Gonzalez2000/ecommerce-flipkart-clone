@@ -3,6 +3,12 @@
   height: 56px;
   background: var(--first-color);
 }
+
+.header a:hover {
+  color: var(--white-color);
+  opacity: 1;
+}
+
 .subHeader {
   max-width: 1100px;
   width: 100%;
@@ -27,6 +33,7 @@
 .exploreText {
   font-size: 10px;
   font-style: italic;
+  color: var(--white-color);
 }
 .plusText {
   font-size: 10px;
