@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import CartItem from "./CartItem";
 import { addToCart, getCartItems, removeCartItem } from "../../actions";
 import { MaterialButton } from "../../components/MaterialUI";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PriceDetails from "../../components/PriceDetails";
 import "./styles.css";
 import Loader from "../../components/UI/Loader";
 import { Helmet } from "react-helmet";
+import emptyCart from "../../images/empty-cart.webp";
+import { isNotEmpty } from "../../helpers/evalEmptyObjects";
 
 function CartPage(props) {
   const cart = useSelector((state) => state.cart);
@@ -47,7 +49,7 @@ function CartPage(props) {
   if (props.onlyCartItems) {
     return (
       <>
-        {cartItems &&
+        {isNotEmpty(cartItems) &&
           Object.keys(cartItems).map((item, index) => {
             return (
               <CartItem
@@ -92,14 +94,15 @@ function CartPage(props) {
       <div className="cart-container">
         {cart.updatingCart && <Loader />}
         <Card
+          header={isNotEmpty(cartItems) ? true : false}
           headerLeft={`My Cart  (${
-            cartItems ? Object.keys(cartItems).length : "No items"
+            isNotEmpty(cartItems) ? Object.keys(cartItems).length : "No items"
           })`}
           headerRight={<div>Delivered to</div>}
           style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
         >
           <div style={{ minHeight: "200px" }}>
-            {cartItems &&
+            {isNotEmpty(cartItems) ? (
               Object.keys(cartItems).map((item, index) => {
                 return (
                   <CartItem
@@ -110,25 +113,43 @@ function CartPage(props) {
                     onRemoveCartItem={onRemoveCartItem}
                   />
                 );
-              })}
+              })
+            ) : (
+              <div className="empty-cart">
+                <picture>
+                  <img src={emptyCart} alt="emptycart" />
+                </picture>
+                <h2>Your cart is empty</h2>
+                <p>Looks like you haven't added anything to your cart yet.</p>
+                <Link to="/">
+                  <MaterialButton title="Continue Shopping" />
+                </Link>
+              </div>
+            )}
           </div>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              background: "#ffffff",
-              justifyContent: "flex-end",
-              boxShadow: "0 0 10px 10px #eee",
-              padding: "10px 0",
-            }}
-          >
-            <div style={{ width: "250px", marginRight: "1rem" }}>
-              <MaterialButton
-                title="PLACE ORDER"
-                onClick={() => navigate("/checkout")}
-              />
+          {isNotEmpty(cartItems) && (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                background: "#ffffff",
+                justifyContent: "flex-end",
+                boxShadow: "0 0 10px 10px #eee",
+                padding: "10px 0",
+              }}
+            >
+              {auth.authenticate ? (
+                <div style={{ width: "250px", marginRight: "1rem" }}>
+                  <MaterialButton
+                    title="PLACE ORDER"
+                    onClick={() => navigate("/checkout")}
+                  />
+                </div>
+              ) : (
+                <p>Login to go Checkout</p>
+              )}
             </div>
-          </div>
+          )}
         </Card>
         <PriceDetails
           totalItem={
