@@ -140,7 +140,7 @@ function ProductsListDetails() {
             />
           )}
         </div>
-        {productData.products.length > 0 && products ? (
+        {productData.products.length > 0 && products && !productData.loading ? (
           currentProducts.map((prod) => {
             return (
               <Card header={false} key={randomUI()}>
