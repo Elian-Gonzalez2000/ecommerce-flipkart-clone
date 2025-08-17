@@ -10,6 +10,7 @@ const {
   deleteProductById,
   getProducts,
   editProductById,
+  getProductsBySearchQuery,
 } = require("../controller/product.js");
 const multer = require("multer");
 const router = express.Router();
@@ -50,5 +51,6 @@ router.post(
   getProducts
 );
 router.post("/product/editproduct", requiresSignin, editProductById);
+router.get("/products/getproductsbyquery", getProductsBySearchQuery);
 
 module.exports = router;
