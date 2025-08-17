@@ -15,6 +15,7 @@ import CancelCheckout from "./containers/CheckoutPage/CheckoutResults/Cancel";
 import Error from "./containers/Signup/Error";
 import Confirm from "./containers/Signup/Confirm";
 import { Helmet } from "react-helmet";
+import SearchProducts from "./containers/SearchProducts";
 
 function App() {
   const url = "http://localhost:3002/api/admin/signin";
@@ -79,6 +80,7 @@ function App() {
             element={<ProductsDetailsPage />}
           />
           <Route path="/:slug" exact element={<ProductListPage />} />
+          <Route path="/search" exact element={<SearchProducts />} />
           <Route
             path="/checkout/success/:orderId"
             exact
