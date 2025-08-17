@@ -4,12 +4,14 @@ import { useLocation, useParams, Link } from "react-router-dom";
 import { getProductsBySlug } from "../../../actions";
 import Card from "../../../components/UI/Card";
 import { BiRupee } from "react-icons/bi";
-import { MaterialButton } from "../../../components/MaterialUI";
 import Rating from "../../../components/UI/Rating";
 import Price from "../../../components/UI/Price";
 import "./style.css";
 import Loader from "../../../components/UI/Loader";
 import { Helmet } from "react-helmet";
+import Skeleton from "../../../components/UI/Skeleton";
+import { randomUI } from "../../../helpers/randomUI";
+import getParams from "../../../utilities/getParams";
 
 function ProductStore(props) {
   const product = useSelector((state) => state.product);
@@ -21,18 +23,19 @@ function ProductStore(props) {
     under20k: 20000,
     under30k: 30000,
   });
+  const pathname = useLocation().pathname;
   const slug = useLocation().pathname.substring(1);
-  const params = useParams();
+  const params = getParams(useLocation().search);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProductsBySlug(slug));
   }, [slug]);
-  //console.log(useLocation(), product, params);
+  //console.log(useLocation(), params);
   return (
     <>
       <Helmet>
         <title>
-          {`${params.slug} Online at Best Prices and Offers in India | 01-Dec-24`}
+          {`${slug} Online at Best Prices and Offers in India | 01-Dec-24`}
         </title>
         <meta
           property="og:title"
@@ -40,26 +43,28 @@ function ProductStore(props) {
         />
         <meta
           property="og:url"
-          content={`https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/${params.slug}`}
+          content={`https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/${slug}`}
         />
         <meta
           name="twitter:url"
-          content={`https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/${params.slug}`}
+          content={`https://elian-gonzalez2000.github.io/ecommerce-flipkart-clone/client/dist/#/${slug}`}
         />
-        <meta
-          name="twitter:title"
-          content={`${params.slug} | Flipkart.com Clone`}
-        />
+        <meta name="twitter:title" content={`${slug} | Flipkart.com Clone`} />
       </Helmet>
       {product.loading && <Loader />}
-      {product.productsByPrice &&
+      {product.productsByPrice && !product.loading ? (
         Object.keys(product.productsByPrice).map((key) => {
           return (
             <Card
               classNames={"product-card"}
               headerLeft={`${slug} Mobile under `}
               headerRight={
-                <MaterialButton classNames="card-button" title="View all" />
+                <Link
+                  to={`${pathname}?cid=${params.cid}&type=details&range=5000`}
+                  classNames="card-button"
+                >
+                  View All
+                </Link>
               }
               priceRange={priceRange[key]}
               cardIcon={<BiRupee />}
@@ -68,14 +73,14 @@ function ProductStore(props) {
                 margin: "40px auto",
                 border: "none",
               }}
-              key={self.crypto.randomUUID()}
+              key={randomUI()}
             >
               <article style={{ display: "flex" }}>
                 {product.productsByPrice[key].map((product) => (
                   <Link
                     to={`/${product.slug}/${product._id}/p`}
                     className="product-container"
-                    key={self.crypto.randomUUID()}
+                    key={randomUI()}
                   >
                     <picture className="product-img-container">
                       <img
@@ -98,8 +103,110 @@ function ProductStore(props) {
               </article>
             </Card>
           );
-        })}
+        })
+      ) : (
+        <>
+          <SkelentonLoaderProducts />
+          <SkelentonLoaderProducts />
+          <SkelentonLoaderProducts />
+        </>
+      )}
     </>
+  );
+}
+
+function SkelentonLoaderProducts() {
+  return (
+    <Card
+      classNames={"product-card"}
+      headerLeft={
+        <Skeleton
+          width="350px"
+          height="30px"
+          /* styles={{ marginBottom: ".5rem" }} */
+        />
+      }
+      headerRight={
+        <Skeleton
+          width="120px"
+          height="30px"
+          /* styles={{ marginBottom: ".5rem" }} */
+        />
+      }
+      style={{
+        width: "calc(100% - 20px)",
+        margin: "40px auto",
+        border: "none",
+      }}
+      key={randomUI()}
+    >
+      <article style={{ display: "flex" }}>
+        <Link to={`#`} className="product-container">
+          <picture className="product-img-container">
+            <Skeleton
+              width="150px"
+              height="150px"
+              styles={{ marginBottom: ".5rem" }}
+            />
+          </picture>
+          <div className="product-info">
+            <Skeleton
+              width="90%"
+              height="20px"
+              styles={{ margin: "0 auto", marginBottom: ".5rem" }}
+            />
+          </div>
+        </Link>
+        <Link to={`#`} className="product-container">
+          <picture className="product-img-container">
+            <Skeleton
+              width="150px"
+              height="150px"
+              styles={{ marginBottom: ".5rem" }}
+            />
+          </picture>
+          <div className="product-info">
+            <Skeleton
+              width="90%"
+              height="20px"
+              styles={{ margin: "0 auto", marginBottom: ".5rem" }}
+            />
+          </div>
+        </Link>
+        <Link to={`#`} className="product-container">
+          <picture className="product-img-container">
+            <Skeleton
+              width="150px"
+              height="150px"
+              styles={{ marginBottom: ".5rem" }}
+            />
+          </picture>
+          <div className="product-info">
+            <Skeleton
+              width="90%"
+              height="20px"
+              styles={{ margin: "0 auto", marginBottom: ".5rem" }}
+            />
+          </div>
+        </Link>
+        <Link to={`#`} className="product-container">
+          <picture className="product-img-container">
+            <Skeleton
+              width="150px"
+              height="150px"
+              styles={{ marginBottom: ".5rem" }}
+            />
+          </picture>
+          <div className="product-info">
+            <Skeleton
+              width="90%"
+              height="20px"
+              styles={{ margin: "0 auto", marginBottom: ".5rem" }}
+            />
+          </div>
+        </Link>
+      </article>
+    </Card>
   );
 }
 
