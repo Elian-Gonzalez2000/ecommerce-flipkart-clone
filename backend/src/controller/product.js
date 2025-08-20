@@ -147,6 +147,184 @@ exports.deleteProductById = (req, res) => {
   }
 };
 
+exports.getProductsBySearchQuery = async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    // Validación de la query
+    if (!query || query.trim().length === 0) {
+      return res
+        .status(400)
+        .json({ error: "La consulta de búsqueda es requerida" });
+    }
+
+    // Limpiar y normalizar la query
+    const cleanQuery = query.trim().replace(/\s+/g, " ");
+    const queryWords = cleanQuery.split(" ").filter((word) => word.length > 0);
+
+    // Crear múltiples patrones de búsqueda
+    const searchPatterns = [];
+
+    // 1. Búsqueda exacta
+    searchPatterns.push({
+      $or: [
+        { name: { $regex: cleanQuery, $options: "i" } },
+        { description: { $regex: cleanQuery, $options: "i" } },
+        { slug: { $regex: cleanQuery, $options: "i" } },
+      ],
+      weight: 100,
+    });
+
+    // 2. Búsqueda por prefijos
+    const prefixPatterns = queryWords.map((word) => ({
+      $or: [
+        { name: { $regex: `^${word}`, $options: "i" } },
+        { description: { $regex: `^${word}`, $options: "i" } },
+        { slug: { $regex: `^${word}`, $options: "i" } },
+      ],
+      weight: 80,
+    }));
+    searchPatterns.push(...prefixPatterns);
+
+    // 3. Búsqueda fuzzy (tolerancia de 1-2 caracteres)
+    const fuzzyPatterns = queryWords
+      .map((word) => {
+        if (word.length < 3) return null; // Solo para palabras de 3+ caracteres
+
+        // Crear variaciones fuzzy
+        const fuzzyVariations = [];
+        for (let i = 0; i < word.length; i++) {
+          // Eliminar un carácter
+          const withoutChar = word.slice(0, i) + word.slice(i + 1);
+          if (withoutChar.length >= 2) fuzzyVariations.push(withoutChar);
+
+          // Cambiar un carácter por otro similar
+          const similarChars = {
+            a: "e",
+            e: "a",
+            i: "y",
+            o: "u",
+            u: "o",
+            s: "z",
+            z: "s",
+            c: "k",
+            k: "c",
+            f: "v",
+            v: "f",
+          };
+          const char = word[i];
+          if (similarChars[char]) {
+            const withSimilar =
+              word.slice(0, i) + similarChars[char] + word.slice(i + 1);
+            fuzzyVariations.push(withSimilar);
+          }
+        }
+
+        return {
+          $or: [
+            {
+              name: { $regex: `(${fuzzyVariations.join("|")})`, $options: "i" },
+            },
+            {
+              description: {
+                $regex: `(${fuzzyVariations.join("|")})`,
+                $options: "i",
+              },
+            },
+            {
+              slug: { $regex: `(${fuzzyVariations.join("|")})`, $options: "i" },
+            },
+          ],
+          weight: 30,
+        };
+      })
+      .filter(Boolean);
+    searchPatterns.push(...fuzzyPatterns);
+
+    // 4. Búsqueda por palabras individuales
+    const wordPatterns = queryWords.map((word) => ({
+      $or: [
+        { name: { $regex: word, $options: "i" } },
+        { description: { $regex: word, $options: "i" } },
+        { slug: { $regex: word, $options: "i" } },
+      ],
+      weight: 50,
+    }));
+    searchPatterns.push(...wordPatterns);
+
+    // Construir el filtro de búsqueda combinado
+    const searchFilter = {
+      $and: [
+        { quantity: { $gt: 0 } }, // Solo productos disponibles
+        { $or: searchPatterns.map((pattern) => pattern.$or).flat() },
+      ],
+    };
+
+    // Realizar la búsqueda con scoring de relevancia
+    const products = await Product.find(searchFilter)
+      .select(
+        "_id name price quantity slug description productPictures category"
+      )
+      .populate({
+        path: "category",
+        select: "_id name",
+      })
+      .lean()
+      .exec();
+
+    // Calcular puntuación de relevancia para cada producto
+    const scoredProducts = products.map((product) => {
+      let score = 0;
+      const searchText =
+        `${product.name} ${product.description} ${product.slug}`.toLowerCase();
+
+      // Puntuación por coincidencia exacta
+      if (searchText.includes(cleanQuery.toLowerCase())) {
+        score += 100;
+      }
+
+      // Puntuación por palabras individuales
+      queryWords.forEach((word) => {
+        if (product.name.toLowerCase().includes(word.toLowerCase())) {
+          score += 60;
+        } else if (
+          product.description.toLowerCase().includes(word.toLowerCase())
+        ) {
+          score += 40;
+        } else if (product.slug.toLowerCase().includes(word.toLowerCase())) {
+          score += 30;
+        }
+      });
+
+      // Puntuación por prefijos
+      queryWords.forEach((word) => {
+        if (product.name.toLowerCase().startsWith(word.toLowerCase())) {
+          score += 20;
+        }
+      });
+
+      return { ...product, relevanceScore: score };
+    });
+
+    // Ordenar por relevancia (mayor puntuación primero)
+    scoredProducts.sort((a, b) => b.relevanceScore - a.relevanceScore);
+
+    // Remover el score de la respuesta final
+    const finalProducts = scoredProducts.map(
+      ({ relevanceScore, ...product }) => product
+    );
+
+    if (finalProducts.length > 0) {
+      return res.status(200).json({ products: finalProducts });
+    } else {
+      return res.status(400).json({ error: "No se encontraron productos" });
+    }
+  } catch (error) {
+    console.error("Error en búsqueda de productos:", error);
+    return res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
 exports.getProducts = async (req, res) => {
   const products = await Product.find({})
     .select("_id name price quantity slug description productPictures category")
