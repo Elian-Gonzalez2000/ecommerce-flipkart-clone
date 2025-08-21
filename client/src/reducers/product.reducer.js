@@ -48,7 +48,7 @@ export default (state = initialState, action) => {
 
     case productConstants.GET_PRODUCTS_BY_SEARCH_QUERY_REQUEST:
       state = {
-        ...state,
+        ...initialState,
         loading: true,
       };
       break;
