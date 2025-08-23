@@ -6,13 +6,6 @@ const homepageSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-
-    banners: [
-      {
-        img: { type: String },
-        navigateTo: { type: String },
-      },
-    ],
     products: [
       {
         img: { type: String },
@@ -35,4 +28,4 @@ const homepageSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Homepage", pageSchema);
+module.exports = mongoose.model("Homepage", homepageSchema);
