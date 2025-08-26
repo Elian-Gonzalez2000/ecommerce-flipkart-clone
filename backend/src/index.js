@@ -15,6 +15,8 @@ const initialDataRoutes = require("./router/admin/initialData.js");
 const pageRoutes = require("./router/admin/page.js");
 const orderRoutes = require("./router/order.js");
 const adminOrderRoute = require("./router/admin/order.routes.js");
+const adminHomepageCardRoutes = require("./router/admin/homepageCard.routes.js");
+const homepageCardRoutes = require("./router/homepageCard.routes.js");
 const fs = require("fs");
 const https = require("https");
 const {
@@ -112,6 +114,8 @@ app.use("/api", initialDataRoutes);
 app.use("/api", pageRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", adminOrderRoute);
+app.use("/api", adminHomepageCardRoutes);
+app.use("/api", homepageCardRoutes);
 app.use("/api/stripe", stripeRoutes);
 
 app.get("/", (req, res, next) => {
