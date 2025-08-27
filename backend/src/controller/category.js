@@ -3,118 +3,136 @@ const slugify = require("slugify");
 const shortid = require("shortid");
 
 function createCategories(categories, parentId = null) {
-   const categoryList = [];
-   let category;
-   if (parentId == null) {
-      category = categories.filter((cat) => cat.parentId == undefined);
-   } else {
-      category = categories.filter((cat) => cat.parentId == parentId);
-   }
+  const categoryList = [];
+  let category;
+  if (parentId == null) {
+    category = categories.filter((cat) => cat.parentId == undefined);
+  } else {
+    category = categories.filter((cat) => cat.parentId == parentId);
+  }
 
-   for (let cate of category) {
-      categoryList.push({
-         _id: cate._id,
-         name: cate.name,
-         slug: cate.slug,
-         type: cate.type,
-         parentId: cate.parentId,
-         children: createCategories(categories, cate._id),
-      });
-   }
+  for (let cate of category) {
+    categoryList.push({
+      _id: cate._id,
+      name: cate.name,
+      slug: cate.slug,
+      type: cate.type,
+      parentId: cate.parentId,
+      children: createCategories(categories, cate._id),
+    });
+  }
 
-   return categoryList;
+  return categoryList;
 }
 
 exports.addCategory = (req, res) => {
-   const categoryObj = {
-      name: req.body.name,
-      slug: `${slugify(req.body.name)}-${shortid.generate()}`,
-      createdBy: req.user._id,
-   };
+  const categoryObj = {
+    name: req.body.name,
+    slug: `${slugify(req.body.name)}-${shortid.generate()}`,
+    createdBy: req.user._id,
+  };
 
-   if (req.file) {
-      categoryObj.categoryImage =
-         process.env.API + "/public/" + req.file.filename;
-   }
+  if (req.file) {
+    categoryObj.categoryImage =
+      process.env.API + "/public/" + req.file.filename;
+  }
 
-   if (req.body.parentId) {
-      categoryObj.parentId = req.body.parentId;
-   }
+  if (req.body.parentId) {
+    categoryObj.parentId = req.body.parentId;
+  }
 
-   const cat = new Category(categoryObj);
-   cat.save((error, category) => {
-      if (error) return res.status(400).json({ error });
-      if (category) {
-         return res.status(201).json({ category });
-      }
-   });
+  const cat = new Category(categoryObj);
+  cat.save((error, category) => {
+    if (error) return res.status(400).json({ error });
+    if (category) {
+      return res.status(201).json({ category });
+    }
+  });
 };
 
 exports.getCategories = (req, res) => {
-   Category.find({}).exec((error, categories) => {
-      if (error) return res.status(400).json({ error });
-      if (categories) {
-         const categoryList = createCategories(categories);
-         res.status(200).json({ categoryList });
-      }
-   });
+  Category.find({}).exec((error, categories) => {
+    if (error) return res.status(400).json({ error });
+    if (categories) {
+      const categoryList = createCategories(categories);
+      res.status(200).json({ categoryList });
+    }
+  });
 };
 
 exports.updateCategory = async (req, res) => {
-   const { _id, name, parentId, type } = req.body;
-   const updatedCategories = [];
+  try {
+    const { _id, name, parentId, type } = req.body;
 
-   if (name instanceof Array) {
-      for (let i = 0; i < name.length; i++) {
-         const category = {
-            name: name[i],
-            type: type[i],
-         };
-         if (parentId[i] !== "") {
-            category.parentId = parentId[i];
-         }
-
-         const updateCategory = await Category.findOneAndUpdate(
-            { _id: _id[i] },
-            category,
-            { new: true }
-         );
-         updatedCategories.push(updateCategory);
+    if (name instanceof Array) {
+      if (
+        !_id ||
+        !type ||
+        _id.length !== name.length ||
+        type.length !== name.length
+      ) {
+        return res.status(400).json({ error: "Datos inconsistentes" });
       }
-      ///console.log(updatedCategories);
-      res.status(201).json({ updatedCategories });
-   } else {
+
+      const updatePromises = name.map((nameItem, i) => {
+        const category = {
+          name: nameItem,
+          type: type[i],
+          slug: slugify(nameItem),
+        };
+
+        if (parentId && parentId[i] && parentId[i] !== "") {
+          category.parentId = parentId[i];
+        }
+
+        return Category.findOneAndUpdate({ _id: _id[i] }, category, {
+          new: true,
+          runValidators: true,
+        });
+      });
+
+      const updatedCategories = await Promise.all(updatePromises);
+      res.status(200).json({ updatedCategories });
+    } else {
       const category = {
-         name,
-         type,
+        name,
+        type,
+        slug: slugify(name),
       };
-      if (parentId !== "") {
-         category.parentId = parentId;
+
+      if (parentId && parentId !== "") {
+        category.parentId = parentId;
       }
-      const updatedCategories = await Category.findOneAndUpdate(
-         { _id },
-         category,
-         { new: true }
+
+      const updatedCategory = await Category.findOneAndUpdate(
+        { _id },
+        category,
+        { new: true, runValidators: true }
       );
-      res.status(201).json({ updatedCategories });
-   }
+
+      res.status(200).json({ updatedCategory });
+    }
+  } catch (error) {
+    console.error("Error updating categories:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 };
 
 exports.deleteCategories = async (req, res) => {
-   const { ids } = req.body.payload;
-   const deletedCategories = [];
-   for (let i = 0; i < ids.length; i++) {
-      const deleteCategory = await Category.findOneAndDelete({
-         _id: ids[i]._id,
-      });
-      deletedCategories.push(deleteCategory);
-   }
+  const { ids } = req.body.payload;
+  const deletedCategories = [];
+  for (let i = 0; i < ids.length; i++) {
+    const deleteCategory = await Category.findOneAndDelete({
+      _id: ids[i]._id,
+    });
+    deletedCategories.push(deleteCategory);
+  }
 
-   if (deletedCategories.length == ids.length) {
-      res.status(200).json({
-         message: "Categories removed",
-      });
-   } else {
-      res.status(400).json({ message: "Something went wrong" });
-   }
+  if (deletedCategories.length == ids.length) {
+    res.status(200).json({
+      message: "Categories removed",
+    });
+  } else {
+    res.status(400).json({ message: "Something went wrong" });
+  }
 };
