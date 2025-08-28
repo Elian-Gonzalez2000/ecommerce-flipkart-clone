@@ -21,7 +21,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case productConstants.GET_PRODUCTS_BY_SLUG_REQUEST:
       state = {
-        ...state,
+        ...initialState,
         loading: true,
       };
       break;
@@ -72,7 +72,7 @@ export default (state = initialState, action) => {
 
     case productConstants.GET_PRODUCTS_PAGE_REQUEST:
       state = {
-        ...state,
+        ...initialState,
         pageRequest: true,
       };
       break;
