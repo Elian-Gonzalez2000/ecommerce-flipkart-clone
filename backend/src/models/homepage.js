@@ -9,7 +9,7 @@ const homepageSchema = new mongoose.Schema(
     products: [
       {
         img: { type: String },
-        navigateTo: { type: String },
+        name: { type: String },
         offer: { type: Number || Boolean, default: false },
       },
     ],
