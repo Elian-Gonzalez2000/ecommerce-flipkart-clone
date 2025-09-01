@@ -13,48 +13,9 @@ import Category from "./containers/Category";
 import NewPage from "./containers/NewPage";
 import SignupConfirm from "./containers/Signup/confirm";
 import SignupError from "./containers/Signup/error";
+import Homepage from "./containers/Homepage";
 
 function App() {
-  const url = "http://localhost:3002/api/admin/signin";
-  const data = {
-    /*       firstName: "Edwiin",
-      lastName: "Gonzalez", */
-    /* email: "eliancarlogm@gmail.com",
-      password: "123456789", */
-    //name: "Electronics",
-    //parentId: "627b1a44874b7eba250c33d8",
-  };
-  /*  fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-         email: "eswin@gmail.com",
-         password: "123456789",
-      }),
-      headers: {
-         "Content-Type": "application/json",
-      },
-   })
-      .then((res) => res.json())
-      .then((data) => {
-         console.log(data);
-         if (data?.token) {
-            console.log(data.token);
-            fetch("http://localhost:3002/api/category/create", {
-               method: "POST",
-               body: JSON.stringify({ name: "Sports" }),
-               headers: {
-                  "Content-Type": "application/json",
-                  authorization:
-                     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjdiMWE0NDg3NGI3ZWJhMjUwYzMzZDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTIyMzUxNzQsImV4cCI6MTY1MjI0MjM3NH0.EfNoWqYCmu210ryhnQcXSAau3e3lUwLMDBqiq9ZUp9o",
-               },
-            })
-               .then((res) => res.json())
-               .then((data) => console.log(data))
-               .catch((err) => console.log(err));
-         }
-      })
-      .catch((error) => console.log(error));
- */
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
@@ -75,6 +36,11 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" exact element={<PrivateRoute component={Home} />} />
+        <Route
+          path="/homepage"
+          exact
+          element={<PrivateRoute component={Homepage} />}
+        />
         <Route path="/page" element={<PrivateRoute component={NewPage} />} />
         <Route
           path="/products"
