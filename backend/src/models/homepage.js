@@ -11,6 +11,7 @@ const homepageSchema = new mongoose.Schema(
         img: { type: String },
         name: { type: String },
         offer: { type: Number, default: 0, min: 0, max: 100 },
+        navigateTo: { type: String },
       },
     ],
     category: {
