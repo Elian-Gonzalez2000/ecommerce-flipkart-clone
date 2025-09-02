@@ -10,7 +10,7 @@ const homepageSchema = new mongoose.Schema(
       {
         img: { type: String },
         name: { type: String },
-        offer: { type: Number || Boolean, default: false },
+        offer: { type: Number, default: 0, min: 0, max: 100 },
       },
     ],
     category: {
