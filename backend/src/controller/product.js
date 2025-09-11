@@ -4,7 +4,6 @@ const env = require("dotenv");
 const multer = require("multer");
 const shortid = require("shortid");
 const slugify = require("slugify");
-const axios = require("axios");
 var fs = require("fs");
 const { log, error } = require("console");
 
@@ -323,14 +322,6 @@ exports.getProductsBySearchQuery = async (req, res) => {
     console.error("Error en búsqueda de productos:", error);
     return res.status(500).json({ error: "Error interno del servidor" });
   }
-};
-
-exports.createHomepageCard = (req, res) => {
-  const { product, category, user } = req.body;
-
-  Product.findById(product).exec((error, product) => {
-    if (error) return res.status(400).json({ error });
-  });
 };
 
 exports.getProducts = async (req, res) => {
