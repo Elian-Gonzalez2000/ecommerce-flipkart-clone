@@ -5,6 +5,7 @@ const homepageSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      unique: true,
     },
     products: [
       {
@@ -18,7 +19,6 @@ const homepageSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
-      unique: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
