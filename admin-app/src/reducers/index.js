@@ -5,14 +5,16 @@ import productReducer from "./product.reducer";
 import orderReducer from "./order.reducer";
 import { combineReducers } from "redux";
 import pageReducer from "./page.reducer";
+import homepageReducer from "./homepage.reducer";
 
 const rootReducer = combineReducers({
-   auth: authReducer,
-   user: userReducer,
-   category: categoryReducer,
-   order: orderReducer,
-   product: productReducer,
-   page: pageReducer,
+  auth: authReducer,
+  user: userReducer,
+  category: categoryReducer,
+  order: orderReducer,
+  product: productReducer,
+  page: pageReducer,
+  homepage: homepageReducer,
 });
 
 export default rootReducer;
