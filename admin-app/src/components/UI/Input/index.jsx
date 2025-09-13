@@ -8,6 +8,7 @@ import { Form } from "react-bootstrap";
 const Input = (props) => {
   const {
     label,
+    name,
     type,
     placeholder,
     value,
@@ -15,6 +16,7 @@ const Input = (props) => {
     errorMessage,
     register,
     styles,
+    children,
   } = props;
 
   let input = null;
@@ -24,19 +26,15 @@ const Input = (props) => {
         <Form.Group className="mb-3" controlId={`formBasicEmail`}>
           {label && <Form.Label>{label}</Form.Label>}
           <select
-            className="form-control form-control-sm"
+            name={name ? name : ""}
+            className="form-control "
             value={value}
             onChange={onChange}
           >
             <option value="">{placeholder}</option>
-            {props.options.length > 0
-              ? props.options.map((option, index) => (
-                  <option key={`${option.name}-${index}`} value={option._id}>
-                    {option.name}
-                  </option>
-                ))
-              : null}
+            {children}
           </select>
+          <Form.Text className="text-danger">{errorMessage}</Form.Text>
         </Form.Group>
       );
       break;
@@ -49,6 +47,7 @@ const Input = (props) => {
         >
           {label && <Form.Label>{label}</Form.Label>}
           <Form.Control
+            name={name ? name : ""}
             type={type}
             placeholder={placeholder}
             value={value}
@@ -62,7 +61,7 @@ const Input = (props) => {
       );
       break;
   }
-  return input;
+  if (input) return input;
 };
 
 export default Input;
