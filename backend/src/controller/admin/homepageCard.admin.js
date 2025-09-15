@@ -62,6 +62,7 @@ exports.createHomepageCard = (req, res) => {
         if (cat) {
           homepageCardData.category = {
             _id: cat._id,
+            name: cat.name,
           };
         }
 
@@ -90,7 +91,10 @@ exports.createHomepageCard = (req, res) => {
           if (homepageCard) {
             return res
               .status(201)
-              .json({ data: homepageCard, message: "Homepage card created" });
+              .json({
+                createdCard: homepageCard,
+                message: "Homepage card created",
+              });
           }
         });
       });
@@ -127,7 +131,7 @@ exports.getAllHomepagesCards = (req, res) => {
     if (homepages)
       return res.status(200).json({
         message: "All homepages cards obtained",
-        data: [...homepages],
+        allCards: [...homepages],
       });
   });
 };
