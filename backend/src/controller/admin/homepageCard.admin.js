@@ -8,7 +8,7 @@ const slugify = require("slugify");
 const { log, error } = require("console");
 
 exports.createHomepageCard = (req, res) => {
-  const { productsList, category, title } = req.body;
+  const { productsList, category = req.body.categoryId, title } = req.body;
   if (productsList.length == 0)
     return res.status(400).json({ message: "The card need products" });
   if (!category)
@@ -125,12 +125,10 @@ exports.getAllHomepagesCards = (req, res) => {
       return res.status(400).json({ message: "Something was wrong", error });
 
     if (homepages)
-      return res
-        .status(200)
-        .json({
-          message: "All homepages cards obtained",
-          data: [...homepages],
-        });
+      return res.status(200).json({
+        message: "All homepages cards obtained",
+        data: [...homepages],
+      });
   });
 };
 
