@@ -62,7 +62,6 @@ exports.createHomepageCard = (req, res) => {
         if (cat) {
           homepageCardData.category = {
             _id: cat._id,
-            name: cat.name,
           };
         }
 
@@ -89,12 +88,10 @@ exports.createHomepageCard = (req, res) => {
           }
 
           if (homepageCard) {
-            return res
-              .status(201)
-              .json({
-                createdCard: homepageCard,
-                message: "Homepage card created",
-              });
+            return res.status(201).json({
+              createdCard: homepageCard,
+              message: "Homepage card created",
+            });
           }
         });
       });
@@ -128,11 +125,39 @@ exports.getAllHomepagesCards = (req, res) => {
     if (error)
       return res.status(400).json({ message: "Something was wrong", error });
 
-    if (homepages)
-      return res.status(200).json({
-        message: "All homepages cards obtained",
-        allCards: [...homepages],
+    if (homepages) {
+      const cardsResponse = [];
+
+      const fillCardsCategoryPromises = homepages.map((card) => {
+        return Category.findById(card.category._id);
       });
+
+      Promise.all(fillCardsCategoryPromises).then((categoriesResults) => {
+        homepages.forEach((card, index) => {
+          categoriesResults.forEach((cat) => {
+            if (cat && card.category._id.toString() === cat._id.toString()) {
+              cardsResponse.push({
+                _id: card._id,
+                title: card.title,
+                products: card.products,
+                category: { _id: cat._id, name: cat.name, slug: cat.slug },
+              });
+            }
+          });
+        });
+        if (cardsResponse.length > 0) {
+          return res.status(200).json({
+            message: "All homepages cards obtained",
+            allCards: [...cardsResponse],
+          });
+        } else {
+          return res.status(400).json({
+            message: "No homepages cards categories found",
+            allCards: [],
+          });
+        }
+      });
+    }
   });
 };
 
