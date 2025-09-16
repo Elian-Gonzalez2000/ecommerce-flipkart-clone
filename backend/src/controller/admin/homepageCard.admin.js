@@ -151,10 +151,20 @@ exports.getAllHomepagesCards = (req, res) => {
             allCards: [...cardsResponse],
           });
         } else {
-          return res.status(400).json({
-            message: "No homepages cards categories found",
-            allCards: [],
-          });
+          return res
+            .status(400)
+            .json({
+              message: "No homepages cards categories found",
+              allCards: [],
+            })
+            .catch((error) => {
+              return res
+                .status(400)
+                .json({
+                  message: "Something was wrong with categories",
+                  error,
+                });
+            });
         }
       });
     }
