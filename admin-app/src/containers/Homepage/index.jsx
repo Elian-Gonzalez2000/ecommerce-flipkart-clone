@@ -1,4 +1,4 @@
-import { Modal } from "react-bootstrap";
+import { Modal, Table } from "react-bootstrap";
 import Layout from "../../components/Layout";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
@@ -96,21 +96,58 @@ function HomepageModal() {
     return options;
   };
 
-  const handleProductPictures = (e) => {
-    // Save multiples files
-    if (!e.target.files || !e.target.files.length) return alert("Algo");
-    const images = Array.from(e.target.files);
-    const imagesPromises = images.map(async (file) => {
-      console.log(file);
-      const fileImage = await uploadImage(file);
-      setProductPictures([...productPictures, file]);
-      return fileImage;
-    });
-    Promise.all(imagesPromises).then((res) => {
-      console.log(res);
-      setImgUrl([...imgURL, ...res]);
-    });
-    console.log(e.target.files, productPictures);
+  const renderAllCardsTable = () => {
+    return (
+      <Table responsive="sm">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Products Counted</th>
+          </tr>
+        </thead>
+        <tbody>
+          {homepage.groupOfCards.map((card, index) => {
+            const categoryName = card.category.name
+              ? card.category.name
+              : "No asigned";
+            const productCount = card.products.length;
+            return (
+              <tr key={card._id || randomUI()}>
+                <td>{index + 1}</td>
+                <td>{card.title}</td>
+                <td>{categoryName}</td>
+                <td>{productCount}</td>
+                <td>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    Info
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    del
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
+    );
   };
 
   const RenderAddHomepageModal = () => {
@@ -180,7 +217,7 @@ function HomepageModal() {
                 <p key={randomUI()} className="position-relative">
                   {prod.name}
                   <span
-                    data-productId={prod._id}
+                    data-productid={prod._id}
                     className="cancel-btn"
                     onClick={(e) => cancelOnSelectedProducts(e)}
                   >
@@ -199,13 +236,8 @@ function HomepageModal() {
   return (
     <section>
       <button onClick={() => setShowAddHomepageModal(true)}> Open modal</button>
-      <RenderAddHomepageModal />
-      {/* {homepage?.groupOfCards &&
-        homepage?.groupOfCards.map((card) => {
-          console.log(card);
-
-          return <p>{card.title}</p>;
-        })} */}
+      {showAddHomepageModal ? RenderAddHomepageModal() : ""}
+      {homepage.groupOfCards.length > 0 ? renderAllCardsTable() : "No Cards"}
     </section>
   );
 }
