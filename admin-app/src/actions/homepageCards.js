@@ -28,6 +28,33 @@ export const createHomepageCard = (formData) => {
   };
 };
 
+export const updateHomepageCard = (formData) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: homepageCardsConstants.UPDATE_HOMEPAGECARD_REQUEST });
+      const res = await axios.post("admin/homepagecard/create", {
+        ...formData,
+        productsList: formData.products,
+      });
+
+      if (res.status === 201) {
+        dispatch({
+          type: homepageCardsConstants.UPDATE_HOMEPAGECARD_SUCCESS,
+          payload: res.data.data,
+        });
+      }
+    } catch (error) {
+      if (error?.response?.status === 400) {
+        console.log(error);
+        dispatch({
+          type: homepageCardsConstants.UPDATE_HOMEPAGECARD_FAILURE,
+          payload: error.response,
+        });
+      }
+    }
+  };
+};
+
 export const getAllCardsHomepages = () => {
   return async (dispatch) => {
     try {
