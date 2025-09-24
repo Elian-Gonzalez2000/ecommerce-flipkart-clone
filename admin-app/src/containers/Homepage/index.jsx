@@ -11,6 +11,7 @@ import { addProduct } from "../../actions";
 import {
   createHomepageCard,
   getAllCardsHomepages,
+  updateHomepageCard,
 } from "../../actions/homepageCards";
 
 function Homepage() {
@@ -27,6 +28,13 @@ function HomepageModal() {
     category: "",
     products: [],
     currentProductName: "",
+  });
+  const [editFormValues, setEditFormValues] = useState({
+    title: "",
+    category: "",
+    products: [],
+    currentProductName: "",
+    homepageId: "",
   });
   const [formErrors, setFormErrors] = useState({
     title: "",
@@ -47,7 +55,7 @@ function HomepageModal() {
     dispatch(getAllCardsHomepages());
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmitAddHomepageModal = () => {
     const requestCardData = {
       title: values.title,
       categoryId: values.category,
@@ -68,13 +76,62 @@ function HomepageModal() {
     }
   };
 
+  const handleSubmitEditHomepageModal = () => {
+    const requestCardData = {
+      title: editFormValues.title,
+      categoryId: editFormValues.category,
+      products: editFormValues.products,
+      homepageId: editFormValues.homepageId,
+    };
+    const checkFormErrors = {};
+    if (!editFormValues.title.trim())
+      checkFormErrors.title = "The card need a title";
+    if (!editFormValues.category.trim())
+      checkFormErrors.category = "The card need a category";
+    if (editFormValues.products.length === 0)
+      checkFormErrors.products = "The card need show products";
+
+    setFormErrors(checkFormErrors);
+
+    if (Object.keys(checkFormErrors).length === 0) {
+      dispatch(updateHomepageCard(requestCardData));
+      setShowEditHomepageModal(false);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues((state) => ({ ...state, [name]: value }));
   };
 
-  const cancelOnSelectedProducts = (e) => {
-    //console.log(product.products.find((item) => e.target.dataset.productid));
+  const handleOpenEditHomepageModal = (homepage) => {
+    console.log(homepage);
+    setEditFormValues({
+      ...editFormValues,
+      title: homepage.title,
+      category: homepage.category._id,
+      products: homepage.products.map((prod) => prod._id),
+      homepageId: homepage._id,
+    });
+    setShowEditHomepageModal(true);
+  };
+
+  const cancelOnEditSelectedProducts = (e) => {
+    const productIdFiltered = editFormValues.products.filter(
+      (prod) => prod === e.target.dataset.productid
+    );
+
+    const updateProductGroupOnState = editFormValues.products.filter(
+      (prod) => prod !== e.target.dataset.productid
+    );
+    if (productIdFiltered)
+      setEditFormValues({
+        ...editFormValues,
+        products: [...updateProductGroupOnState],
+      });
+  };
+
+  const cancelOnAddSelectedProducts = (e) => {
     const productIdFiltered = values.products.filter(
       (prod) => prod === e.target.dataset.productid
     );
@@ -108,15 +165,15 @@ function HomepageModal() {
           </tr>
         </thead>
         <tbody>
-          {homepage.groupOfCards.map((card, index) => {
-            const categoryName = card.category.name
-              ? card.category.name
+          {homepage.groupOfCards.map((homepage, index) => {
+            const categoryName = homepage.category.name
+              ? homepage.category.name
               : "No asigned";
-            const productCount = card.products.length;
+            const productCount = homepage.products.length;
             return (
-              <tr key={card._id || randomUI()}>
+              <tr key={homepage._id || randomUI()}>
                 <td>{index + 1}</td>
-                <td>{card.title}</td>
+                <td>{homepage.title}</td>
                 <td>{categoryName}</td>
                 <td>{productCount}</td>
                 <td>
@@ -130,6 +187,7 @@ function HomepageModal() {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
+                      handleOpenEditHomepageModal(homepage);
                     }}
                   >
                     Edit
@@ -156,7 +214,7 @@ function HomepageModal() {
         show={showAddHomepageModal}
         modalTitle={"Add new card of products in homepage"}
         handleClose={() => setShowAddHomepageModal(false)}
-        onSubmitForm={handleSubmit}
+        onSubmitForm={handleSubmitAddHomepageModal}
       >
         <Input
           label="Title"
@@ -219,7 +277,94 @@ function HomepageModal() {
                   <span
                     data-productid={prod._id}
                     className="cancel-btn"
-                    onClick={(e) => cancelOnSelectedProducts(e)}
+                    onClick={(e) => cancelOnAddSelectedProducts(e)}
+                  >
+                    X
+                  </span>
+                </p>
+              ))
+          ) : (
+            <p>Need products to show in the card homepage</p>
+          )}
+        </div>
+      </FormularyModal>
+    );
+  };
+
+  const RenderEditHomepageModal = () => {
+    return (
+      <FormularyModal
+        show={showEditHomepageModal}
+        modalTitle={"Add new card of products in homepage"}
+        handleClose={() => setShowEditHomepageModal(false)}
+        onSubmitForm={handleSubmitEditHomepageModal}
+      >
+        <Input
+          label="Title"
+          name="title"
+          placeholder={"Product title"}
+          value={editFormValues.title}
+          errorMessage={formErrors?.title ? formErrors.title : ""}
+          onChange={(e) =>
+            setEditFormValues({ ...editFormValues, title: e.target.value })
+          }
+        />
+
+        <Input
+          label="Select category"
+          type="select"
+          name="category"
+          placeholder="Select Category"
+          value={editFormValues.category}
+          errorMessage={formErrors?.category ? formErrors.category : ""}
+          onChange={(e) =>
+            setEditFormValues({ ...editFormValues, category: e.target.value })
+          }
+        >
+          {createCategoryList(category.categories).map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.name}
+            </option>
+          ))}
+        </Input>
+        <Input
+          label="Select card products"
+          type="select"
+          name="products"
+          placeholder="Select card products"
+          value={editFormValues.currentProductName}
+          errorMessage={formErrors?.products ? formErrors.products : ""}
+          onChange={(e) => {
+            if (!editFormValues.products.includes(e.target.value)) {
+              setEditFormValues({
+                ...editFormValues,
+                products: [...editFormValues.products, e.target.value],
+                currentProductName: e.target.value,
+              });
+            }
+          }}
+        >
+          {product.products.map((option) => (
+            <option
+              key={option._id}
+              value={option._id}
+              onClick={(e) => console.log(e.target)}
+            >
+              {option.name}
+            </option>
+          ))}
+        </Input>
+        <div>
+          {editFormValues.products?.length > 0 ? (
+            product.products
+              .filter((prod) => editFormValues.products.includes(prod._id))
+              .map((prod) => (
+                <p key={randomUI()} className="position-relative">
+                  {prod.name}
+                  <span
+                    data-productid={prod._id}
+                    className="cancel-btn"
+                    onClick={(e) => cancelOnEditSelectedProducts(e)}
                   >
                     X
                   </span>
@@ -237,6 +382,7 @@ function HomepageModal() {
     <section>
       <button onClick={() => setShowAddHomepageModal(true)}> Open modal</button>
       {showAddHomepageModal ? RenderAddHomepageModal() : ""}
+      {showEditHomepageModal ? RenderEditHomepageModal() : ""}
       {homepage.groupOfCards.length > 0 ? renderAllCardsTable() : "No Cards"}
     </section>
   );
