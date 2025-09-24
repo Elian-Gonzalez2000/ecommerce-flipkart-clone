@@ -7,6 +7,25 @@ const initialState = {
   loading: false,
 };
 
+const updatedGroupOfCards = (groupCardsList, addCardUpdated) => {
+  if (!Array.isArray(groupCardsList)) {
+    console.log("first argument must be an array");
+    return [];
+  }
+  if (
+    !addCardUpdated?.title ||
+    !addCardUpdated.category ||
+    !addCardUpdated.products
+  ) {
+    console.log("second argument must have the correct object data");
+    return [];
+  }
+  const groupOfCardsUpdated = groupCardsList.filter(
+    (card) => card._id === addCardUpdated._id
+  );
+  return [...groupOfCardsUpdated, { ...addCardUpdated }];
+};
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case homepageCardsConstants.GET_HOMEPAGECARDS_REQUEST:
@@ -43,6 +62,29 @@ export default (state = initialState, action) => {
       };
       break;
     case homepageCardsConstants.CREATE_HOMEPAGECARD_FAILURE:
+      state = {
+        ...state,
+        error: action.payload.error,
+        loading: false,
+      };
+      break;
+    case homepageCardsConstants.UPDATE_HOMEPAGECARD_REQUEST:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case homepageCardsConstants.UPDATE_HOMEPAGECARD_SUCCESS:
+      state = {
+        ...state,
+        groupOfCards: updatedGroupOfCards(
+          [...groupOfCards],
+          action.payload.updatedCard
+        ),
+        loading: false,
+      };
+      break;
+    case homepageCardsConstants.UPDATE_HOMEPAGECARD_FAILURE:
       state = {
         ...state,
         error: action.payload.error,
