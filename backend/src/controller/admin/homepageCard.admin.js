@@ -111,6 +111,8 @@ exports.updateHomepageCard = (req, res) => {
     updatedBy: { _id: req.user._id },
   };
 
+  let fullCategoryData = {};
+
   const productsPromises = productsList.map((productId) => {
     return Product.findById(productId);
   });
@@ -138,6 +140,11 @@ exports.updateHomepageCard = (req, res) => {
           homepageCardData.category = {
             _id: cat._id,
           };
+          fullCategoryData = {
+            _id: cat._id,
+            name: cat.name,
+            slug: cat.slug,
+          };
         }
 
         if (!results && !cat)
@@ -148,28 +155,41 @@ exports.updateHomepageCard = (req, res) => {
           return res.status(400).json({ message: "No products found" });
         if (!cat) return res.status(400).json({ message: "No category found" });
 
-        Homepage.findByIdAndUpdate(homepageId, { ...homepageCardData }).exec(
-          (error, homepageUpdated) => {
-            if (error) {
-              if (error.code === 11000) {
-                return res.status(400).json({
-                  message: "There is already a record with this unique data.",
-                  error,
-                });
-              }
-              return res
-                .status(400)
-                .json({ message: "Something was wrong with category", error });
-            }
-
-            if (homepageUpdated) {
-              return res.status(201).json({
-                updatedCard: homepageUpdated,
-                message: "Homepage card updated",
+        Homepage.findByIdAndUpdate(
+          homepageId,
+          { ...homepageCardData },
+          { returnDocument: "after" }
+        ).exec((error, homepageUpdated) => {
+          if (error) {
+            if (error.code === 11000) {
+              return res.status(400).json({
+                message: "There is already a record with this unique data.",
+                error,
               });
             }
+            return res
+              .status(400)
+              .json({ message: "Something was wrong with category", error });
           }
-        );
+
+          if (homepageUpdated) {
+            const homepageUpdatedCard = {
+              _id: homepageUpdated._id,
+              title: homepageUpdated.title,
+              products: homepageUpdated.products,
+              category: {
+                _id: cat._id,
+                name: cat.name,
+                slug: cat.slug,
+              },
+            };
+
+            return res.status(200).json({
+              updatedCard: homepageUpdatedCard,
+              message: "Homepage card updated",
+            });
+          }
+        });
       });
     })
     .catch((error) => {
