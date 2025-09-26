@@ -105,7 +105,6 @@ function HomepageModal() {
   };
 
   const handleOpenEditHomepageModal = (homepage) => {
-    console.log(homepage);
     setEditFormValues({
       ...editFormValues,
       title: homepage.title,
@@ -153,7 +152,7 @@ function HomepageModal() {
     return options;
   };
 
-  const renderAllCardsTable = () => {
+  const RenderAllCardsTable = () => {
     return (
       <Table responsive="sm">
         <thead>
@@ -165,44 +164,46 @@ function HomepageModal() {
           </tr>
         </thead>
         <tbody>
-          {homepage.groupOfCards.map((homepage, index) => {
-            const categoryName = homepage.category.name
-              ? homepage.category.name
-              : "No asigned";
-            const productCount = homepage.products.length;
-            return (
-              <tr key={homepage._id || randomUI()}>
-                <td>{index + 1}</td>
-                <td>{homepage.title}</td>
-                <td>{categoryName}</td>
-                <td>{productCount}</td>
-                <td>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    Info
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleOpenEditHomepageModal(homepage);
-                    }}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    del
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
+          {homepage.groupOfCards.length > 0
+            ? homepage.groupOfCards.map((homepage, index) => {
+                const categoryName = homepage.category.name
+                  ? homepage.category.name
+                  : "No asigned";
+                const productCount = homepage.products.length;
+                return (
+                  <tr key={homepage._id || randomUI()}>
+                    <td>{index + 1}</td>
+                    <td>{homepage.title}</td>
+                    <td>{categoryName}</td>
+                    <td>{productCount}</td>
+                    <td>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        Info
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenEditHomepageModal(homepage);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        del
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            : "No Cards"}
         </tbody>
       </Table>
     );
@@ -295,7 +296,7 @@ function HomepageModal() {
     return (
       <FormularyModal
         show={showEditHomepageModal}
-        modalTitle={"Add new card of products in homepage"}
+        modalTitle={"Edit card of products in homepage"}
         handleClose={() => setShowEditHomepageModal(false)}
         onSubmitForm={handleSubmitEditHomepageModal}
       >
@@ -383,7 +384,8 @@ function HomepageModal() {
       <button onClick={() => setShowAddHomepageModal(true)}> Open modal</button>
       {showAddHomepageModal ? RenderAddHomepageModal() : ""}
       {showEditHomepageModal ? RenderEditHomepageModal() : ""}
-      {homepage.groupOfCards.length > 0 ? renderAllCardsTable() : "No Cards"}
+      {/* {!homepage.loading ? RenderAllCardsTable() : "Loading"} */}
+      {RenderAllCardsTable()}
     </section>
   );
 }
