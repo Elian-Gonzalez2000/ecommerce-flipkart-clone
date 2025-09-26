@@ -12,6 +12,7 @@ const updatedGroupOfCards = (groupCardsList, addCardUpdated) => {
     console.log("first argument must be an array");
     return [];
   }
+
   if (
     !addCardUpdated?.title ||
     !addCardUpdated.category ||
@@ -20,10 +21,12 @@ const updatedGroupOfCards = (groupCardsList, addCardUpdated) => {
     console.log("second argument must have the correct object data");
     return [];
   }
+
   const groupOfCardsUpdated = groupCardsList.filter(
-    (card) => card._id === addCardUpdated._id
+    (card) => card._id !== addCardUpdated._id
   );
-  return [...groupOfCardsUpdated, { ...addCardUpdated }];
+
+  return [...groupOfCardsUpdated, addCardUpdated];
 };
 
 export default (state = initialState, action) => {
@@ -75,12 +78,15 @@ export default (state = initialState, action) => {
       };
       break;
     case homepageCardsConstants.UPDATE_HOMEPAGECARD_SUCCESS:
+      const cardUpdated = action.payload.updatedCard;
+      const saveUpdatedGroupOfCards = updatedGroupOfCards(
+        [...state.groupOfCards],
+        cardUpdated
+      );
+
       state = {
         ...state,
-        groupOfCards: updatedGroupOfCards(
-          [...groupOfCards],
-          action.payload.updatedCard
-        ),
+        groupOfCards: saveUpdatedGroupOfCards,
         loading: false,
       };
       break;
