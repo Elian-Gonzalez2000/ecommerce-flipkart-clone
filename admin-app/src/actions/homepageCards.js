@@ -32,15 +32,15 @@ export const updateHomepageCard = (formData) => {
   return async (dispatch) => {
     try {
       dispatch({ type: homepageCardsConstants.UPDATE_HOMEPAGECARD_REQUEST });
-      const res = await axios.post("admin/homepagecard/create", {
+      const res = await axios.post("admin/homepagecard/update", {
         ...formData,
         productsList: formData.products,
       });
 
-      if (res.status === 201) {
+      if (res.status === 200) {
         dispatch({
           type: homepageCardsConstants.UPDATE_HOMEPAGECARD_SUCCESS,
-          payload: res.data.data,
+          payload: res.data,
         });
       }
     } catch (error) {
