@@ -74,9 +74,20 @@ exports.createHomepageCard = (req, res) => {
               .json({ message: "Something was wrong", error });
           }
 
+          const homepageCardToResponse = {
+            _id: homepageCard._id,
+            title: homepageCard.title,
+            products: homepageCard.products,
+            category: {
+              _id: cat._id,
+              name: cat.name,
+              slug: cat.slug,
+            },
+          };
+
           if (homepageCard) {
             return res.status(201).json({
-              createdCard: homepageCard,
+              createdCard: homepageCardToResponse,
               message: "Homepage card created",
             });
           }
