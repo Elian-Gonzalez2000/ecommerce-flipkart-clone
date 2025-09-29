@@ -50,7 +50,7 @@ export default (state = initialState, action) => {
         error: action.payload.error,
         loading: false,
       };
-
+      break;
     case homepageCardsConstants.CREATE_HOMEPAGECARD_REQUEST:
       state = {
         ...state,
@@ -58,9 +58,13 @@ export default (state = initialState, action) => {
       };
       break;
     case homepageCardsConstants.CREATE_HOMEPAGECARD_SUCCESS:
+      const updatedGroupOfCardsWithCreatedCard = [
+        ...state.groupOfCards,
+        action.payload.createdCard,
+      ];
       state = {
         ...state,
-        groupOfCards: [...groupOfCards, action.payload.createdCard],
+        groupOfCards: updatedGroupOfCardsWithCreatedCard,
         loading: false,
       };
       break;
